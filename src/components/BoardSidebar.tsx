@@ -79,9 +79,18 @@ const BoardSidebar = ({
         </button>
         {/* Theme toggle */}
         <section
-          className="theme-toggle mt-4 flex cursor-pointer items-center justify-around gap-4 rounded-md bg-[#F4F7FD] p-4 dark:bg-[#20212C] sm:mt-auto"
+          className="theme-toggle mt-4 flex cursor-pointer items-center justify-center gap-6 rounded-md bg-[#F4F7FD] p-4 dark:bg-[#20212C] sm:mt-auto"
           onClick={() => {
-            // ?
+            setDarkTheme(!darkTheme);
+            if (!darkTheme) {
+              localStorage.setItem("theme", "dark");
+              console.log("storage save to dark");
+            } else {
+              // else set light theme
+              // setDarkTheme(false);
+              localStorage.setItem("theme", "light");
+              console.log("storage save to light");
+            }
           }}
         >
           {/* Light theme icon */}
@@ -106,13 +115,13 @@ const BoardSidebar = ({
               }
             }}
             className={`${!darkTheme ? "bg-[#635FC7]" : "bg-[#444298]"}
-          relative inline-flex h-[38px] w-[74px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
+          relative inline-flex h-[22px] w-[40px] shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus-visible:outline-offset-8 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
           >
             <span className="sr-only">Toggle dark theme</span>
             <span
               aria-hidden="true"
-              className={`${darkTheme ? "translate-x-9" : "translate-x-0"}
-            pointer-events-none inline-block h-[34px] w-[34px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
+              className={`${darkTheme ? "translate-x-[21px]" : "translate-x-0"}
+            pointer-events-none inline-block h-[14px] w-[14px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
             />
           </Switch>
           {/* Dark theme icon */}
