@@ -2,7 +2,6 @@ import Image from "next/image";
 import React from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { FaChevronDown } from "react-icons/fa";
-import BoardSidebar from "./BoardSidebar";
 
 interface HeaderProps {
   isBoardMenuOpen: boolean;
@@ -22,6 +21,7 @@ const Header = ({ isBoardMenuOpen, setIsBoardMenuOpen, darkTheme }: HeaderProps)
               width={153}
               layout="fixed"
               alt="logo"
+              priority
             />
           </div>
           <div className="sm:hidden">
