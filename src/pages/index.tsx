@@ -8,9 +8,36 @@ import Header from "../components/Header";
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
+  // const [selectedBoard, setSelectedBoard] = useState(null)
+  const [selectedBoard, setSelectedBoard] = useState(data.boards[0]);
+  // console.log(selectedBoard);
+  // {name: 'Platform Launch', columns: Array(3)}
+  // columns: Array(3)
+  // 0:
+  // name: "Todo"
+  // tasks: Array(4)
+  // 0:
+  // description: ""
+  // status: "Todo"
+  // subtasks: (3) [{…}, {…}, {…}]
+  // title: "Build UI for onboarding flow"
+  // [[Prototype]]: Object
+  // 1: {title: 'Build UI for search', description: '', status: 'Todo', subtasks: Array(1)}
+  // 2: {title: 'Build settings UI', description: '', status: 'Todo', subtasks: Array(2)}
+  // 3: {title: 'QA and test all major user journeys', description: 'Once we feel version one is ready, we need to rigo…rnally and externally to identify any major gaps.', status: 'Todo', subtasks: Array(2)}
+  // length: 4
+  // [[Prototype]]: Array(0)
+  // [[Prototype]]: Object
+  // 1: {name: 'Doing', tasks: Array(6)}
+  // 2: {name: 'Done', tasks: Array(7)}
+  // length: 3
+  // [[Prototype]]: Array(0)
+  // name: "Platform Launch"
+
   const [isBoardMenuOpen, setIsBoardMenuOpen] = useState(false);
   const [darkTheme, setDarkTheme] = useState(false);
   const [boardsData, setBoardsData] = useState(data.boards);
+
   // console.log(boardsData);
   // console.log(data);
   // boards: Array(3)
@@ -38,8 +65,8 @@ const Home: NextPage = () => {
 
   // Save theme to local storage
   useEffect(() => {
-    console.log(darkTheme, ": dark theme on load");
-    console.log(localStorage.getItem("theme"), "zzz");
+    console.log(darkTheme, ": dark theme state on load");
+    console.log(localStorage.getItem("theme"), "get local storage theme");
     if (
       // if saved dark theme in local storage or device prefers dark mode - set dark theme
       localStorage.getItem("theme") === "dark" ||
@@ -62,6 +89,7 @@ const Home: NextPage = () => {
         isBoardMenuOpen={isBoardMenuOpen}
         setIsBoardMenuOpen={setIsBoardMenuOpen}
         darkTheme={darkTheme}
+        selectedBoard={selectedBoard}
       />
       <Boards
         isBoardMenuOpen={isBoardMenuOpen}
@@ -69,6 +97,7 @@ const Home: NextPage = () => {
         darkTheme={darkTheme}
         setDarkTheme={setDarkTheme}
         boardsData={boardsData}
+        selectedBoard={selectedBoard}
       />
     </main>
   );

@@ -7,11 +7,12 @@ interface HeaderProps {
   isBoardMenuOpen: boolean;
   setIsBoardMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
   darkTheme: boolean | null;
+  selectedBoard: any; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 }
 
-const Header = ({ isBoardMenuOpen, setIsBoardMenuOpen, darkTheme }: HeaderProps) => {
+const Header = ({ isBoardMenuOpen, setIsBoardMenuOpen, darkTheme, selectedBoard }: HeaderProps) => {
   return (
-    <header className="dark:bg-[#2B2C37] dark:text-white">
+    <header className="fixed top-0 left-0 right-0 z-20 bg-white dark:bg-[#2B2C37] dark:text-white">
       <div className="flex items-center justify-between p-4">
         <div className="flex items-center gap-3">
           <div className="hidden sm:mr-4 sm:block">
@@ -31,8 +32,7 @@ const Header = ({ isBoardMenuOpen, setIsBoardMenuOpen, darkTheme }: HeaderProps)
             className="flex items-center gap-1 focus:outline-offset-2 focus-visible:outline-offset-2"
             onClick={() => setIsBoardMenuOpen(!isBoardMenuOpen)}
           >
-            Platform Launch
-            <FaChevronDown fill="#635FC7" className="sm:hidden" />
+            {selectedBoard.name} <FaChevronDown fill="#635FC7" className="sm:hidden" />
           </button>
         </div>
         <div className="flex items-center gap-3">

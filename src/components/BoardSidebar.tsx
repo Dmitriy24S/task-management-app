@@ -1,7 +1,7 @@
 import { Switch } from "@headlessui/react";
 import Image from "next/image";
 import React from "react";
-// Transition
+
 interface BoardSidebarProps {
   isBoardMenuOpen: boolean;
   setIsBoardMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -22,7 +22,7 @@ const BoardSidebar = ({
       <div
         className={`${
           isBoardMenuOpen ? "block" : "hidden"
-        } backdrop fixed inset-0 z-10 bg-black opacity-30 sm:hidden`}
+        } backdrop fixed inset-0 z-20 bg-black opacity-30 sm:hidden`}
         onClick={() => setIsBoardMenuOpen(false)}
       ></div>
       <div
@@ -32,12 +32,17 @@ const BoardSidebar = ({
               // "flex sm:w-[320px] sm:border-r sm:border-gray-200 dark:sm:border-gray-700"
               "flex sm:w-full sm:border-r sm:border-gray-200 dark:sm:border-gray-700"
             : "sm:w-0"
-        } menu-container absolute right-0 left-0 z-20 mx-auto max-w-[20rem] rounded-md bg-white fill-[#828FA3] text-[#828FA3] transition-[width] duration-300 ease-in-out dark:bg-[#2B2C37] sm:relative sm:min-h-full sm:rounded-none `}
+        } menu-container absolute right-0 left-0 z-20 mx-auto mt-20 max-w-[20rem]  overflow-x-hidden rounded-md bg-white fill-[#828FA3] text-[#828FA3] transition-[width] duration-300 ease-in-out dark:bg-[#2B2C37] sm:relative  sm:z-10  sm:mt-0 sm:rounded-none sm:pt-20`}
       >
+        {/* sm:min-h-full */}
+        {/* max-h-screen */}
+        {/* sm:fixed */}
+        {/* sm:relative */}
         <div
           className={`${
             isBoardMenuOpen ? "flex" : "hidden"
-          } menu-content w-full flex-col gap-4 overflow-hidden p-4`}
+            //   } menu-content w-full flex-col gap-4 overflow-hidden p-4 sm:fixed`}
+          } menu-content w-[320px] max-w-[20rem]  flex-col gap-4 overflow-hidden p-4 sm:fixed sm:min-h-[85%]`}
         >
           <h2 className="mb-2 min-w-max">All boards ({boardsData.length})</h2>
           <ul className="flex flex-col gap-3">
@@ -73,7 +78,7 @@ const BoardSidebar = ({
           </button>
           {/* Theme toggle */}
           <section
-            className="theme-toggle mt-4 flex min-w-max cursor-pointer items-center justify-center gap-6 rounded-md bg-[#F4F7FD] p-4 dark:bg-[#20212C] sm:mt-auto"
+            className="theme-toggle mx-auto mt-4 flex w-64 min-w-max cursor-pointer items-center justify-center gap-6 rounded-md bg-[#F4F7FD] p-4 dark:bg-[#20212C] sm:mt-auto"
             onClick={() => {
               setDarkTheme(!darkTheme);
               if (!darkTheme) {
