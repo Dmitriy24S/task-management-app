@@ -15,11 +15,13 @@ const ThemeToggle = ({ darkTheme, setDarkTheme }: ThemeToggleProps) => {
         if (!darkTheme) {
           localStorage.setItem("theme", "dark");
           console.log("storage save to dark");
+          document.documentElement.setAttribute("data-color-scheme", "dark");
         } else {
           // else set light theme
           // setDarkTheme(false);
           localStorage.setItem("theme", "light");
           console.log("storage save to light");
+          document.documentElement.setAttribute("data-color-scheme", "light");
         }
       }}
     >
@@ -42,11 +44,15 @@ const ThemeToggle = ({ darkTheme, setDarkTheme }: ThemeToggleProps) => {
           if (!darkTheme) {
             localStorage.setItem("theme", "dark");
             console.log("storage save to dark");
+            document.documentElement.setAttribute("data-color-scheme", "dark");
           } else {
             // else set light theme
             // setDarkTheme(false);
             localStorage.setItem("theme", "light");
             console.log("storage save to light");
+            document.documentElement.setAttribute("data-color-scheme", "light");
+            // !!!
+            // TODO refactor
           }
         }}
         className={`${!darkTheme ? "bg-[#635FC7]" : "bg-[#444298]"}

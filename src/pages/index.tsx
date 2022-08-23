@@ -63,6 +63,11 @@ const Home: NextPage = () => {
   // 1: {name: 'Marketing Plan', columns: Array(3)}
   // 2: {name: 'Roadmap', columns: Array(3)}
 
+  // Dark / Light Theme
+
+  // Toggle browser scrollbar color (+.css):
+  // document.documentElement.setAttribute( "data-color-scheme", darkTheme ? "light" : "dark")
+
   // Save theme to local storage
   useEffect(() => {
     console.log(darkTheme, ": dark theme state on load");
@@ -75,11 +80,13 @@ const Home: NextPage = () => {
       console.log("dark mode load, set dark");
       setDarkTheme(true);
       // localStorage.setItem("theme", "dark");
+      document.documentElement.setAttribute("data-color-scheme", "dark");
     } else {
       // else set light theme
       console.log("light mode load, set light");
       setDarkTheme(false);
       // localStorage.setItem("theme", "light");
+      document.documentElement.setAttribute("data-color-scheme", "light");
     }
   }, []);
 

@@ -36,7 +36,7 @@ const Boards = ({
         // className={`${
         //   isBoardMenuOpen ? "translate-x-[320px]" : "translate-x-0"
         // } relative min-h-full w-full bg-[#F4F7FD] p-4 transition-transform duration-300 dark:bg-[#20212C] dark:text-white`}
-        className={`main-container relative min-h-full w-full overflow-x-scroll bg-[#F4F7FD] px-4 pb-24 pt-24 transition-transform duration-300 dark:bg-[#20212C] dark:text-white`}
+        className={`main-container relative min-h-full w-full overflow-x-auto bg-[#F4F7FD] px-4 pb-24 pt-24 transition-transform duration-300 dark:bg-[#20212C] dark:text-white`}
       >
         <div className="board-list mx-auto grid w-11/12 grid-flow-col justify-center gap-4 px-4">
           {/* // ?  mr-40 margin right for spacing on horizontal right scroll? */}

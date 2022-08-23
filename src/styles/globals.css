@@ -31,3 +31,12 @@ a {
     background: black;
   }
 }
+
+/* Toggle browser scrollbar color theme */
+[data-color-scheme="dark"] {
+  color-scheme: dark;
+}
+[data-color-scheme="light"] {
+  color-scheme: light;
+  /* color: black; */
+}
