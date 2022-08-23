@@ -24,7 +24,7 @@ const Boards = ({
   selectedBoard,
 }: HeaderProps) => {
   return (
-    <div className="relative flex min-h-full min-w-full flex-grow">
+    <div className="relative flex min-h-full min-w-full flex-grow dark:bg-[#2B2C37]">
       <BoardSidebar
         isBoardMenuOpen={isBoardMenuOpen}
         setIsBoardMenuOpen={setIsBoardMenuOpen}
