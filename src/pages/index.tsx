@@ -3,8 +3,8 @@ import Head from "next/head";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import data from "../assets/data/data.json";
-import Boards from "../components/Boards";
-import Header from "../components/Header";
+import Boards from "../components/Board/Boards";
+import Header from "../components/Header/Header";
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
