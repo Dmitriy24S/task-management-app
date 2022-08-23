@@ -9,7 +9,7 @@ interface ThemeToggleProps {
 const ThemeToggle = ({ darkTheme, setDarkTheme }: ThemeToggleProps) => {
   return (
     <section
-      className="theme-toggle mx-auto mt-4 flex w-64 min-w-max cursor-pointer items-center justify-center gap-6 rounded-md bg-[#F4F7FD] p-4 dark:bg-[#20212C] sm:mt-auto"
+      className="theme-toggle group mx-auto mt-4 mb-6 flex w-64 min-w-max cursor-pointer items-center justify-center gap-6 rounded-md bg-[#F4F7FD] p-4 dark:bg-[#20212C] sm:mb-0 sm:mt-auto"
       onClick={() => {
         setDarkTheme(!darkTheme);
         if (!darkTheme) {
@@ -56,7 +56,7 @@ const ThemeToggle = ({ darkTheme, setDarkTheme }: ThemeToggleProps) => {
           }
         }}
         className={`${!darkTheme ? "bg-[#635FC7]" : "bg-[#444298]"}
-relative inline-flex h-[22px] w-[40px] shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus-visible:outline-offset-8 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
+relative inline-flex h-[22px] w-[40px] shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus-visible:outline-offset-8 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 group-hover:bg-[#827ee9] dark:group-hover:bg-[#534fc5]`}
       >
         <span className="sr-only">Toggle dark theme</span>
         <span

@@ -91,22 +91,33 @@ const Home: NextPage = () => {
   }, []);
 
   return (
-    <main className={`${darkTheme ? "dark" : ""} flex min-h-screen flex-col`}>
-      <Header
-        isBoardMenuOpen={isBoardMenuOpen}
-        setIsBoardMenuOpen={setIsBoardMenuOpen}
-        darkTheme={darkTheme}
-        selectedBoard={selectedBoard}
-      />
-      <Boards
-        isBoardMenuOpen={isBoardMenuOpen}
-        setIsBoardMenuOpen={setIsBoardMenuOpen}
-        darkTheme={darkTheme}
-        setDarkTheme={setDarkTheme}
-        boardsData={boardsData}
-        selectedBoard={selectedBoard}
-      />
-    </main>
+    <>
+      <Head>
+        <title>Home App</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
+      </Head>
+      <main className={`${darkTheme ? "dark" : ""} flex min-h-screen flex-col`}>
+        <Header
+          isBoardMenuOpen={isBoardMenuOpen}
+          setIsBoardMenuOpen={setIsBoardMenuOpen}
+          darkTheme={darkTheme}
+          selectedBoard={selectedBoard}
+        />
+        <Boards
+          isBoardMenuOpen={isBoardMenuOpen}
+          setIsBoardMenuOpen={setIsBoardMenuOpen}
+          darkTheme={darkTheme}
+          setDarkTheme={setDarkTheme}
+          boardsData={boardsData}
+          selectedBoard={selectedBoard}
+        />
+      </main>
+    </>
   );
 };
 

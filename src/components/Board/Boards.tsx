@@ -31,7 +31,9 @@ const Boards = ({
         setDarkTheme={setDarkTheme}
         darkTheme={darkTheme}
         boardsData={boardsData}
+        selectedBoard={selectedBoard}
       />
+      {/* Main board container list */}
       <section
         // className={`${
         //   isBoardMenuOpen ? "translate-x-[320px]" : "translate-x-0"
