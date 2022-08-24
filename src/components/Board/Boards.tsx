@@ -53,7 +53,7 @@ const Boards = ({
         // } relative min-h-full w-full bg-[#F4F7FD] p-4 transition-transform duration-300 dark:bg-[#20212C] dark:text-white`}
         className={`main-container relative min-h-full w-full overflow-x-auto bg-[#F4F7FD] px-6 pb-24 pt-24 transition-transform duration-300 dark:bg-[#20212C] dark:text-white`}
       >
-        <div className="board-list mx-auto grid w-11/12 grid-flow-col justify-center gap-4">
+        <div className="board-list mx-auto grid w-11/12 min-w-fit grid-flow-col justify-center gap-4">
           {/* // ?  mr-40 margin right for spacing on horizontal right scroll? */}
           {/* Boards columns */}
           {selectedBoard.columns.map((column: BoardColumns, index: number) => {
