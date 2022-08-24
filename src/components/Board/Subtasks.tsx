@@ -1,5 +1,5 @@
 import React from "react";
-import { BoardSubTasks, BoardTasks } from "../types";
+import { BoardSubTasks, BoardTasks } from "../../types";
 
 interface SubtasksProps {
   task: BoardTasks;

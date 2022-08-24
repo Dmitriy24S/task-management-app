@@ -34,13 +34,13 @@ const Header = ({ isBoardMenuOpen, setIsBoardMenuOpen, darkTheme, selectedBoard 
           </div>
           {/* Active board name / open/close sidebar menu */}
           <button
-            className="flex items-center gap-1 focus:outline-offset-2 focus-visible:outline-offset-2"
+            className="flex items-center gap-1 text-2xl font-bold focus:outline-offset-2 focus-visible:outline-offset-2"
             onClick={() => setIsBoardMenuOpen(!isBoardMenuOpen)}
           >
             {selectedBoard.name} <FaChevronDown fill="#635FC7" className="sm:hidden" />
           </button>
         </div>
-        <div className="header-right flex items-center gap-3">
+        <div className="header-right flex items-center gap-1.5">
           <HeaderAddTaskButton />
           <HeaderMoreInfoButton />
         </div>

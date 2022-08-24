@@ -1,6 +1,7 @@
 import Image from "next/image";
 import React from "react";
 // import { ReactComponent as HideSidebarSVG } from "../../assets/icons/sidebar-hide.svg";
+import PlusSvg from "../../assets/icons/icon-add-task-mobile.svg";
 import HideSidebarSVG from "../../assets/icons/sidebar-hide.svg";
 import { Board } from "../../types";
 import SidebarMenuListItem from "./SidebarMenuListItem";
@@ -39,7 +40,7 @@ const BoardSidebar = ({
               // "flex sm:w-[320px] sm:border-r sm:border-gray-200 dark:sm:border-gray-700"
               "flex sm:w-full sm:border-r sm:border-gray-200 dark:sm:border-gray-700"
             : "invisible sm:flex sm:w-0"
-        } menu-container absolute right-0 left-0 z-20 mx-auto mt-20 max-w-[20rem]  overflow-x-hidden rounded-md bg-white fill-[#828FA3] text-[#828FA3] transition-[width] duration-300 ease-in-out dark:bg-[#2B2C37] sm:relative sm:z-10 sm:mt-0 sm:rounded-none sm:pt-20`}
+        } menu-container fixed right-0 left-0 z-20 mx-auto mt-20 max-w-[20rem]  overflow-x-hidden rounded-md bg-white fill-[#828FA3] text-[#828FA3] transition-[width] duration-300 ease-in-out dark:bg-[#2B2C37] sm:relative sm:z-10 sm:mt-0 sm:rounded-none sm:pt-20`}
       >
         {/* sm:min-h-full */}
         {/* max-h-screen */}
@@ -85,7 +86,11 @@ const BoardSidebar = ({
                 </svg>
               </div>
             </span>
-            <span className="mr-1 pb-1">+</span> Create New Board
+            {/* <span className="mr-1 pb-1">+</span>  */}
+            {/* <Image src="/assets/icons/icon-add-task-mobile.svg" height={12} width={12} alt="" /> */}
+            {/* <PlusSvg className="mr-1 fill-white" /> */}
+            <PlusSvg className="mr-1 fill-[#6f6de0] text-[#6f6de0] group-hover:fill-[#6f6de0]" />
+            Create New Board
           </button>
           {/* Theme toggle */}
           <ThemeToggle darkTheme={darkTheme} setDarkTheme={setDarkTheme} />
