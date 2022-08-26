@@ -11,9 +11,16 @@ interface HeaderProps {
   darkTheme: boolean | null;
   // selectedBoard: any; // !!!!!
   selectedBoard: Board;
+  setIsNewTaskFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Header = ({ isBoardMenuOpen, setIsBoardMenuOpen, darkTheme, selectedBoard }: HeaderProps) => {
+const Header = ({
+  isBoardMenuOpen,
+  setIsBoardMenuOpen,
+  darkTheme,
+  selectedBoard,
+  setIsNewTaskFormOpen,
+}: HeaderProps) => {
   return (
     <header className="fixed top-0 left-0 right-0 z-20 bg-white dark:bg-[#2B2C37] dark:text-white">
       <div className="flex items-center justify-between p-4">
@@ -41,7 +48,7 @@ const Header = ({ isBoardMenuOpen, setIsBoardMenuOpen, darkTheme, selectedBoard 
           </button>
         </div>
         <div className="header-right flex items-center gap-1.5">
-          <HeaderAddTaskButton />
+          <HeaderAddTaskButton setIsNewTaskFormOpen={setIsNewTaskFormOpen} />
           <HeaderMoreInfoButton />
         </div>
       </div>

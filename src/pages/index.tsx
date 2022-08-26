@@ -5,11 +5,16 @@ import { useEffect, useState } from "react";
 import data from "../assets/data/data.json";
 import Boards from "../components/Board/Boards";
 import Header from "../components/Header/Header";
+import NewTaskForm from "../components/NewTaskForm";
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
+  const [isNewTaskFormOpen, setIsNewTaskFormOpen] = useState(true);
+
   // const [selectedBoard, setSelectedBoard] = useState(null)
   const [selectedBoard, setSelectedBoard] = useState(data.boards[0]);
+  // State: {columns: Array(3), name: "Platform Launch"}
+
   // console.log(selectedBoard);
   // {name: 'Platform Launch', columns: Array(3)}
   // columns: Array(3)
@@ -37,11 +42,12 @@ const Home: NextPage = () => {
   const [isBoardMenuOpen, setIsBoardMenuOpen] = useState(false);
   const [darkTheme, setDarkTheme] = useState(false);
   const [boardsData, setBoardsData] = useState(data.boards);
+  // State: [{…}, {…}, {…}]
 
   // console.log(boardsData);
   // console.log(data);
   // boards: Array(3)
-  //.. 0: columns: Array(3)
+  //.. 0:{columns: Array(3), name: "Platform Launch"}
   //.... 0: {name: 'Todo', tasks: Array(4)}
   //.... tasks: Array(4)
   //.... .... 0: {title: 'Build UI for onboarding flow', description: '', status: 'Todo', subtasks: Array(3)}
@@ -101,12 +107,19 @@ const Home: NextPage = () => {
           rel="stylesheet"
         />
       </Head>
-      <main className={`${darkTheme ? "dark" : ""} flex min-h-screen flex-col`}>
+      <main className={`${darkTheme ? "dark" : ""} flex max-h-screen min-h-screen flex-col`}>
+        {/*  max-h-screen - prevents scroll on open pos:fixed modals (menu, new task form) */}
         <Header
           isBoardMenuOpen={isBoardMenuOpen}
           setIsBoardMenuOpen={setIsBoardMenuOpen}
           darkTheme={darkTheme}
           selectedBoard={selectedBoard}
+          setIsNewTaskFormOpen={setIsNewTaskFormOpen}
+        />
+        {/* New task form */}
+        <NewTaskForm
+          isNewTaskFormOpen={isNewTaskFormOpen}
+          setIsNewTaskFormOpen={setIsNewTaskFormOpen}
         />
         <Boards
           isBoardMenuOpen={isBoardMenuOpen}
@@ -115,6 +128,8 @@ const Home: NextPage = () => {
           setDarkTheme={setDarkTheme}
           boardsData={boardsData}
           selectedBoard={selectedBoard}
+          isNewTaskFormOpen={isNewTaskFormOpen}
+          setIsNewTaskFormOpen={setIsNewTaskFormOpen}
         />
       </main>
     </>
