@@ -1,5 +1,6 @@
 import Image from "next/image";
 import React from "react";
+import { FaChevronDown } from "react-icons/fa";
 import Cross from "../assets/icons/cross.svg";
 import Plus from "../assets/icons/icon-add-task-mobile.svg";
 
@@ -107,12 +108,16 @@ const NewTaskForm = ({ isNewTaskFormOpen, setIsNewTaskFormOpen }: Props) => {
               id="status"
               title="status"
               placeholder="status"
-              className="peer cursor-pointer rounded px-4 py-2 text-sm text-black outline outline-1 outline-medium-grey/25 transition-colors placeholder:text-black/25 focus:outline-main-purple dark:bg-dark-grey dark:text-white dark:placeholder:text-white/25"
+              className="peer cursor-pointer appearance-none rounded px-4 py-2 text-sm text-black outline outline-1 outline-medium-grey/25 transition-colors placeholder:text-black/25 focus:outline-main-purple dark:bg-dark-grey dark:text-white dark:placeholder:text-white/25"
             >
               <option value="Todo">Todo</option>
               <option value="Doing">Doing</option>
               <option value="Done">Done</option>
             </select>
+            <FaChevronDown
+              fill="#635FC7"
+              className="pointer-events-none absolute right-2.5 bottom-2.5"
+            />
           </div>
           {/* Create button */}
           <button

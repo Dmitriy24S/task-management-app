@@ -9,7 +9,7 @@ import NewTaskForm from "../components/NewTaskForm";
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
-  const [isNewTaskFormOpen, setIsNewTaskFormOpen] = useState(true);
+  const [isNewTaskFormOpen, setIsNewTaskFormOpen] = useState(false);
 
   // const [selectedBoard, setSelectedBoard] = useState(null)
   const [selectedBoard, setSelectedBoard] = useState(data.boards[0]);
