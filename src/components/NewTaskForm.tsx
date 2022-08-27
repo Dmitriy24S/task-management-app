@@ -55,7 +55,8 @@ const NewTaskForm = ({ isNewTaskFormOpen, setIsNewTaskFormOpen }: Props) => {
             >
               Subtasks
             </label>
-            <div className="flex items-center gap-4">
+            {/* subtask */}
+            <div className="subtask flex items-center gap-4">
               <input
                 className="peer w-full cursor-pointer rounded bg-transparent py-2 px-4 text-sm text-black outline outline-1 outline-medium-grey/25  placeholder:text-black/25 focus:outline-main-purple dark:text-white dark:placeholder:text-white/25"
                 id="Subtasks1"
@@ -66,7 +67,8 @@ const NewTaskForm = ({ isNewTaskFormOpen, setIsNewTaskFormOpen }: Props) => {
                 <Cross className="cursor-pointer fill-medium-grey hover:fill-red" />
               </div>
             </div>
-            <div className="flex items-center gap-4">
+            {/* subtask */}
+            <div className="subtask flex items-center gap-4">
               <input
                 className="peer w-full cursor-pointer rounded bg-transparent py-2 px-4 text-sm text-black outline outline-1 outline-medium-grey/25  placeholder:text-black/25 focus:outline-main-purple dark:text-white dark:placeholder:text-white/25"
                 id="Subtasks2"

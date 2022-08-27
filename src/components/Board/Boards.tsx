@@ -64,9 +64,20 @@ const Boards = ({
           {selectedBoard.columns.map((column: BoardColumns, index: number) => {
             // console.log(column);
             // {name: 'Todo', tasks: Array(4)}
+            // {/* style={{backgroundColor: 'rgb(103, 226, 174')}} */}
             return (
               <BoardColumn index={index} selectedBoard={selectedBoard}>
-                <h2>{column.name}</h2>
+                <h2 className="flex items-center gap-3">
+                  {column.name === "Todo" ? (
+                    <div className="h-4 w-4 rounded-full bg-[rgba(73,196,229,1)]"></div>
+                  ) : column.name === "Doing" ? (
+                    <div className="h-4 w-4 rounded-full bg-[rgba(132,113,242,1)]"></div>
+                  ) : (
+                    <div className="h-4 w-4 rounded-full bg-[rgba(103,226,174,1)]"></div>
+                  )}
+                  {column.name}
+                </h2>
+
                 {column.tasks.map((task: BoardTasks) => {
                   return <Subtasks task={task} />;
                 })}

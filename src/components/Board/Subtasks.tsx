@@ -12,12 +12,12 @@ const Subtasks = ({ task }: SubtasksProps) => {
   return (
     <article
       // className={`rounded-lg bg-white p-4 text-black shadow-md dark:bg-[#2B2C37] dark:text-white`}
-      className={`rounded-lg bg-white p-4 text-black shadow-task dark:bg-[#2B2C37] dark:text-white`}
+      className={`group cursor-pointer rounded-lg bg-white p-4 text-black shadow-task dark:bg-[#2B2C37] dark:text-white`}
     >
-      <h3>{task.title}</h3>
-      <p className="text-[#828fa3]">
+      <h3 className="font-bold group-hover:text-main-purple">{task.title}</h3>
+      <p className="mt-1 text-xs font-bold text-[#828fa3]">
         {`${task.subtasks.filter((item: BoardSubTasks) => item.isCompleted).length} out of
-${task.subtasks.length}`}
+${task.subtasks.length} subtasks`}
       </p>
     </article>
   );
