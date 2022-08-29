@@ -62,8 +62,10 @@ const BoardSidebar = ({
             {boardsData.map((board: Board) => {
               // 2: {name: 'Roadmap', columns: Array(3)}
               //   return <SidebarMenuListItem name={board.name} />;
+              // console.log(board.name);
               return (
                 <SidebarMenuListItem
+                  key={board.name}
                   selectedBoard={selectedBoard}
                   // className={`${board.name === selectedBoard.name ? "bg-violet-700" : ""}`}
                 >
@@ -74,6 +76,7 @@ const BoardSidebar = ({
           </ul>
           {/* Create new board button */}
           <button className="group flex min-w-max items-center p-4 text-[#6f6de0] hover:bg-[#6766ad22] sm:mr-8 sm:rounded-r-full">
+            {/* Plus svg */}
             <span>
               <div>
                 <svg

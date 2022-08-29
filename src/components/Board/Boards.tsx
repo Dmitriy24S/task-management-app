@@ -5,7 +5,7 @@ import { Board, BoardColumns, BoardSubTasks, BoardTasks } from "../../types";
 import NewTaskForm from "../NewTaskForm";
 import BoardSidebar from "../Sidemenu/BoardSidebar";
 import BoardColumn from "./BoardColumn";
-import Subtasks from "./Subtasks";
+import Task from "./Task";
 
 interface HeaderProps {
   isBoardMenuOpen: boolean;
@@ -17,6 +17,8 @@ interface HeaderProps {
   selectedBoard: Board;
   isNewTaskFormOpen: boolean;
   setIsNewTaskFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsSubtasksOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  showSubtasks: (task: BoardTasks, column: BoardColumns) => void;
 }
 
 const Boards = ({
@@ -28,6 +30,8 @@ const Boards = ({
   selectedBoard,
   isNewTaskFormOpen,
   setIsNewTaskFormOpen,
+  setIsSubtasksOpen,
+  showSubtasks,
 }: HeaderProps) => {
   return (
     <div className="relative flex min-h-full min-w-full flex-grow dark:bg-[#2B2C37]">
@@ -64,9 +68,9 @@ const Boards = ({
           {selectedBoard.columns.map((column: BoardColumns, index: number) => {
             // console.log(column);
             // {name: 'Todo', tasks: Array(4)}
-            // {/* style={{backgroundColor: 'rgb(103, 226, 174')}} */}
             return (
-              <BoardColumn index={index} selectedBoard={selectedBoard}>
+              <BoardColumn index={index} selectedBoard={selectedBoard} key={column.name}>
+                {/* Title */}
                 <h2 className="flex items-center gap-3">
                   {column.name === "Todo" ? (
                     <div className="h-4 w-4 rounded-full bg-[rgba(73,196,229,1)]"></div>
@@ -77,9 +81,17 @@ const Boards = ({
                   )}
                   {column.name}
                 </h2>
-
+                {/* Task */}
                 {column.tasks.map((task: BoardTasks) => {
-                  return <Subtasks task={task} />;
+                  return (
+                    <Task
+                      task={task}
+                      key={task.title}
+                      setIsSubtasksOpen={setIsSubtasksOpen}
+                      showSubtasks={showSubtasks}
+                      column={column}
+                    />
+                  );
                 })}
               </BoardColumn>
             );

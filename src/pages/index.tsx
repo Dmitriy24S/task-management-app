@@ -6,10 +6,46 @@ import data from "../assets/data/data.json";
 import Boards from "../components/Board/Boards";
 import Header from "../components/Header/Header";
 import NewTaskForm from "../components/NewTaskForm";
+import SubtasksModal from "../components/SubtasksModal";
 import styles from "../styles/Home.module.css";
+import { Board, BoardColumns, BoardSubTasks, BoardTasks } from "../types";
 
 const Home: NextPage = () => {
   const [isNewTaskFormOpen, setIsNewTaskFormOpen] = useState(false);
+  const [isSubtasksOpen, setIsSubtasksOpen] = useState(false);
+  const [selectedColumn, setSelectedColumn] = useState<BoardColumns | null>(null);
+  const [selectedTask, setSelectedTask] = useState<BoardTasks | null>(null);
+
+  const showSubtasks = (task: BoardTasks, column: BoardColumns) => {
+    setIsSubtasksOpen(true);
+    console.log({ task });
+    setSelectedTask(task);
+    console.log({ column });
+    setSelectedColumn(column);
+    // column:
+    // name: "Doing"
+    // tasks: Array(6)
+    // ... 0: {title: 'Design settings and search pages', description: '', status: 'Doing', subtasks: Array(3)}
+    // ... ... 0:
+    // ... ... description: ""
+    // ... ... status: "Doing"
+    // ... ... subtasks: (3) [{…}, {…}, {…}]
+    // ... ... title: "Design settings and search pages"
+    // ...
+    // ... 1: {title: 'Add account management endpoints', description: '', status: 'Doing', subtasks: Array(3)}
+    // ... 2: {title: 'Design onboarding flow', description: '', status: 'Doing', subtasks: Array(3)}
+    // ... 3: {title: 'Add search endpoints', description: '', status: 'Doing', subtasks: Array(2)}
+    // ... 4: {title: 'Add authentication endpoints', description: '', status: 'Doing', subtasks: Array(2)}
+    // ... 5: {title: 'Research pricing points of various competitors and trial different business models', description: "We know what we're planning to build for version o…he subtasks until we have a coherent proposition.", status: 'Doing', subtasks: Array(3)}
+    // length: 6
+  };
+
+  const handleSubtaskChange = (task: BoardTasks, subtask: BoardSubTasks) => {
+    console.log("handle change");
+    console.log({ task });
+    console.log({ subtask });
+    console.log({ selectedColumn });
+  };
 
   // const [selectedBoard, setSelectedBoard] = useState(null)
   const [selectedBoard, setSelectedBoard] = useState(data.boards[0]);
@@ -42,7 +78,9 @@ const Home: NextPage = () => {
   const [isBoardMenuOpen, setIsBoardMenuOpen] = useState(false);
   const [darkTheme, setDarkTheme] = useState(false);
   const [boardsData, setBoardsData] = useState(data.boards);
+  // const [boardsData, setBoardsData] = useState<Board>(data.boards);
   // State: [{…}, {…}, {…}]
+  console.log({ boardsData });
 
   // console.log(boardsData);
   // console.log(data);
@@ -76,8 +114,8 @@ const Home: NextPage = () => {
 
   // Save theme to local storage
   useEffect(() => {
-    console.log(darkTheme, ": dark theme state on load");
-    console.log(localStorage.getItem("theme"), "get local storage theme");
+    console.log("dark theme state on load:", darkTheme);
+    console.log("get local storage theme:", localStorage.getItem("theme"));
     if (
       // if saved dark theme in local storage or device prefers dark mode - set dark theme
       localStorage.getItem("theme") === "dark" ||
@@ -121,6 +159,12 @@ const Home: NextPage = () => {
           isNewTaskFormOpen={isNewTaskFormOpen}
           setIsNewTaskFormOpen={setIsNewTaskFormOpen}
         />
+        <SubtasksModal
+          isSubtasksOpen={isSubtasksOpen}
+          setIsSubtasksOpen={setIsSubtasksOpen}
+          selectedTask={selectedTask}
+          handleSubtaskChange={handleSubtaskChange}
+        />
         <Boards
           isBoardMenuOpen={isBoardMenuOpen}
           setIsBoardMenuOpen={setIsBoardMenuOpen}
@@ -130,6 +174,8 @@ const Home: NextPage = () => {
           selectedBoard={selectedBoard}
           isNewTaskFormOpen={isNewTaskFormOpen}
           setIsNewTaskFormOpen={setIsNewTaskFormOpen}
+          setIsSubtasksOpen={setIsSubtasksOpen}
+          showSubtasks={showSubtasks}
         />
       </main>
     </>
