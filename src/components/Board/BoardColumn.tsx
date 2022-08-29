@@ -13,7 +13,7 @@ interface Props {
 const BoardColumn = ({ children, index, selectedBoard }: Props) => {
   return (
     <section
-      className={`flex min-w-[20rem] max-w-[22rem] flex-col gap-4 ${
+      className={`flex w-[22rem] flex-col gap-4 ${
         index === selectedBoard.columns.length - 1 ? "pr-4" : ""
       }`}
     >
