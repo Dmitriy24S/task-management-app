@@ -27,7 +27,7 @@ const SubtasksModal = ({
 ${selectedTask?.subtasks.length} subtasks`}
           </p>
           <div className="subtask-list-container flex flex-col gap-3">
-            {selectedTask?.subtasks.map((subtask) => {
+            {selectedTask?.subtasks.map((subtask, index) => {
               return (
                 <label
                   htmlFor={subtask.title}
@@ -40,7 +40,10 @@ ${selectedTask?.subtasks.length} subtasks`}
                     id={subtask.title}
                     checked={subtask.isCompleted}
                     // onChange={() => handleSubtaskChange(selectedTask)}
-                    onChange={() => handleSubtaskChange(selectedTask, subtask)}
+                    onChange={() => {
+                      console.log("index click:", index); // index click: 0
+                      handleSubtaskChange(selectedTask, subtask);
+                    }}
                     // onChange={() =>
                     //   handleSubtaskChange({
                     //     ...selectedTask,
