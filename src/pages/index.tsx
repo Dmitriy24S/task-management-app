@@ -126,7 +126,6 @@ const Home: NextPage = () => {
       // selectedBoard:
       // columns: (3) [{…}, {…}, {…}]
       // name: "Platform Launch"
-
       setSelectedBoard({
         ...selectedBoard,
         columns: selectedBoard.columns.map((column: BoardColumns) => {
@@ -183,6 +182,64 @@ const Home: NextPage = () => {
         }),
       });
     } // end prevent undefined
+  };
+
+  // Task status change
+  const handleStatusChange = (newStatus: string, oldStatus: string, task: BoardTasks) => {
+    console.log("handle status change");
+    // console.log({ newStatus }); // 'Todo'
+    // console.log({ oldStatus }); // 'Doing'
+    // console.log({ task }); // task: {title: 'Design settings and search pages', description: '', status:'Doing'...
+    const updatedTaskWithNewStatus = { ...task, status: newStatus };
+    // console.log({ updatedTaskWithNewStatus });
+    // updatedTaskWithNewStatus:
+    // description: ""
+    // status: "Done"
+    // subtasks: (3) [{…}, {…}, {…}]
+    // title: "Design settings and search pages
+
+    // console.log({ selectedBoard });
+    // selectedBoard:
+    // columns: Array(3)
+    // ... 0: {name: 'Todo', tasks: Array(4)}
+    // ... ... 0:
+    // ... ... name: "Todo"
+    // ... ... tasks: Array(4)
+    // ... ... 0: {title: 'Build UI for onboarding flow', description: '', status: 'Todo', subtasks: Array(3)}
+    // ... ... 1: {title: 'Build UI for search', description: '', status: 'Todo', subtasks: Array(1)}
+    // ... ... 2: {title: 'Build settings UI', description: '', status: 'Todo', subtasks: Array(2)}
+    // ... ... 3: {title: 'QA and test all major user journeys', descrip...
+    // ... 1: {name: 'Doing', tasks: Array(6)}
+    // ... 2: {name: 'Done', tasks: Array(7)}
+    // name: "Platform Launch"
+
+    setSelectedBoard({
+      ...selectedBoard,
+      columns: selectedBoard.columns.map((column: BoardColumns) => {
+        if (column.name === updatedTaskWithNewStatus.status) {
+          const updatedTasks = [...column.tasks, updatedTaskWithNewStatus];
+          // console.log({ updatedTasks });
+          // updatedTasks: Array(5)
+          // 0: {title: 'Build UI for onboarding flow', description: '', status: 'Todo', subtasks: Array(3)}
+          // 1: {title: 'Build UI for search', desc...
+          return { ...column, tasks: updatedTasks };
+        }
+        if (column.name === oldStatus) {
+          // console.log(column, "found"); // {name: 'Doing', tasks: Array(6)} 'found'
+          // splice(start: number, deleteCount?: number): T[];
+          // column.tasks.splice;
+          const newTasksWithRemovedTask = column.tasks.filter((item) => {
+            return item.title !== task.title;
+          });
+          return {
+            ...column,
+            tasks: newTasksWithRemovedTask,
+          };
+        }
+        return column;
+      }),
+    });
+    // end handle status change
   };
 
   // Dark / Light Theme
@@ -243,6 +300,7 @@ const Home: NextPage = () => {
           setIsSubtasksOpen={setIsSubtasksOpen}
           selectedTask={selectedTask}
           handleSubtaskChange={handleSubtaskChange}
+          handleStatusChange={handleStatusChange}
         />
         <Boards
           isBoardMenuOpen={isBoardMenuOpen}

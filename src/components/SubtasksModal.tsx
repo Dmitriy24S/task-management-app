@@ -7,6 +7,7 @@ interface Props {
   setIsSubtasksOpen: React.Dispatch<React.SetStateAction<boolean>>;
   selectedTask: BoardTasks | null;
   handleSubtaskChange: (task: BoardTasks, subtask: BoardSubTasks) => void;
+  handleStatusChange: (newStatus: string, oldStatus: string, task: BoardTasks) => void;
 }
 
 const SubtasksModal = ({
@@ -14,7 +15,14 @@ const SubtasksModal = ({
   setIsSubtasksOpen,
   selectedTask,
   handleSubtaskChange,
+  handleStatusChange,
 }: Props) => {
+  // console.log({ selectedTask });
+  // selectedTask:
+  // description: ""
+  // status: "Doing"
+  // subtasks: (3) [{…}, {…}, {…}]
+  // title: "Design settings and search pages"
   return (
     selectedTask && (
       <Modal isOpen={isSubtasksOpen} setIsOpen={setIsSubtasksOpen}>
@@ -76,6 +84,10 @@ ${selectedTask?.subtasks.length} subtasks`}
               className="peer cursor-pointer appearance-none rounded px-4 py-2 text-sm text-black outline outline-1 outline-medium-grey/25 transition-colors placeholder:text-black/25 focus:outline-main-purple dark:bg-dark-grey dark:text-white dark:placeholder:text-white/25"
               // value={selectedTask.status}
               defaultValue={selectedTask.status}
+              onChange={(e) => {
+                // console.log(e.target.value); // 'Todo' / 'Doing' / etc...
+                handleStatusChange(e.target.value, selectedTask.status, selectedTask);
+              }}
             >
               <option value="Todo">Todo</option>
               <option value="Doing">Doing</option>
