@@ -1,6 +1,9 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import Image from "next/image";
 import React from "react";
+import { useFieldArray, useForm } from "react-hook-form";
 import { FaChevronDown } from "react-icons/fa";
+import * as yup from "yup";
 import Cross from "../assets/icons/cross.svg";
 import Plus from "../assets/icons/icon-add-task-mobile.svg";
 
@@ -9,7 +12,85 @@ interface Props {
   setIsNewTaskFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+const formSchema = yup.object({
+  taskTitle: yup
+    .string()
+    .trim()
+    .min(4, "Title must be at least 4 characters")
+    .max(20, "Title must be at most 20 characters")
+    // .matches(/^[a-zA-Z0-9 ]+$/, "only letters and numbers")
+    .required(),
+  taskDescription: yup
+    .string()
+    .trim()
+    .min(4, "Description must be at least 4 characters")
+    .max(100, "Description must be at most 100 characters")
+    // .matches(/^[a-zA-Z0-9 ]+$/, "only letters and numbers")
+    .required(),
+  // items array start
+  subtasks: yup
+    .array()
+    .of(
+      yup.object().shape({
+        subtasktitle: yup
+          .string()
+          .trim()
+          .min(4, "Subtask name must be at least 4 characters")
+          .max(20, "Subtask name must be at most 20 characters")
+          .matches(/^[a-zA-Z0-9 ]+$/, "only letters and numbers")
+          .required(),
+      })
+      // .minLength(1, "Minimum 1 item") // no
+      // .required() // no
+    )
+    .min(1, "Cannot be empty") // ? works
+    .required(),
+  // items array end
+});
+
+interface FormTypes {
+  taskTitle: string;
+  taskDescription: string;
+  subtasks: { subtasktitle: string }[];
+}
+
 const NewTaskForm = ({ isNewTaskFormOpen, setIsNewTaskFormOpen }: Props) => {
+  const {
+    register,
+    control,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm<FormTypes>({
+    defaultValues: {
+      // items: [{ name: "default Value" }]
+      subtasks: [{ subtasktitle: "" }, { subtasktitle: "" }],
+      // show two default empty fields for subtasks input
+    },
+    resolver: yupResolver(formSchema),
+  });
+
+  const { fields, append, remove } = useFieldArray({ name: "subtasks", control }); // ability to add/remove subtasks
+  // const watchFields = watch("subtasks"); // target specific field by their names
+  // console.log(watchFields); // track input changes subtasks array names inside form
+
+  // Handle submit new task
+  const onSubmit = (data: FormTypes) => {
+    console.log("form submit data:", data);
+    // {subtasks: Array(2), taskTitle: 'asdasd', taskDescription: 'asdadas'}
+    // subtasks: Array(2)
+    // 0: {subtasktitle: 'sadada'}
+    // 1: {subtasktitle: 'sdfsdsdfsasdada'}
+    // length: 2
+    // [[Prototype]]: Array(0)
+    // taskDescription: "asdadas"
+    // taskTitle: "asdasd"
+
+    // close new task form window/modal
+    setIsNewTaskFormOpen(false);
+  };
+
   return (
     <div className={`${isNewTaskFormOpen ? "block max-h-screen" : "hidden"} `}>
       <div
@@ -17,18 +98,28 @@ const NewTaskForm = ({ isNewTaskFormOpen, setIsNewTaskFormOpen }: Props) => {
         onClick={() => setIsNewTaskFormOpen(false)}
       ></div>
       <section className="new-task-form-container fixed left-0 right-0 z-30 mx-auto mt-20 flex max-h-[80vh] w-11/12 min-w-[20rem] max-w-max  flex-col overflow-y-auto rounded-lg bg-white p-6 text-black dark:bg-[#2B2C37] dark:text-white sm:max-w-md">
-        <form className="flex flex-col gap-6 " onSubmit={() => console.log("submit")}>
+        <form className="flex flex-col gap-6" onSubmit={handleSubmit((data) => onSubmit(data))}>
           <h1 className="text-lg font-bold">Add New Task</h1>
           {/* Title */}
           <div className="relative flex w-full flex-col gap-2 text-white">
-            <label htmlFor="Title" className="text-xs font-bold text-medium-grey dark:text-white">
+            <label
+              htmlFor="task-title"
+              className="text-xs font-bold text-medium-grey dark:text-white"
+            >
               Title
             </label>
+
             <input
-              id="Title"
+              type="text"
+              id="task-title"
               className="peer cursor-pointer rounded px-4 py-2 text-sm text-black outline outline-1 outline-medium-grey/25 transition-colors placeholder:text-black/25 focus:outline-main-purple dark:bg-dark-grey dark:text-white dark:placeholder:text-white/25"
               placeholder="e.g. Take coffee break"
+              {...register("taskTitle")}
+              // autoFocus
             />
+            {errors.taskTitle && (
+              <p className="form-message text-sm text-red">{errors.taskTitle?.message}</p>
+            )}
           </div>
           {/* Description */}
           <div
@@ -36,59 +127,64 @@ const NewTaskForm = ({ isNewTaskFormOpen, setIsNewTaskFormOpen }: Props) => {
             placeholder="e.g. Take coffee break"
           >
             <label
-              htmlFor="Description"
+              htmlFor="task-description"
               className="text-xs font-bold text-medium-grey dark:text-white"
             >
               Description
             </label>
             <textarea
               rows={4}
-              id="Description"
+              id="task-description"
               className="peer cursor-pointer resize-none rounded px-4 py-2 text-sm text-black outline outline-1 outline-medium-grey/25 transition-colors placeholder:text-black/25 focus:outline-main-purple dark:bg-dark-grey dark:text-white dark:placeholder:text-white/25"
               placeholder="e.g. It's always good to take a break. This 15 minute break will recharge the batteries a little."
+              {...register("taskDescription")}
             />
+            {errors.taskDescription && (
+              <p className="form-message text-sm text-red">{errors.taskDescription?.message}</p>
+            )}
           </div>
-          {/* Subtasks */}
+          {/* Subtasks list container - start */}
           <div className="subtasks-container flex flex-col gap-3">
             <label
               className="block text-xs font-bold text-medium-grey dark:text-white"
-              htmlFor="Subtasks1"
+              htmlFor="subtask0"
             >
               Subtasks
             </label>
-            {/* subtask */}
-            <div className="subtask flex items-center gap-4">
-              <input
-                className="peer w-full cursor-pointer rounded bg-transparent py-2 px-4 text-sm text-black outline outline-1 outline-medium-grey/25  placeholder:text-black/25 focus:outline-main-purple dark:text-white dark:placeholder:text-white/25"
-                id="Subtasks1"
-                type="text"
-                placeholder="e.g. Make coffee"
-              />
-              <div>
-                <Cross className="cursor-pointer fill-medium-grey hover:fill-red" />
-              </div>
-            </div>
-            {/* subtask */}
-            <div className="subtask flex items-center gap-4">
-              <input
-                className="peer w-full cursor-pointer rounded bg-transparent py-2 px-4 text-sm text-black outline outline-1 outline-medium-grey/25  placeholder:text-black/25 focus:outline-main-purple dark:text-white dark:placeholder:text-white/25"
-                id="Subtasks2"
-                type="text"
-                placeholder="e.g. Make coffee"
-              />
-              <div>
-                {/* // ? without div overflow cutoff svg ? */}
-                <Cross className="flex cursor-pointer fill-medium-grey hover:fill-red" />
-              </div>
-              {/* <div className="cursor-pointer fill-medium-grey hover:fill-red">
-                <svg width="15" height="15" xmlns="http://www.w3.org/2000/svg">
-                  <g fill-rule="evenodd">
-                    <path d="m12.728 0 2.122 2.122L2.122 14.85 0 12.728z"></path>
-                    <path d="M0 2.122 2.122 0 14.85 12.728l-2.122 2.122z"></path>
-                  </g>
-                </svg>
-              </div> */}
-            </div>
+            {/* Subtasks list */}
+            {fields?.map((_item, index) => {
+              const fieldName = `subtasks[${index}]`;
+              return (
+                // Subtask
+                <>
+                  <fieldset
+                    className="subtask flex items-center gap-4"
+                    name={fieldName}
+                    key={fieldName}
+                  >
+                    <input
+                      type="text"
+                      id={`subtask${index}`}
+                      className="peer w-full cursor-pointer rounded bg-transparent py-2 px-4 text-sm text-black outline outline-1 outline-medium-grey/25  placeholder:text-black/25 focus:outline-main-purple dark:text-white dark:placeholder:text-white/25"
+                      placeholder="e.g. Make coffee"
+                      {...register(`subtasks.${index}.subtasktitle`)}
+                      name={`subtasks.${index}.subtasktitle`}
+                    />
+                    <div>
+                      {/* // ? without div overflow cutoff svg ? */}
+                      <Cross className="cursor-pointer fill-medium-grey hover:fill-red" />
+                    </div>
+                  </fieldset>
+                  {errors.subtasks?.[index]?.subtasktitle && (
+                    <p className="form-message text-sm text-red">
+                      {errors.subtasks?.[index]?.subtasktitle?.message}
+                    </p>
+                  )}
+                </>
+              );
+            })}
+            {/* Subtasks list container - end */}
+
             {/* Add new subtask - button */}
             <button
               type="button"
@@ -98,6 +194,7 @@ const NewTaskForm = ({ isNewTaskFormOpen, setIsNewTaskFormOpen }: Props) => {
               Add New Subtask
             </button>
           </div>
+
           {/* select options - Status */}
           <div className="relative flex w-full flex-col gap-2 text-white">
             <label htmlFor="status" className="text-xs font-bold text-medium-grey dark:text-white">
