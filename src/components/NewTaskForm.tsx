@@ -46,12 +46,14 @@ const formSchema = yup.object({
     .min(1, "Cannot be empty") // ? works
     .required(),
   // items array end
+  taskStatus: yup.string().required(),
 });
 
 interface FormTypes {
   taskTitle: string;
   taskDescription: string;
   subtasks: { subtasktitle: string }[];
+  taskStatus: string;
 }
 
 const NewTaskForm = ({ isNewTaskFormOpen, setIsNewTaskFormOpen }: Props) => {
@@ -74,6 +76,8 @@ const NewTaskForm = ({ isNewTaskFormOpen, setIsNewTaskFormOpen }: Props) => {
   const { fields, append, remove } = useFieldArray({ name: "subtasks", control }); // ability to add/remove subtasks
   // const watchFields = watch("subtasks"); // target specific field by their names
   // console.log(watchFields); // track input changes subtasks array names inside form
+  // const statusSelectCheck = watch("taskStatus");
+  // console.log({ statusSelectCheck });
 
   // Handle submit new task
   const onSubmit = (data: FormTypes) => {
@@ -195,18 +199,22 @@ const NewTaskForm = ({ isNewTaskFormOpen, setIsNewTaskFormOpen }: Props) => {
             </button>
           </div>
 
-          {/* select options - Status */}
+          {/* Select options - Status */}
           <div className="relative flex w-full flex-col gap-2 text-white">
             <label htmlFor="status" className="text-xs font-bold text-medium-grey dark:text-white">
               Status
             </label>
             <select
-              name="status"
               id="status"
               title="status"
-              placeholder="status"
+              // placeholder="status"
+              // name="status"
+              {...register("taskStatus")}
               className="peer cursor-pointer appearance-none rounded px-4 py-2 text-sm text-black outline outline-1 outline-medium-grey/25 transition-colors placeholder:text-black/25 focus:outline-main-purple dark:bg-dark-grey dark:text-white dark:placeholder:text-white/25"
             >
+              <option value="" disabled hidden>
+                Select an Option
+              </option>
               <option value="Todo">Todo</option>
               <option value="Doing">Doing</option>
               <option value="Done">Done</option>
@@ -216,6 +224,9 @@ const NewTaskForm = ({ isNewTaskFormOpen, setIsNewTaskFormOpen }: Props) => {
               className="pointer-events-none absolute right-2.5 bottom-2.5"
             />
           </div>
+          {errors.taskStatus && (
+            <p className="form-message text-sm text-red">{errors.taskStatus?.message}</p>
+          )}
           {/* Create button */}
           <button
             type="submit"
