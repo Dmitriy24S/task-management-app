@@ -294,6 +294,8 @@ const Home: NextPage = () => {
         <NewTaskForm
           isNewTaskFormOpen={isNewTaskFormOpen}
           setIsNewTaskFormOpen={setIsNewTaskFormOpen}
+          setSelectedBoard={setSelectedBoard}
+          selectedBoard={selectedBoard}
         />
         <SubtasksModal
           isSubtasksOpen={isSubtasksOpen}

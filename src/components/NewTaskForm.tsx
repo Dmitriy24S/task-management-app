@@ -1,15 +1,18 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { FaChevronDown } from "react-icons/fa";
 import * as yup from "yup";
 import Cross from "../assets/icons/cross.svg";
 import Plus from "../assets/icons/icon-add-task-mobile.svg";
+import { Board, BoardColumns } from "../types";
 
 interface Props {
   isNewTaskFormOpen: boolean;
   setIsNewTaskFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setSelectedBoard: React.Dispatch<React.SetStateAction<Board>>;
+  selectedBoard: Board;
 }
 
 const formSchema = yup.object({
@@ -19,14 +22,14 @@ const formSchema = yup.object({
     .min(4, "Title must be at least 4 characters")
     .max(20, "Title must be at most 20 characters")
     // .matches(/^[a-zA-Z0-9 ]+$/, "only letters and numbers")
-    .required(),
+    .required("Title is required"),
   taskDescription: yup
     .string()
     .trim()
     .min(4, "Description must be at least 4 characters")
     .max(100, "Description must be at most 100 characters")
     // .matches(/^[a-zA-Z0-9 ]+$/, "only letters and numbers")
-    .required(),
+    .required("Description is required"),
   // items array start
   subtasks: yup
     .array()
@@ -44,9 +47,9 @@ const formSchema = yup.object({
       // .required() // no
     )
     .min(1, "Cannot be empty") // ? works
-    .required(),
+    .required("Subtasks are required"),
   // items array end
-  taskStatus: yup.string().required(),
+  taskStatus: yup.string().required("Status is required"),
 });
 
 interface FormTypes {
@@ -56,14 +59,20 @@ interface FormTypes {
   taskStatus: string;
 }
 
-const NewTaskForm = ({ isNewTaskFormOpen, setIsNewTaskFormOpen }: Props) => {
+const NewTaskForm = ({
+  isNewTaskFormOpen,
+  setIsNewTaskFormOpen,
+  setSelectedBoard,
+  selectedBoard,
+}: Props) => {
   const {
     register,
     control,
     handleSubmit,
     watch,
     reset,
-    formState: { errors },
+    formState,
+    formState: { isSubmitSuccessful, errors },
   } = useForm<FormTypes>({
     defaultValues: {
       // items: [{ name: "default Value" }]
@@ -91,9 +100,52 @@ const NewTaskForm = ({ isNewTaskFormOpen, setIsNewTaskFormOpen }: Props) => {
     // taskDescription: "asdadas"
     // taskTitle: "asdasd"
 
+    const newTask = {
+      title: data.taskTitle,
+      description: data.taskDescription,
+      status: data.taskStatus,
+      subtasks: data.subtasks.map((item) => {
+        return {
+          title: item.subtasktitle,
+          isCompleted: false,
+        };
+      }),
+    };
+
+    setSelectedBoard({
+      ...selectedBoard,
+      columns: selectedBoard.columns.map((column: BoardColumns) => {
+        if (column.name === data.taskStatus) {
+          const updatedTasks = [...column.tasks, newTask];
+          // console.log({ updatedTasks });
+          // updatedTasks: Array(5)
+          // 0: {title: 'Build UI for onboarding flow', description: '', status: 'Todo', subtasks: Array(3)}
+          // 1: {title: 'Build UI for search', desc...
+          return { ...column, tasks: updatedTasks };
+        }
+        return column;
+      }),
+    });
+
+    // reset({ ...data }); // ! not work reset w/ {...data}
+
     // close new task form window/modal
     setIsNewTaskFormOpen(false);
   };
+
+  // Reset form inputs on submit
+  useEffect(() => {
+    if (formState.isSubmitSuccessful) {
+      // reset({ ...data });
+      reset({
+        taskTitle: "",
+        taskDescription: "",
+        subtasks: [{ subtasktitle: "" }, { subtasktitle: "" }],
+        taskStatus: "Todo",
+      });
+    }
+    // }, [formState, submittedData, reset]);
+  }, [formState, reset]);
 
   return (
     <div className={`${isNewTaskFormOpen ? "block max-h-screen" : "hidden"} `}>
