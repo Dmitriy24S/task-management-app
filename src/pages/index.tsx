@@ -216,6 +216,7 @@ const Home: NextPage = () => {
     setSelectedBoard({
       ...selectedBoard,
       columns: selectedBoard.columns.map((column: BoardColumns) => {
+        // Add task to selected status column
         if (column.name === updatedTaskWithNewStatus.status) {
           const updatedTasks = [...column.tasks, updatedTaskWithNewStatus];
           // console.log({ updatedTasks });
@@ -224,6 +225,7 @@ const Home: NextPage = () => {
           // 1: {title: 'Build UI for search', desc...
           return { ...column, tasks: updatedTasks };
         }
+        // Delete task from old status column
         if (column.name === oldStatus) {
           // console.log(column, "found"); // {name: 'Doing', tasks: Array(6)} 'found'
           // splice(start: number, deleteCount?: number): T[];
@@ -240,6 +242,9 @@ const Home: NextPage = () => {
       }),
     });
     // end handle status change
+
+    // Close subtask modal - //TODO: this temp. fixes bug: if change status more than once in open modal -> causes duplicate task in columns (not updating current/old status)
+    setIsSubtasksOpen(false);
   };
 
   // Dark / Light Theme
