@@ -15,6 +15,7 @@ interface BoardSidebarProps {
   //   boardsData: BoardColumns[];
   boardsData: Board[];
   selectedBoard: Board;
+  handleSwitchSelectBoard: (boardName: string) => void;
 }
 
 const BoardSidebar = ({
@@ -24,6 +25,7 @@ const BoardSidebar = ({
   darkTheme,
   boardsData,
   selectedBoard,
+  handleSwitchSelectBoard,
 }: BoardSidebarProps) => {
   return (
     <>
@@ -68,6 +70,7 @@ const BoardSidebar = ({
                   key={board.name}
                   selectedBoard={selectedBoard}
                   // className={`${board.name === selectedBoard.name ? "bg-violet-700" : ""}`}
+                  handleSwitchSelectBoard={handleSwitchSelectBoard}
                 >
                   {board.name}
                 </SidebarMenuListItem>

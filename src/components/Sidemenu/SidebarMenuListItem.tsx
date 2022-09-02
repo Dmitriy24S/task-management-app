@@ -5,10 +5,11 @@ interface Props {
   // name: string;
   children: string;
   selectedBoard: Board;
+  handleSwitchSelectBoard: (boardName: string) => void;
 }
 // const SidebarMenuListItem = ({ name }: any) => { // !!!! ????
 // const SidebarMenuListItem = ({ name }: Props) => {
-const SidebarMenuListItem = ({ children, selectedBoard }: Props) => {
+const SidebarMenuListItem = ({ children, selectedBoard, handleSwitchSelectBoard }: Props) => {
   //   console.log(name); // Platform Launch
   return (
     <li>
@@ -18,6 +19,10 @@ const SidebarMenuListItem = ({ children, selectedBoard }: Props) => {
             ? "bg-violet-700 text-white hover:bg-violet-700"
             : "hover:bg-[#6766ad22] hover:text-[#6f6de0] "
         } group flex w-full min-w-max items-center gap-2 p-4 sm:rounded-r-full`}
+        onClick={() => {
+          console.log(children, "menu list item - board title"); // name title of board? - Platform Launch /Marketing Plan / Roadmap
+          handleSwitchSelectBoard(children);
+        }}
       >
         <span>
           <div>

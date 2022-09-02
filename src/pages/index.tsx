@@ -44,7 +44,7 @@ const Home: NextPage = () => {
   const [selectedColumn, setSelectedColumn] = useState<BoardColumns | null>(null);
   const [selectedTask, setSelectedTask] = useState<BoardTasks | null>(null);
   const [selectedBoard, setSelectedBoard] = useState<Board>(data.boards[0]);
-  console.log({ selectedBoard });
+  // console.log({ selectedBoard });
   // {name: 'Platform Launch', columns: Array(3)}
   // name: "Platform Launch"
   // columns: Array(3)
@@ -82,6 +82,17 @@ const Home: NextPage = () => {
     // ... 4: {title: 'Add authentication endpoints', description: '', status: 'Doing', subtasks: Array(2)}
     // ... 5: {title: 'Research pricing points of various competitors and trial different business models', description: "We know what we're planning to build for version o…he subtasks until we have a coherent proposition.", status: 'Doing', subtasks: Array(3)}
     // length: 6
+  };
+
+  // Handle switch / select board
+  const handleSwitchSelectBoard = (boardName: string) => {
+    const newSelectedBoard = boardsData.filter((board) => board.name === boardName);
+    console.log({ newSelectedBoard }, "new selected board");
+    // newSelectedBoard: Array(1)
+    // 0:
+    // columns: (3) [{…}, {…}, {…}]
+    // name: "Marketing Plan"
+    setSelectedBoard(newSelectedBoard[0]);
   };
 
   // Subtask checkbox tick in modal
@@ -287,7 +298,7 @@ const Home: NextPage = () => {
         />
       </Head>
       <main className={`${darkTheme ? "dark" : ""} flex max-h-screen min-h-screen flex-col`}>
-        {/*  max-h-screen - prevents scroll on open pos:fixed modals (menu, new task form) */}
+        {/* max-h-screen - prevents scroll on open pos:fixed modals (menu, new task form) */}
         <Header
           isBoardMenuOpen={isBoardMenuOpen}
           setIsBoardMenuOpen={setIsBoardMenuOpen}
@@ -295,7 +306,6 @@ const Home: NextPage = () => {
           selectedBoard={selectedBoard}
           setIsNewTaskFormOpen={setIsNewTaskFormOpen}
         />
-        {/* New task form */}
         <NewTaskForm
           isNewTaskFormOpen={isNewTaskFormOpen}
           setIsNewTaskFormOpen={setIsNewTaskFormOpen}
@@ -320,6 +330,7 @@ const Home: NextPage = () => {
           setIsNewTaskFormOpen={setIsNewTaskFormOpen}
           setIsSubtasksOpen={setIsSubtasksOpen}
           showSubtasks={showSubtasks}
+          handleSwitchSelectBoard={handleSwitchSelectBoard}
         />
       </main>
     </>

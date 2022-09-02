@@ -19,7 +19,26 @@ interface HeaderProps {
   setIsNewTaskFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setIsSubtasksOpen: React.Dispatch<React.SetStateAction<boolean>>;
   showSubtasks: (task: BoardTasks, column: BoardColumns) => void;
+  handleSwitchSelectBoard: (boardName: string) => void;
 }
+
+const generateColumnColor = (index: number) => {
+  const colors = ["#49C4E5", "#8471F2", "#67E2AE", "#e5a449"];
+  if (colors[index]) {
+    return colors[index];
+  } else {
+    // index % arr.length - will loop colors?
+    // console.log(generateColumnColor(5)); // #8471F2 //  hsl(216, 80%, 70%)
+    let rand = Math.random();
+    console.log(rand, "1"); // 0.5983916920571346 '1'
+    rand = Math.floor(rand * 360);
+    console.log(rand, "2"); // 215 '2'
+    rand = rand + 1;
+    console.log(rand, "3"); // 216 '3'
+    const randomColor = `hsl(${rand}, 80%, 70%)`; // hsl(216, 80%, 70%)
+    return randomColor; // #8471F2 //  hsl(216, 80%, 70%)
+  }
+};
 
 const Boards = ({
   isBoardMenuOpen,
@@ -32,6 +51,7 @@ const Boards = ({
   setIsNewTaskFormOpen,
   setIsSubtasksOpen,
   showSubtasks,
+  handleSwitchSelectBoard,
 }: HeaderProps) => {
   return (
     <div className="relative flex min-h-full min-w-full flex-grow dark:bg-[#2B2C37]">
@@ -42,6 +62,7 @@ const Boards = ({
         darkTheme={darkTheme}
         boardsData={boardsData}
         selectedBoard={selectedBoard}
+        handleSwitchSelectBoard={handleSwitchSelectBoard}
       />
       {/* Open sidebar desktop */}
       {/* {!isBoardMenuOpen && ( )} */}
@@ -62,7 +83,7 @@ const Boards = ({
         // } relative min-h-full w-full bg-[#F4F7FD] p-4 transition-transform duration-300 dark:bg-[#20212C] dark:text-white`}
         className={`main-container relative min-h-full w-full overflow-x-auto bg-[#F4F7FD] px-6 pb-24 pt-24 transition-transform duration-300 dark:bg-[#20212C] dark:text-white`}
       >
-        <div className="board-list mx-auto grid w-11/12 min-w-fit grid-flow-col justify-center gap-4">
+        <div className="board-list mx-auto grid h-full w-11/12 min-w-fit grid-flow-col justify-center gap-4">
           {/* // ?  mr-40 margin right for spacing on horizontal right scroll? */}
           {/* Boards columns */}
           {selectedBoard.columns.map((column: BoardColumns, index: number) => {
@@ -72,27 +93,39 @@ const Boards = ({
               <BoardColumn index={index} selectedBoard={selectedBoard} key={column.name}>
                 {/* Title */}
                 <h2 className="flex items-center gap-3">
-                  {column.name === "Todo" ? (
+                  {/* {column.name === "Todo" ? (
                     <div className="h-4 w-4 rounded-full bg-[rgba(73,196,229,1)]"></div>
                   ) : column.name === "Doing" ? (
                     <div className="h-4 w-4 rounded-full bg-[rgba(132,113,242,1)]"></div>
                   ) : (
                     <div className="h-4 w-4 rounded-full bg-[rgba(103,226,174,1)]"></div>
-                  )}
+                  )} */}
+                  <div
+                    className="h-4 w-4 rounded-full"
+                    style={{ backgroundColor: generateColumnColor(index) }}
+                  ></div>
                   {column.name}
                 </h2>
-                {/* Task */}
-                {column.tasks.map((task: BoardTasks) => {
-                  return (
-                    <Task
-                      task={task}
-                      key={task.title}
-                      setIsSubtasksOpen={setIsSubtasksOpen}
-                      showSubtasks={showSubtasks}
-                      column={column}
-                    />
-                  );
-                })}
+                <div
+                  className={`tasks-container flex flex-col gap-4 ${
+                    column.tasks.length === 0
+                      ? "h-full rounded-lg border-2 border-dashed border-gray-600"
+                      : ""
+                  }`}
+                >
+                  {/* Task */}
+                  {column.tasks.map((task: BoardTasks) => {
+                    return (
+                      <Task
+                        task={task}
+                        key={task.title}
+                        setIsSubtasksOpen={setIsSubtasksOpen}
+                        showSubtasks={showSubtasks}
+                        column={column}
+                      />
+                    );
+                  })}
+                </div>
               </BoardColumn>
             );
           })}
