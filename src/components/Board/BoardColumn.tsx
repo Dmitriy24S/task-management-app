@@ -15,6 +15,7 @@ const BoardColumn = ({ children, index, selectedBoard }: Props) => {
     <section
       className={`flex w-[22rem] flex-col gap-4 ${
         index === selectedBoard.columns.length - 1 ? "pr-4" : ""
+        // spacing to right of main board for view with x-overflow scroll
       }`}
     >
       {children}

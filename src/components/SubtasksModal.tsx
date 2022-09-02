@@ -27,8 +27,11 @@ const SubtasksModal = ({
     selectedTask && (
       <Modal isOpen={isSubtasksOpen} setIsOpen={setIsSubtasksOpen}>
         <h1 className="text-lg font-bold">{selectedTask.title}</h1>
+        <p className="text-sm text-medium-grey">
+          {selectedTask.description ? selectedTask.description : "No description"}
+        </p>
         <div>
-          <p className="mt-1 pb-4 text-xs font-bold text-[#828fa3]">
+          <p className="mt-1 pb-4 text-xs font-bold leading-6 text-[#828fa3]">
             {`${
               selectedTask?.subtasks.filter((item: BoardSubTasks) => item.isCompleted).length
             } out of
