@@ -207,6 +207,10 @@ const NewTaskForm = ({
             >
               Subtasks
             </label>
+            {/* show error if empty subtasks (all removed) - 'Cannot be empty' */}
+            {errors.subtasks && (
+              <p className="form-message text-sm text-red">{errors.subtasks.message}</p>
+            )}
             {/* Subtasks list */}
             {fields?.map((_item, index) => {
               const fieldName = `subtasks[${index}]`;
@@ -214,7 +218,7 @@ const NewTaskForm = ({
                 // Subtask
                 <>
                   <fieldset
-                    className="subtask flex items-center gap-4"
+                    className="subtask flex items-center gap-1"
                     name={fieldName}
                     key={fieldName}
                   >
@@ -226,10 +230,13 @@ const NewTaskForm = ({
                       {...register(`subtasks.${index}.subtasktitle`)}
                       name={`subtasks.${index}.subtasktitle`}
                     />
-                    <div>
-                      {/* // ? without div overflow cutoff svg ? */}
-                      <Cross className="cursor-pointer fill-medium-grey hover:fill-red" />
-                    </div>
+                    <button
+                      onClick={() => remove(index)}
+                      className="block h-full fill-medium-grey p-2 hover:fill-red focus-visible:fill-red"
+                    >
+                      {/* // ? without div/button overflow cutoff svg ? */}
+                      <Cross />
+                    </button>
                   </fieldset>
                   {errors.subtasks?.[index]?.subtasktitle && (
                     <p className="form-message text-sm text-red">
@@ -244,7 +251,10 @@ const NewTaskForm = ({
             {/* Add new subtask - button */}
             <button
               type="button"
-              className="flex items-center justify-center gap-1 rounded-3xl bg-main-purple/20 py-2.5 px-4.5 text-center text-sm font-bold text-main-purple hover:bg-main-purple/10 focus:outline-offset-2 focus-visible:outline-offset-2 dark:text-white/90 dark:hover:bg-main-purple/30 "
+              className="mt-1.5 flex items-center justify-center gap-1 rounded-3xl bg-main-purple/20 py-2.5 px-4.5 text-center text-sm font-bold text-main-purple hover:bg-main-purple/10 focus:outline-offset-2 focus-visible:outline-offset-2 dark:text-white/90 dark:hover:bg-main-purple/30"
+              onClick={() => {
+                append({ subtasktitle: "" });
+              }}
             >
               <Plus className="fill-red-500" />
               Add New Subtask
