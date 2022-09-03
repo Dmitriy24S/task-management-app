@@ -259,17 +259,21 @@ const NewTaskForm = ({
             <select
               id="status"
               title="status"
+              value=""
               // placeholder="status"
               // name="status"
               {...register("taskStatus")}
               className="peer cursor-pointer appearance-none rounded px-4 py-2 text-sm text-black outline outline-1 outline-medium-grey/25 transition-colors placeholder:text-black/25 focus:outline-main-purple dark:bg-dark-grey dark:text-white dark:placeholder:text-white/25"
             >
-              <option value="" disabled hidden>
-                Select an Option
-              </option>
-              <option value="Todo">Todo</option>
+              <option value="">Select an Option</option>
+              {/* show available task status according to current selected board */}
+              {selectedBoard.columns.map((column) => {
+                return <option value={`${column.name}`}> {column.name}</option>;
+              })}
+              {/* <option value="" disabled hidden> */}
+              {/* <option value="Todo">Todo</option>
               <option value="Doing">Doing</option>
-              <option value="Done">Done</option>
+              <option value="Done">Done</option> */}
             </select>
             <FaChevronDown
               fill="#635FC7"

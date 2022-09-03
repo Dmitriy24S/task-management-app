@@ -313,6 +313,7 @@ const Home: NextPage = () => {
           selectedBoard={selectedBoard}
         />
         <SubtasksModal
+          selectedBoard={selectedBoard}
           isSubtasksOpen={isSubtasksOpen}
           setIsSubtasksOpen={setIsSubtasksOpen}
           selectedTask={selectedTask}

@@ -1,5 +1,5 @@
 import React from "react";
-import { BoardColumns, BoardSubTasks, BoardTasks } from "../types";
+import { Board, BoardColumns, BoardSubTasks, BoardTasks } from "../types";
 import Modal from "./Modal";
 
 interface Props {
@@ -8,6 +8,7 @@ interface Props {
   selectedTask: BoardTasks | null;
   handleSubtaskChange: (task: BoardTasks, subtask: BoardSubTasks) => void;
   handleStatusChange: (newStatus: string, oldStatus: string, task: BoardTasks) => void;
+  selectedBoard: Board;
 }
 
 const SubtasksModal = ({
@@ -16,6 +17,7 @@ const SubtasksModal = ({
   selectedTask,
   handleSubtaskChange,
   handleStatusChange,
+  selectedBoard,
 }: Props) => {
   // console.log({ selectedTask });
   // selectedTask:
@@ -85,16 +87,19 @@ ${selectedTask?.subtasks.length} subtasks`}
               title="status"
               placeholder="status"
               className="peer cursor-pointer appearance-none rounded px-4 py-2 text-sm text-black outline outline-1 outline-medium-grey/25 transition-colors placeholder:text-black/25 focus:outline-main-purple dark:bg-dark-grey dark:text-white dark:placeholder:text-white/25"
-              // value={selectedTask.status}
-              defaultValue={selectedTask.status}
+              value={selectedTask.status} // show status according to openend task
               onChange={(e) => {
                 // console.log(e.target.value); // 'Todo' / 'Doing' / etc...
                 handleStatusChange(e.target.value, selectedTask.status, selectedTask);
               }}
             >
-              <option value="Todo">Todo</option>
+              {/* show available task status according to current selected board */}
+              {selectedBoard.columns.map((column) => {
+                return <option value={`${column.name}`}>{column.name}</option>;
+              })}
+              {/* <option value="Todo">Todo</option>
               <option value="Doing">Doing</option>
-              <option value="Done">Done</option>
+              <option value="Done">Done</option> */}
             </select>
             {/* Arrow */}
             <svg
