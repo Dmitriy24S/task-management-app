@@ -95,7 +95,11 @@ ${selectedTask?.subtasks.length} subtasks`}
             >
               {/* show available task status according to current selected board */}
               {selectedBoard.columns.map((column) => {
-                return <option value={`${column.name}`}>{column.name}</option>;
+                return (
+                  <option key={column.name} value={`${column.name}`}>
+                    {column.name}
+                  </option>
+                );
               })}
               {/* <option value="Todo">Todo</option>
               <option value="Doing">Doing</option>

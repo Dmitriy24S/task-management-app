@@ -141,7 +141,7 @@ const NewTaskForm = ({
         taskTitle: "",
         taskDescription: "",
         subtasks: [{ subtasktitle: "" }, { subtasktitle: "" }],
-        taskStatus: "Todo",
+        taskStatus: "",
       });
     }
     // }, [formState, submittedData, reset]);
@@ -259,7 +259,8 @@ const NewTaskForm = ({
             <select
               id="status"
               title="status"
-              value=""
+              // value=""
+              defaultValue=""
               // placeholder="status"
               // name="status"
               {...register("taskStatus")}
@@ -268,7 +269,11 @@ const NewTaskForm = ({
               <option value="">Select an Option</option>
               {/* show available task status according to current selected board */}
               {selectedBoard.columns.map((column) => {
-                return <option value={`${column.name}`}> {column.name}</option>;
+                return (
+                  <option key={column.name} value={`${column.name}`}>
+                    {column.name}
+                  </option>
+                );
               })}
               {/* <option value="" disabled hidden> */}
               {/* <option value="Todo">Todo</option>
