@@ -13,10 +13,9 @@ interface Props {
 const BoardColumn = ({ children, index, selectedBoard }: Props) => {
   return (
     <section
-      className={`flex w-[22rem] flex-col gap-4 ${
-        index === selectedBoard.columns.length - 1 ? "pr-4" : ""
-        // spacing to right of main board for view with x-overflow scroll
-      }`}
+      className={`flex w-[22rem] flex-col gap-4 last:pr-4`}
+      // spacing to right of main board for view with x-overflow scroll
+      // ${ index === selectedBoard.columns.length - 1 ? "pr-4" : "" }
     >
       {children}
     </section>

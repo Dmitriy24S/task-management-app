@@ -109,7 +109,7 @@ const Boards = ({
                 <div
                   className={`tasks-container flex flex-col gap-4 ${
                     column.tasks.length === 0
-                      ? "h-full rounded-lg border-2 border-dashed border-gray-600"
+                      ? "h-full rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600"
                       : ""
                   }`}
                 >
