@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import data from "../assets/data/data.json";
 import Boards from "../components/Board/Boards";
 import Header from "../components/Header/Header";
-import NewTaskForm from "../components/NewTaskForm";
+import NewTaskFormModal from "../components/NewTaskForm";
 import SubtasksModal from "../components/SubtasksModal";
 import styles from "../styles/Home.module.css";
 import { Board, BoardColumns, BoardSubTasks, BoardTasks } from "../types";
@@ -306,7 +306,7 @@ const Home: NextPage = () => {
           selectedBoard={selectedBoard}
           setIsNewTaskFormOpen={setIsNewTaskFormOpen}
         />
-        <NewTaskForm
+        <NewTaskFormModal
           isNewTaskFormOpen={isNewTaskFormOpen}
           setIsNewTaskFormOpen={setIsNewTaskFormOpen}
           setSelectedBoard={setSelectedBoard}
