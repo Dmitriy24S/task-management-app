@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import data from "../assets/data/data.json";
 import Boards from "../components/Board/Boards";
+import NewColumnModal from "../components/Board/NewColumnModal";
 import Header from "../components/Header/Header";
 import NewTaskFormModal from "../components/NewTaskForm";
 import SubtasksModal from "../components/SubtasksModal";
@@ -14,6 +15,7 @@ const Home: NextPage = () => {
   const [isNewTaskFormOpen, setIsNewTaskFormOpen] = useState(false);
   const [isSubtasksOpen, setIsSubtasksOpen] = useState(false);
   const [isBoardMenuOpen, setIsBoardMenuOpen] = useState(false);
+  const [isNewColumnFormOpen, setIsNewColumnFormOpen] = useState(false);
 
   const [boardsData, setBoardsData] = useState<Board[]>(data.boards);
   // State: [{…}, {…}, {…}]
@@ -258,6 +260,69 @@ const Home: NextPage = () => {
     setIsSubtasksOpen(false);
   };
 
+  // Add new column to board
+  const addNewColumnToBoard = (newColumnsName: { name: string }[]) => {
+    // console.log({ newColumnsName });
+    // {newColumnsName: Array(1)}
+    // newColumnsName: Array(1)
+    // 0: {name: '1111'}
+    const newColumns = newColumnsName.map((columnName) => ({
+      // name: columnName;
+      // tasks: [];
+      // name: columnName,
+      name: columnName.name,
+      tasks: [],
+    }));
+    // console.log({ newColumns });
+    // {newColumns: Array(1)}
+    // newColumns: Array(1)
+    // 0: undefined
+
+    // newColumns: Array(1)
+    // 0:
+    // name: {name: '1111'}
+    // tasks: []
+    // console.log(newColumns);
+
+    // console.log(selectedBoard.columns);
+    // (3) [{…}, {…}, {…}]
+    // 0: {name: 'Todo', tasks: Array(4)}
+    // 1: {name: 'Doing', tasks: Array(6)}
+    // 2: {name: 'Done', tasks: Array(7)});
+
+    // console.log({ selectedBoard });
+    // {name: 'Platform Launch', columns: Array(3)}
+    // name: "Platform Launch"
+    // columns: Array(3)
+    /// 0: name: "Todo"
+    /// tasks: Array(4)
+    /// .. 0: title: "Build UI for onboarding flow"
+    /// .. description: ""
+    /// .. status: "Todo"
+    /// .. subtasks: (3) [{…}, {…}, {…}]
+    /// .. 1: {title: 'Build UI for search', description: '', status: 'Todo', subtasks: Array(1)}
+    /// .. 2: {title: 'Build settings UI', description: '', status: 'Todo', subtasks: Array(2)}
+    /// .. 3: {title: 'QA and test all major user journeys', description: 'Once we feel version one is ready, we need to rigo…rnally and externally to identify any major gaps.', status: 'Todo', subtasks: Array(2)}
+    // 1: {name: 'Doing', tasks: Array(6)}
+    // 2: {name: 'Done', tasks: Array(7)}
+
+    setSelectedBoard({ ...selectedBoard, columns: [...selectedBoard.columns, ...newColumns] });
+
+    setIsNewColumnFormOpen(false);
+  };
+
+  // Update board when add new column to board -> to save changes before switch to another board in sidebar menu
+  useEffect(() => {
+    setBoardsData(
+      boardsData.map((board) => {
+        if (board.name === selectedBoard.name) {
+          // console.log("match select board", selectedBoard);
+          return selectedBoard;
+        } else return board;
+      })
+    );
+  }, [selectedBoard]);
+
   // Dark / Light Theme
   const [darkTheme, setDarkTheme] = useState(false);
 
@@ -320,6 +385,12 @@ const Home: NextPage = () => {
           handleSubtaskChange={handleSubtaskChange}
           handleStatusChange={handleStatusChange}
         />
+        <NewColumnModal
+          isNewColumnFormOpen={isNewColumnFormOpen}
+          setIsNewColumnFormOpen={setIsNewColumnFormOpen}
+          selectedBoard={selectedBoard}
+          addNewColumnToBoard={addNewColumnToBoard}
+        />
         <Boards
           isBoardMenuOpen={isBoardMenuOpen}
           setIsBoardMenuOpen={setIsBoardMenuOpen}
@@ -332,6 +403,7 @@ const Home: NextPage = () => {
           setIsSubtasksOpen={setIsSubtasksOpen}
           showSubtasks={showSubtasks}
           handleSwitchSelectBoard={handleSwitchSelectBoard}
+          setIsNewColumnFormOpen={setIsNewColumnFormOpen}
         />
       </main>
     </>

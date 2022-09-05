@@ -4,6 +4,7 @@ import ShowSidebarSVG from "../../assets/icons/sidebar-show.svg";
 import { Board, BoardColumns, BoardSubTasks, BoardTasks } from "../../types";
 import NewTaskForm from "../NewTaskForm";
 import BoardSidebar from "../Sidemenu/BoardSidebar";
+import AddNewColumnButton from "./AddNewColumnButton";
 import BoardColumn from "./BoardColumn";
 import Task from "./Task";
 
@@ -20,6 +21,7 @@ interface HeaderProps {
   setIsSubtasksOpen: React.Dispatch<React.SetStateAction<boolean>>;
   showSubtasks: (task: BoardTasks, column: BoardColumns) => void;
   handleSwitchSelectBoard: (boardName: string) => void;
+  setIsNewColumnFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const generateColumnColor = (index: number) => {
@@ -52,6 +54,7 @@ const Boards = ({
   setIsSubtasksOpen,
   showSubtasks,
   handleSwitchSelectBoard,
+  setIsNewColumnFormOpen,
 }: HeaderProps) => {
   return (
     <div className="relative flex min-h-full min-w-full flex-grow dark:bg-[#2B2C37]">
@@ -81,10 +84,12 @@ const Boards = ({
         // className={`${
         //   isBoardMenuOpen ? "translate-x-[320px]" : "translate-x-0"
         // } relative min-h-full w-full bg-[#F4F7FD] p-4 transition-transform duration-300 dark:bg-[#20212C] dark:text-white`}
-        className={`main-container relative min-h-full w-full overflow-x-auto bg-[#F4F7FD] px-6 pb-24 pt-24 transition-transform duration-300 dark:bg-[#20212C] dark:text-white`}
+        className={`main-container relative min-h-full w-full overflow-x-auto bg-[#F4F7FD] px-6 pb-16 pt-24 transition-transform duration-300 dark:bg-[#20212C] dark:text-white`}
       >
+        {/* // ? pb-16 not matter? */}
         <div className="board-list mx-auto grid h-full w-11/12 min-w-fit grid-flow-col justify-center gap-4">
           {/* // ?  mr-40 margin right for spacing on horizontal right scroll? */}
+
           {/* Boards columns */}
           {selectedBoard.columns.map((column: BoardColumns, index: number) => {
             // console.log(column);
@@ -107,7 +112,8 @@ const Boards = ({
                   {column.name}
                 </h2>
                 <div
-                  className={`tasks-container flex flex-col gap-4 ${
+                  // pb-16 mb-16 spacing bottom?
+                  className={`tasks-container mb-16 flex flex-col gap-4 ${
                     column.tasks.length === 0
                       ? "h-full rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600"
                       : ""
@@ -129,6 +135,8 @@ const Boards = ({
               </BoardColumn>
             );
           })}
+          {/* Add new column */}
+          <AddNewColumnButton setIsNewColumnFormOpen={setIsNewColumnFormOpen} />
         </div>
       </section>
     </div>
