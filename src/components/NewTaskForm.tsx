@@ -212,10 +212,13 @@ const NewTaskFormModal = ({
           >
             Subtasks
           </label>
+
           {/* show error if empty subtasks (all removed) - 'Cannot be empty' */}
-          {errors.subtasks && (
+          {/* {errors.subtasks && (
             <p className="form-message text-sm text-red">{errors.subtasks.message}</p>
-          )}
+          )} */}
+          {/* // ? comment out -> prevent deletion of last subtask input in function with fields.length check, otherwise appears extra spacing for empty error div inbetween label and input */}
+
           {/* Subtasks list */}
           {fields?.map((_item, index) => {
             const fieldName = `subtasks[${index}]`;
@@ -236,7 +239,13 @@ const NewTaskFormModal = ({
                     name={`subtasks.${index}.subtasktitle`}
                   />
                   <button
-                    onClick={() => remove(index)}
+                    type="button"
+                    onClick={() => {
+                      // prevent deleting last subtask input, keep atleast one
+                      if (fields.length > 1) {
+                        remove(index);
+                      }
+                    }}
                     className="block h-full fill-medium-grey p-2 hover:fill-red focus-visible:fill-red"
                   >
                     {/* // ? without div/button overflow cutoff svg ? */}
