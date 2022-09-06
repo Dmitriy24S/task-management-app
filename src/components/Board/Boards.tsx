@@ -24,22 +24,29 @@ interface HeaderProps {
   setIsNewColumnFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+const colors = ["#49C4E5", "#8471F2", "#67E2AE", "#e5a449"];
+
 const generateColumnColor = (index: number) => {
-  const colors = ["#49C4E5", "#8471F2", "#67E2AE", "#e5a449"];
-  if (colors[index]) {
-    return colors[index];
-  } else {
-    // index % arr.length - will loop colors?
-    // console.log(generateColumnColor(5)); // #8471F2 //  hsl(216, 80%, 70%)
-    let rand = Math.random();
-    console.log(rand, "1"); // 0.5983916920571346 '1'
-    rand = Math.floor(rand * 360);
-    console.log(rand, "2"); // 215 '2'
-    rand = rand + 1;
-    console.log(rand, "3"); // 216 '3'
-    const randomColor = `hsl(${rand}, 80%, 70%)`; // hsl(216, 80%, 70%)
-    return randomColor; // #8471F2 //  hsl(216, 80%, 70%)
-  }
+  console.log("color generate, rerun?"); // ! reruns ?
+
+  // ? half fix rerun function on rerender of component? - (put colors outside and push new color run function only when not exisiting index of color)
+  // const colors = ["#49C4E5", "#8471F2", "#67E2AE", "#e5a449"];
+  // if (colors[index]) {
+  // return colors[index];
+  // } else {
+  // index % arr.length - will loop colors?
+  // console.log(generateColumnColor(5)); // #8471F2 //  hsl(216, 80%, 70%)
+
+  let rand = Math.random();
+  console.log(rand, "1 rand"); // 0.5983916920571346 '1 rand'
+  rand = Math.floor(rand * 360);
+  console.log(rand, "2 rand * 360"); // 215 '2 rand * 360'
+  rand = rand + 1;
+  console.log(rand, "3 rand + 1"); // 216 '3 rand + 1'
+  const randomColor = `hsl(${rand}, 80%, 70%)`; // hsl(216, 80%, 70%)
+  colors.push(randomColor, "random color result"); // push new color to fix/prevent recalc. new color for exisitng extra column?
+  return randomColor; // #8471F2 //  hsl(216, 80%, 70%)
+  // }
 };
 
 const Boards = ({
@@ -107,7 +114,10 @@ const Boards = ({
                   )} */}
                   <div
                     className="h-4 w-4 rounded-full"
-                    style={{ backgroundColor: generateColumnColor(index) }}
+                    style={{
+                      backgroundColor: colors[index] ? colors[index] : generateColumnColor(index),
+                      // ? half fix rerun function on rerender of component?
+                    }}
                   ></div>
                   {column.name}
                 </h2>
