@@ -12,6 +12,7 @@ interface HeaderProps {
   // selectedBoard: any; // !!!!!
   selectedBoard: Board;
   setIsNewTaskFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  // handleDeleteBoard: (selectedBoardName: string) => void;
 }
 
 const Header = ({
@@ -20,7 +21,8 @@ const Header = ({
   darkTheme,
   selectedBoard,
   setIsNewTaskFormOpen,
-}: HeaderProps) => {
+}: // handleDeleteBoard,
+HeaderProps) => {
   return (
     <header className="fixed top-0 left-0 right-0 z-20 bg-white dark:bg-[#2B2C37] dark:text-white">
       <div className="flex items-center justify-between p-4">
@@ -49,7 +51,10 @@ const Header = ({
         </div>
         <div className="header-right flex items-center sm:gap-1.5">
           <HeaderAddTaskButton setIsNewTaskFormOpen={setIsNewTaskFormOpen} />
-          <HeaderMoreInfoButton />
+          <HeaderMoreInfoButton
+            selectedBoardName={selectedBoard.name}
+            // handleDeleteBoard={handleDeleteBoard}
+          />
         </div>
       </div>
     </header>
