@@ -3,13 +3,10 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 
 interface Props {
   selectedBoardName: string;
-  // handleDeleteBoard: (selectedBoardName: string) => void;
+  handleDeleteBoard: (selectedBoardName: string) => void;
 }
 
-const HeaderMoreInfoButton = ({
-  selectedBoardName,
-}: // handleDeleteBoard
-Props) => {
+const HeaderMoreInfoButton = ({ selectedBoardName, handleDeleteBoard }: Props) => {
   return (
     <div
       className="dropdown-end group dropdown cursor-pointer rounded-md p-2 focus-visible:outline"
@@ -30,7 +27,7 @@ Props) => {
           <button
             className="font-bold text-red-main hover:bg-red-600 hover:text-white focus-visible:bg-red-600 focus-visible:text-white"
             onClick={() => {
-              // handleDeleteBoard(selectedBoardName)
+              handleDeleteBoard(selectedBoardName);
             }}
           >
             Delete Board

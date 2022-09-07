@@ -323,6 +323,23 @@ const Home: NextPage = () => {
     );
   }, [selectedBoard]);
 
+  // Handle delete board (header more info button option)
+  const handleDeleteBoard = (selectedBoardName: string) => {
+    console.log("handle delete board");
+    const newBoardsDataWithRemovedBoard = boardsData.filter(
+      (board) => board.name !== selectedBoardName
+    );
+
+    console.log(newBoardsDataWithRemovedBoard);
+    setBoardsData(newBoardsDataWithRemovedBoard);
+
+    if (selectedBoard.name === selectedBoardName) {
+      console.log("update selected board after deletion");
+      setSelectedBoard(newBoardsDataWithRemovedBoard[0]);
+      console.log({ selectedBoard }, "selected board");
+    }
+  };
+
   // Dark / Light Theme
   const [darkTheme, setDarkTheme] = useState(false);
 
@@ -370,6 +387,7 @@ const Home: NextPage = () => {
           darkTheme={darkTheme}
           selectedBoard={selectedBoard}
           setIsNewTaskFormOpen={setIsNewTaskFormOpen}
+          handleDeleteBoard={handleDeleteBoard}
         />
         <NewTaskFormModal
           isNewTaskFormOpen={isNewTaskFormOpen}
