@@ -2,7 +2,6 @@ import { Transition } from "@headlessui/react";
 import React from "react";
 import ShowSidebarSVG from "../../assets/icons/sidebar-show.svg";
 import { Board, BoardColumns, BoardSubTasks, BoardTasks } from "../../types";
-import NewTaskForm from "../NewTaskForm";
 import BoardSidebar from "../Sidemenu/BoardSidebar";
 import AddNewColumnButton from "./AddNewColumnButton";
 import BoardColumn from "./BoardColumn";

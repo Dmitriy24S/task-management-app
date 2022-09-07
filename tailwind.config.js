@@ -13,7 +13,7 @@ module.exports = {
         "light-grey": "#F4F7FD",
         "lines-dark": "#3E3F4E",
         "lines-light": "#E4EBFA",
-        red: "#EA5555",
+        "red-main": "#EA5555",
         "red-light": "#FF9898",
       },
       boxShadow: {
@@ -24,5 +24,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  // plugins: [require("daisyui")],
 };

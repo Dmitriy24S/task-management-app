@@ -6,7 +6,7 @@ import data from "../assets/data/data.json";
 import Boards from "../components/Board/Boards";
 import NewColumnModal from "../components/Board/NewColumnModal";
 import Header from "../components/Header/Header";
-import NewTaskFormModal from "../components/NewTaskForm";
+import NewTaskFormModal from "../components/NewTaskFormModal";
 import SubtasksModal from "../components/SubtasksModal";
 import styles from "../styles/Home.module.css";
 import { Board, BoardColumns, BoardSubTasks, BoardTasks } from "../types";

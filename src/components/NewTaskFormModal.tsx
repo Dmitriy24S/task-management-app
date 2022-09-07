@@ -159,7 +159,18 @@ const NewTaskFormModal = ({
 
     // new refactor into Modal component:
     <Modal isOpen={isNewTaskFormOpen} setIsOpen={setIsNewTaskFormOpen}>
-      <form className="flex flex-col gap-6" onSubmit={handleSubmit((data) => onSubmit(data))}>
+      <form
+        className="relative flex flex-col gap-6"
+        onSubmit={handleSubmit((data) => onSubmit(data))}
+      >
+        <button
+          onClick={() => setIsNewTaskFormOpen(false)}
+          className="absolute right-0 top-0 fill-medium-grey p-2 hover:fill-red-main focus-visible:fill-red-main"
+          aria-label="close form"
+          type="button"
+        >
+          <Cross />
+        </button>
         <h1 className="text-lg font-bold">Add New Task</h1>
         {/* Title */}
         <div className="relative flex w-full flex-col gap-2 text-white">
@@ -179,7 +190,7 @@ const NewTaskFormModal = ({
             // autoFocus
           />
           {errors.taskTitle && (
-            <p className="form-message text-sm text-red">{errors.taskTitle?.message}</p>
+            <p className="form-message text-red text-sm">{errors.taskTitle?.message}</p>
           )}
         </div>
         {/* Description */}
@@ -201,7 +212,7 @@ const NewTaskFormModal = ({
             {...register("taskDescription")}
           />
           {errors.taskDescription && (
-            <p className="form-message text-sm text-red">{errors.taskDescription?.message}</p>
+            <p className="form-message text-red text-sm">{errors.taskDescription?.message}</p>
           )}
         </div>
         {/* Subtasks list container - start */}
@@ -224,40 +235,46 @@ const NewTaskFormModal = ({
             const fieldName = `subtasks[${index}]`;
             return (
               // Subtask
-              <>
-                <fieldset
-                  className="subtask flex items-center gap-1"
-                  name={fieldName}
-                  key={fieldName}
+              // <>
+              <fieldset
+                className="subtask flex items-center gap-1"
+                name={fieldName}
+                key={fieldName}
+              >
+                <input
+                  type="text"
+                  id={`subtask${index}`}
+                  className="peer w-full cursor-pointer rounded bg-transparent py-2 px-4 text-sm text-black outline outline-1 outline-medium-grey/25  placeholder:text-black/25 focus:outline-main-purple dark:text-white dark:placeholder:text-white/25"
+                  placeholder="e.g. Make coffee"
+                  {...register(`subtasks.${index}.subtasktitle`)}
+                  name={`subtasks.${index}.subtasktitle`}
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    // prevent deleting last subtask input, keep atleast one
+                    if (fields.length > 1) {
+                      remove(index);
+                    }
+                  }}
+                  className="block h-full fill-medium-grey p-2 hover:fill-red-main focus-visible:fill-red-main"
                 >
-                  <input
-                    type="text"
-                    id={`subtask${index}`}
-                    className="peer w-full cursor-pointer rounded bg-transparent py-2 px-4 text-sm text-black outline outline-1 outline-medium-grey/25  placeholder:text-black/25 focus:outline-main-purple dark:text-white dark:placeholder:text-white/25"
-                    placeholder="e.g. Make coffee"
-                    {...register(`subtasks.${index}.subtasktitle`)}
-                    name={`subtasks.${index}.subtasktitle`}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => {
-                      // prevent deleting last subtask input, keep atleast one
-                      if (fields.length > 1) {
-                        remove(index);
-                      }
-                    }}
-                    className="block h-full fill-medium-grey p-2 hover:fill-red focus-visible:fill-red"
-                  >
-                    {/* // ? without div/button overflow cutoff svg ? */}
-                    <Cross />
-                  </button>
-                </fieldset>
+                  {/* // ? without div/button overflow cutoff svg ? */}
+                  <Cross />
+                </button>
+                {/* put inside for spacing fix? / for single .map return item with key={} */}
                 {errors.subtasks?.[index]?.subtasktitle && (
-                  <p className="form-message text-sm text-red">
+                  <p className="form-message text-sm text-red-main">
                     {errors.subtasks?.[index]?.subtasktitle?.message}
                   </p>
                 )}
-              </>
+              </fieldset>
+              // {/* {errors.subtasks?.[index]?.subtasktitle && (
+              //    <p className="form-message text-sm text-red-main">
+              //     {errors.subtasks?.[index]?.subtasktitle?.message}
+              //     </p>
+              // )} */}
+              // </>
             );
           })}
           {/* Subtasks list container - end */}
@@ -270,7 +287,7 @@ const NewTaskFormModal = ({
               append({ subtasktitle: "" });
             }}
           >
-            <Plus className="fill-red-500" />
+            <Plus />
             Add New Subtask
           </button>
         </div>
@@ -310,7 +327,7 @@ const NewTaskFormModal = ({
           />
         </div>
         {errors.taskStatus && (
-          <p className="form-message text-sm text-red">{errors.taskStatus?.message}</p>
+          <p className="form-message text-sm text-red-main">{errors.taskStatus?.message}</p>
         )}
         {/* Create button */}
         <button

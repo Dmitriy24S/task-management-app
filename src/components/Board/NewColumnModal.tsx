@@ -77,7 +77,7 @@ const NewColumnModal = ({
   return (
     <Modal isOpen={isNewColumnFormOpen} setIsOpen={setIsNewColumnFormOpen}>
       <form
-        className="flex flex-col gap-6"
+        className="relative flex flex-col gap-6"
         onSubmit={handleSubmit((data) => {
           // console.log(data);
           // {columns: Array(1)}
@@ -94,6 +94,14 @@ const NewColumnModal = ({
           // setIsNewColumnFormOpen(false);
         })}
       >
+        <button
+          onClick={() => setIsNewColumnFormOpen(false)}
+          className="absolute right-0 top-0 fill-medium-grey p-2 hover:fill-red-main focus-visible:fill-red-main"
+          aria-label="close form"
+          type="button"
+        >
+          <Cross />
+        </button>
         <h1 className="text-lg font-bold">Add New Column</h1>
 
         {/* Board name */}
@@ -123,18 +131,16 @@ const NewColumnModal = ({
           </label>
           {selectedBoard.columns.map((column, index) => {
             return (
-              <>
-                <fieldset className="column flex items-center gap-1">
-                  <input
-                    type="text"
-                    // id={`column-name${index}`}
-                    className="peer w-full cursor-pointer rounded bg-transparent py-2 px-4 text-sm  text-medium-grey outline outline-1  outline-medium-grey/25 placeholder:text-black/25 focus:outline-main-purple dark:placeholder:text-white/25"
-                    placeholder="Todo"
-                    value={column.name}
-                    readOnly
-                  />
-                </fieldset>
-              </>
+              <fieldset className="column-name flex items-center gap-1" key={column.name}>
+                <input
+                  type="text"
+                  // id={`column-name${index}`}
+                  className="peer w-full cursor-pointer rounded bg-transparent py-2 px-4 text-sm  text-medium-grey outline outline-1  outline-medium-grey/25 placeholder:text-black/25 focus:outline-main-purple dark:placeholder:text-white/25"
+                  placeholder="Todo"
+                  value={column.name}
+                  readOnly
+                />
+              </fieldset>
             );
           })}
 
@@ -142,7 +148,7 @@ const NewColumnModal = ({
           {fields?.map((_item, index) => {
             const fieldName = `columns[${index}]`;
             return (
-              <fieldset className="flex flex-col gap-3">
+              <fieldset className="flex flex-col gap-3" key={`column-name${index}`}>
                 <div className="column-name flex items-center gap-1">
                   <input
                     type="text"
@@ -158,7 +164,7 @@ const NewColumnModal = ({
                         remove(index);
                       }
                     }}
-                    className="block h-full fill-medium-grey p-2 hover:fill-red focus-visible:fill-red"
+                    className="block h-full fill-medium-grey p-2 hover:fill-red-main focus-visible:fill-red-main"
                   >
                     {/* // ? without div/button overflow cutoff svg ? */}
                     <Cross />
@@ -166,7 +172,7 @@ const NewColumnModal = ({
                 </div>
 
                 {errors.columns?.[index]?.name && (
-                  <p className="form-message text-sm text-red">
+                  <p className="form-message text-sm text-red-main">
                     {errors.columns?.[index]?.name?.message}
                   </p>
                 )}
@@ -183,7 +189,7 @@ const NewColumnModal = ({
               append({ name: "" });
             }}
           >
-            <Plus className="fill-red-500" />
+            <Plus />
             Add New Column
           </button>
         </div>
