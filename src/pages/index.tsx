@@ -340,6 +340,18 @@ const Home: NextPage = () => {
     }
   };
 
+  // Handle delete column (new column modal option)
+  const handleDeleteColumn = (columnName: string) => {
+    const updatedColumnsAfterDeletion = selectedBoard.columns.filter(
+      (column) => column.name !== columnName
+    );
+
+    console.log("deleting column:", columnName);
+    console.log(updatedColumnsAfterDeletion, "updated columns");
+
+    setSelectedBoard({ ...selectedBoard, columns: updatedColumnsAfterDeletion });
+  };
+
   // Dark / Light Theme
   const [darkTheme, setDarkTheme] = useState(false);
 
@@ -408,6 +420,7 @@ const Home: NextPage = () => {
           setIsNewColumnFormOpen={setIsNewColumnFormOpen}
           selectedBoard={selectedBoard}
           addNewColumnToBoard={addNewColumnToBoard}
+          handleDeleteColumn={handleDeleteColumn}
         />
         <Boards
           isBoardMenuOpen={isBoardMenuOpen}

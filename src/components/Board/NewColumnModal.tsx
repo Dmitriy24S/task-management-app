@@ -13,13 +13,6 @@ interface FormTypes {
   columns: { name: string }[];
 }
 
-interface Props {
-  isNewColumnFormOpen: boolean;
-  setIsNewColumnFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  selectedBoard: Board;
-  addNewColumnToBoard: (newColumnsName: { name: string }[]) => void;
-}
-
 const formSchema = yup.object({
   columns: yup
     .array()
@@ -39,11 +32,20 @@ const formSchema = yup.object({
     .required("Column names are required"),
 });
 
+interface Props {
+  isNewColumnFormOpen: boolean;
+  setIsNewColumnFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  selectedBoard: Board;
+  addNewColumnToBoard: (newColumnsName: { name: string }[]) => void;
+  handleDeleteColumn: (columnName: string) => void;
+}
+
 const NewColumnModal = ({
   isNewColumnFormOpen,
   setIsNewColumnFormOpen,
   selectedBoard,
   addNewColumnToBoard,
+  handleDeleteColumn,
 }: Props) => {
   const {
     register,
@@ -140,6 +142,16 @@ const NewColumnModal = ({
                   value={column.name}
                   readOnly
                 />
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleDeleteColumn(column.name);
+                  }}
+                  className="block h-full fill-medium-grey p-2 hover:fill-red-main focus-visible:fill-red-main"
+                >
+                  {/* // ? without div/button overflow cutoff svg ? */}
+                  <Cross />
+                </button>
               </fieldset>
             );
           })}
