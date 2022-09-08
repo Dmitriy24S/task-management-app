@@ -261,52 +261,34 @@ const Home: NextPage = () => {
   };
 
   // Add new column to board
-  const addNewColumnToBoard = (newColumnsName: { name: string }[]) => {
+  const addNewColumnToBoard = (newColumnsName: { name: string }[], boardName: string) => {
     // console.log({ newColumnsName });
     // {newColumnsName: Array(1)}
     // newColumnsName: Array(1)
     // 0: {name: '1111'}
     const newColumns = newColumnsName.map((columnName) => ({
-      // name: columnName;
-      // tasks: [];
-      // name: columnName,
       name: columnName.name,
       tasks: [],
     }));
-    // console.log({ newColumns });
-    // {newColumns: Array(1)}
-    // newColumns: Array(1)
-    // 0: undefined
 
-    // newColumns: Array(1)
-    // 0:
-    // name: {name: '1111'}
-    // tasks: []
-    // console.log(newColumns);
+    console.log(selectedBoard); // undefined if remove all boards
 
-    // console.log(selectedBoard.columns);
-    // (3) [{…}, {…}, {…}]
-    // 0: {name: 'Todo', tasks: Array(4)}
-    // 1: {name: 'Doing', tasks: Array(6)}
-    // 2: {name: 'Done', tasks: Array(7)});
-
-    // console.log({ selectedBoard });
-    // {name: 'Platform Launch', columns: Array(3)}
-    // name: "Platform Launch"
-    // columns: Array(3)
-    /// 0: name: "Todo"
-    /// tasks: Array(4)
-    /// .. 0: title: "Build UI for onboarding flow"
-    /// .. description: ""
-    /// .. status: "Todo"
-    /// .. subtasks: (3) [{…}, {…}, {…}]
-    /// .. 1: {title: 'Build UI for search', description: '', status: 'Todo', subtasks: Array(1)}
-    /// .. 2: {title: 'Build settings UI', description: '', status: 'Todo', subtasks: Array(2)}
-    /// .. 3: {title: 'QA and test all major user journeys', description: 'Once we feel version one is ready, we need to rigo…rnally and externally to identify any major gaps.', status: 'Todo', subtasks: Array(2)}
-    // 1: {name: 'Doing', tasks: Array(6)}
-    // 2: {name: 'Done', tasks: Array(7)}
-
-    setSelectedBoard({ ...selectedBoard, columns: [...selectedBoard.columns, ...newColumns] });
+    if (selectedBoard) {
+      const updatedBoardsDataWithNewName = boardsData.map((board) => {
+        if (board.name === selectedBoard.name) {
+          return { name: boardName, columns: [...selectedBoard?.columns, ...newColumns] };
+        } else return board;
+      });
+      setBoardsData(updatedBoardsDataWithNewName); // ? refactor?
+      setSelectedBoard({
+        ...selectedBoard,
+        name: boardName,
+        columns: [...selectedBoard?.columns, ...newColumns],
+      });
+    } else {
+      setSelectedBoard({ name: boardName, columns: newColumns });
+      setBoardsData([{ name: boardName, columns: newColumns }]);
+    }
 
     setIsNewColumnFormOpen(false);
   };
@@ -333,7 +315,10 @@ const Home: NextPage = () => {
     console.log(newBoardsDataWithRemovedBoard);
     setBoardsData(newBoardsDataWithRemovedBoard);
 
-    if (selectedBoard.name === selectedBoardName) {
+    // Update selected board after board deletion switch to first board in new board data array:
+    // prevent nullish (null/undefined) - add .? optional chaining
+    // Unhandled Runtime Error // TypeError: Cannot read properties of undefined (reading 'name')
+    if (selectedBoard?.name === selectedBoardName) {
       console.log("update selected board after deletion");
       setSelectedBoard(newBoardsDataWithRemovedBoard[0]);
       console.log({ selectedBoard }, "selected board");

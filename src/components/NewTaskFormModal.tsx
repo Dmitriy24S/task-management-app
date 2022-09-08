@@ -190,7 +190,7 @@ const NewTaskFormModal = ({
             // autoFocus
           />
           {errors.taskTitle && (
-            <p className="form-message text-red text-sm">{errors.taskTitle?.message}</p>
+            <p className="form-message text-sm text-red-main">{errors.taskTitle?.message}</p>
           )}
         </div>
         {/* Description */}
@@ -212,7 +212,7 @@ const NewTaskFormModal = ({
             {...register("taskDescription")}
           />
           {errors.taskDescription && (
-            <p className="form-message text-red text-sm">{errors.taskDescription?.message}</p>
+            <p className="form-message text-sm text-red-main">{errors.taskDescription?.message}</p>
           )}
         </div>
         {/* Subtasks list container - start */}
@@ -309,7 +309,7 @@ const NewTaskFormModal = ({
           >
             <option value="">Select an Option</option>
             {/* show available task status according to current selected board */}
-            {selectedBoard.columns.map((column) => {
+            {selectedBoard?.columns.map((column) => {
               return (
                 <option key={column.name} value={`${column.name}`}>
                   {column.name}

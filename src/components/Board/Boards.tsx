@@ -97,7 +97,7 @@ const Boards = ({
           {/* // ?  mr-40 margin right for spacing on horizontal right scroll? */}
 
           {/* Boards columns */}
-          {selectedBoard.columns.map((column: BoardColumns, index: number) => {
+          {selectedBoard?.columns.map((column: BoardColumns, index: number) => {
             // console.log(column);
             // {name: 'Todo', tasks: Array(4)}
             return (

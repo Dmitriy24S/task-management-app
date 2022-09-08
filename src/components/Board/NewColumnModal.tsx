@@ -10,10 +10,18 @@ import { useFieldArray, useForm } from "react-hook-form";
 import * as yup from "yup";
 
 interface FormTypes {
+  boardName: string;
   columns: { name: string }[];
 }
 
 const formSchema = yup.object({
+  boardName: yup
+    .string()
+    .trim()
+    .min(4, "Title must be at least 4 characters")
+    .max(20, "Title must be at most 20 characters")
+    // .matches(/^[a-zA-Z0-9 ]+$/, "only letters and numbers")
+    .required("Title is required"),
   columns: yup
     .array()
     .of(
@@ -36,7 +44,7 @@ interface Props {
   isNewColumnFormOpen: boolean;
   setIsNewColumnFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
   selectedBoard: Board;
-  addNewColumnToBoard: (newColumnsName: { name: string }[]) => void;
+  addNewColumnToBoard: (newColumnsName: { name: string }[], boardName: string) => void;
   handleDeleteColumn: (columnName: string) => void;
 }
 
@@ -58,6 +66,7 @@ const NewColumnModal = ({
   } = useForm<FormTypes>({
     mode: "onChange", // validation error onChange while typing in input
     defaultValues: {
+      boardName: selectedBoard?.name,
       // items: [{ name: "default Value" }]
       columns: [{ name: "" }],
       // show one default empty field for column name input
@@ -71,6 +80,7 @@ const NewColumnModal = ({
   useEffect(() => {
     if (formState.isSubmitSuccessful) {
       reset({
+        boardName: selectedBoard?.name,
         columns: [{ name: "" }],
       });
     }
@@ -82,7 +92,8 @@ const NewColumnModal = ({
         className="relative flex flex-col gap-6"
         onSubmit={handleSubmit((data) => {
           // console.log(data);
-          // {columns: Array(1)}
+          // {columns: Array(1), boardName: 'Platform Launchrfds'}
+          // boardName: "Platform Launchrfds"
           // columns: Array(1)
           // 0:
           // name: "1111"
@@ -91,7 +102,7 @@ const NewColumnModal = ({
           // [{…}]
           // 0: {name: '1111'}
 
-          addNewColumnToBoard(data.columns);
+          addNewColumnToBoard(data.columns, data.boardName);
 
           // setIsNewColumnFormOpen(false);
         })}
@@ -118,9 +129,13 @@ const NewColumnModal = ({
             type="text"
             id="board-name"
             className="peer cursor-pointer rounded px-4 py-2 text-sm text-medium-grey outline outline-1 outline-medium-grey/25 transition-colors placeholder:text-black/25 focus:outline-main-purple dark:bg-dark-grey dark:placeholder:text-white/25"
-            value={selectedBoard.name}
-            readOnly
+            // value={selectedBoard?.name}
+            {...register("boardName")}
+            // autoFocus
           />
+          {errors.boardName && (
+            <p className="form-message text-sm text-red-main">{errors.boardName?.message}</p>
+          )}
         </div>
 
         {/* Exising columns list container - start */}
@@ -131,7 +146,7 @@ const NewColumnModal = ({
           >
             Columns
           </label>
-          {selectedBoard.columns.map((column, index) => {
+          {selectedBoard?.columns.map((column, index) => {
             return (
               <fieldset className="column-name flex items-center gap-1" key={column.name}>
                 <input
