@@ -21,6 +21,7 @@ interface HeaderProps {
   showSubtasks: (task: BoardTasks, column: BoardColumns) => void;
   handleSwitchSelectBoard: (boardName: string) => void;
   setIsNewColumnFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsNewBoardFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const colors = ["#49C4E5", "#8471F2", "#67E2AE", "#e5a449"];
@@ -61,6 +62,7 @@ const Boards = ({
   showSubtasks,
   handleSwitchSelectBoard,
   setIsNewColumnFormOpen,
+  setIsNewBoardFormOpen,
 }: HeaderProps) => {
   return (
     <div className="relative flex min-h-full min-w-full flex-grow dark:bg-[#2B2C37]">
@@ -72,6 +74,7 @@ const Boards = ({
         boardsData={boardsData}
         selectedBoard={selectedBoard}
         handleSwitchSelectBoard={handleSwitchSelectBoard}
+        setIsNewBoardFormOpen={setIsNewBoardFormOpen}
       />
       {/* Open sidebar desktop */}
       {/* {!isBoardMenuOpen && ( )} */}

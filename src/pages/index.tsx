@@ -6,6 +6,7 @@ import data from "../assets/data/data.json";
 import Boards from "../components/Board/Boards";
 import NewColumnModal from "../components/Board/NewColumnModal";
 import Header from "../components/Header/Header";
+import NewBoardFormModal from "../components/NewBoardFormModal";
 import NewTaskFormModal from "../components/NewTaskFormModal";
 import SubtasksModal from "../components/SubtasksModal";
 import styles from "../styles/Home.module.css";
@@ -13,6 +14,7 @@ import { Board, BoardColumns, BoardSubTasks, BoardTasks } from "../types";
 
 const Home: NextPage = () => {
   const [isNewTaskFormOpen, setIsNewTaskFormOpen] = useState(false);
+  const [isNewBoardFormOpen, setIsNewBoardFormOpen] = useState(false);
   const [isSubtasksOpen, setIsSubtasksOpen] = useState(false);
   const [isBoardMenuOpen, setIsBoardMenuOpen] = useState(false);
   const [isNewColumnFormOpen, setIsNewColumnFormOpen] = useState(false);
@@ -407,6 +409,10 @@ const Home: NextPage = () => {
           addNewColumnToBoard={addNewColumnToBoard}
           handleDeleteColumn={handleDeleteColumn}
         />
+        <NewBoardFormModal
+          isNewBoardFormOpen={isNewBoardFormOpen}
+          setIsNewBoardFormOpen={setIsNewBoardFormOpen}
+        />
         <Boards
           isBoardMenuOpen={isBoardMenuOpen}
           setIsBoardMenuOpen={setIsBoardMenuOpen}
@@ -420,6 +426,7 @@ const Home: NextPage = () => {
           showSubtasks={showSubtasks}
           handleSwitchSelectBoard={handleSwitchSelectBoard}
           setIsNewColumnFormOpen={setIsNewColumnFormOpen}
+          setIsNewBoardFormOpen={setIsNewBoardFormOpen}
         />
       </main>
     </>

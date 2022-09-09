@@ -16,6 +16,7 @@ interface BoardSidebarProps {
   boardsData: Board[];
   selectedBoard: Board;
   handleSwitchSelectBoard: (boardName: string) => void;
+  setIsNewBoardFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const BoardSidebar = ({
@@ -26,6 +27,7 @@ const BoardSidebar = ({
   boardsData,
   selectedBoard,
   handleSwitchSelectBoard,
+  setIsNewBoardFormOpen,
 }: BoardSidebarProps) => {
   return (
     <>
@@ -77,8 +79,12 @@ const BoardSidebar = ({
               );
             })}
           </ul>
+
           {/* Create new board button */}
-          <button className="group flex min-w-max items-center p-4 text-[#6f6de0] hover:bg-[#6766ad22] sm:mr-8 sm:rounded-r-full">
+          <button
+            className="group flex min-w-max items-center p-4 text-[#6f6de0] hover:bg-[#6766ad22] sm:mr-8 sm:rounded-r-full"
+            onClick={() => setIsNewBoardFormOpen(true)}
+          >
             {/* Plus svg */}
             <span>
               <div>
@@ -98,6 +104,7 @@ const BoardSidebar = ({
             <PlusSvg className="mr-1 fill-[#6f6de0] text-[#6f6de0] group-hover:fill-[#6f6de0]" />
             Create New Board
           </button>
+
           {/* Theme toggle */}
           <ThemeToggle darkTheme={darkTheme} setDarkTheme={setDarkTheme} />
           {/* Hide sidebar button */}
