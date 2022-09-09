@@ -47,7 +47,8 @@ const Home: NextPage = () => {
 
   const [selectedColumn, setSelectedColumn] = useState<BoardColumns | null>(null);
   const [selectedTask, setSelectedTask] = useState<BoardTasks | null>(null);
-  const [selectedBoard, setSelectedBoard] = useState<Board>(data.boards[0]);
+  // const [selectedBoard, setSelectedBoard] = useState<Board>(data.boards[0]);
+  const [selectedBoard, setSelectedBoard] = useState<Board>(boardsData[0]);
   // console.log({ selectedBoard });
   // {name: 'Platform Launch', columns: Array(3)}
   // name: "Platform Launch"
@@ -359,6 +360,15 @@ const Home: NextPage = () => {
     setBoardsData([...boardsData, newBoard]);
     // close form modal:
     setIsNewBoardFormOpen(false);
+
+    // console.log(selectedBoard, "check current selected board while adding new board"); // undefined (when all boards deleted beforehand)
+    // delete all boards beforehand -> selectedBoard = undefined, after adding new board to empty data list -> not auto selected on page
+    if (selectedBoard == null) {
+      console.log("null/undefined selectedBoard, set to boardsData[0] manually");
+      // console.log(boardsData[0], "0000"); // undefined '0000'
+      // setSelectedBoard(boardsData[0]); // ! no -> undefined
+      setSelectedBoard(newBoard); // works
+    }
   };
 
   // Dark / Light Theme
