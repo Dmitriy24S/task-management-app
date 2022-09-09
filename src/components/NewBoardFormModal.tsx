@@ -42,9 +42,14 @@ const formSchema = yup.object({
 interface Props {
   isNewBoardFormOpen: boolean;
   setIsNewBoardFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  handleAddNewBoard: (boardName: string, columnsNames: { name: string }[]) => void;
 }
 
-const NewBoardFormModal = ({ isNewBoardFormOpen, setIsNewBoardFormOpen }: Props) => {
+const NewBoardFormModal = ({
+  isNewBoardFormOpen,
+  setIsNewBoardFormOpen,
+  handleAddNewBoard,
+}: Props) => {
   const {
     register,
     control,
@@ -82,6 +87,15 @@ const NewBoardFormModal = ({ isNewBoardFormOpen, setIsNewBoardFormOpen }: Props)
             // boardName: "1234"
             // columns: Array(1)
             // 0: {name: 'qwert'}
+
+            // console.log(data.boardName, data.columns);
+            // 1111
+            // (2) [{…}, {…}]
+            // ... 0: {name: '2222'}
+            // ... 1: {name: '3333'}
+
+            // TODO: refactor?
+            handleAddNewBoard(data.boardName, data.columns);
           })}
         >
           <button

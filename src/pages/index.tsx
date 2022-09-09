@@ -273,9 +273,10 @@ const Home: NextPage = () => {
       tasks: [],
     }));
 
-    console.log(selectedBoard); // undefined if remove all boards
+    console.log(selectedBoard); // undefined if removed all boards
 
     if (selectedBoard) {
+      // TODO: refactor?
       const updatedBoardsDataWithNewName = boardsData.map((board) => {
         if (board.name === selectedBoard.name) {
           return { name: boardName, columns: [...selectedBoard?.columns, ...newColumns] };
@@ -288,6 +289,7 @@ const Home: NextPage = () => {
         columns: [...selectedBoard?.columns, ...newColumns],
       });
     } else {
+      // TODO: refactor?
       setSelectedBoard({ name: boardName, columns: newColumns });
       setBoardsData([{ name: boardName, columns: newColumns }]);
     }
@@ -337,6 +339,26 @@ const Home: NextPage = () => {
     console.log(updatedColumnsAfterDeletion, "updated columns");
 
     setSelectedBoard({ ...selectedBoard, columns: updatedColumnsAfterDeletion });
+  };
+
+  // Handle add new board (sidemenu button)
+  const handleAddNewBoard = (boardName: string, columnsNames: { name: string }[]) => {
+    console.log("handle add new board");
+    // TODO: refactor?
+    // make columns array:
+    const boardColumns = columnsNames.map((columnName) => ({
+      name: columnName.name,
+      tasks: [],
+    }));
+    // make board object:
+    const newBoard = {
+      name: boardName,
+      columns: boardColumns,
+    };
+    // add new board to array:
+    setBoardsData([...boardsData, newBoard]);
+    // close form modal:
+    setIsNewBoardFormOpen(false);
   };
 
   // Dark / Light Theme
@@ -412,6 +434,7 @@ const Home: NextPage = () => {
         <NewBoardFormModal
           isNewBoardFormOpen={isNewBoardFormOpen}
           setIsNewBoardFormOpen={setIsNewBoardFormOpen}
+          handleAddNewBoard={handleAddNewBoard}
         />
         <Boards
           isBoardMenuOpen={isBoardMenuOpen}
