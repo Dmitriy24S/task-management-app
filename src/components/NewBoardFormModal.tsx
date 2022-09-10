@@ -40,8 +40,8 @@ const formSchema = yup.object({
 });
 
 interface Props {
-  isNewBoardFormOpen: boolean;
-  setIsNewBoardFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isNewBoardFormOpen: string | null;
+  setIsNewBoardFormOpen: React.Dispatch<React.SetStateAction<string | null>>;
   handleAddNewBoard: (boardName: string, columnsNames: { name: string }[]) => void;
 }
 
@@ -78,7 +78,7 @@ const NewBoardFormModal = ({
   return (
     <Modal isOpen={isNewBoardFormOpen} setIsOpen={setIsNewBoardFormOpen}>
       {/* // TODO: refactor? */}
-      {isNewBoardFormOpen && (
+      {isNewBoardFormOpen === "newBoardFormModal" && (
         <form
           className="relative flex flex-col gap-6"
           onSubmit={handleSubmit((data) => {
@@ -102,7 +102,8 @@ const NewBoardFormModal = ({
             type="button"
             aria-label="close form"
             className="absolute right-0 top-0 fill-medium-grey p-2 hover:fill-red-main focus-visible:fill-red-main"
-            onClick={() => setIsNewBoardFormOpen(false)}
+            // onClick={() => setIsNewBoardFormOpen(false)}
+            onClick={() => setIsNewBoardFormOpen(null)}
           >
             <Cross />
           </button>

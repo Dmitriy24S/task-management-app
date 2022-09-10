@@ -3,8 +3,9 @@ import { Board, BoardColumns, BoardSubTasks, BoardTasks } from "../types";
 import Modal from "./Modal";
 
 interface Props {
-  isSubtasksOpen: boolean;
-  setIsSubtasksOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  // TODO: refactor/update names to 'active modal'?
+  isSubtasksOpen: string | null;
+  setIsSubtasksOpen: React.Dispatch<React.SetStateAction<string | null>>;
   selectedTask: BoardTasks | null;
   handleSubtaskChange: (task: BoardTasks, subtask: BoardSubTasks) => void;
   handleStatusChange: (newStatus: string, oldStatus: string, task: BoardTasks) => void;

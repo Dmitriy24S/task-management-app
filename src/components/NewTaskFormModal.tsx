@@ -10,8 +10,11 @@ import { Board, BoardColumns } from "../types";
 import Modal from "./Modal";
 
 interface Props {
-  isNewTaskFormOpen: boolean;
-  setIsNewTaskFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  // isNewTaskFormOpen: boolean;
+  // isNewTaskFormOpen: any;
+  isNewTaskFormOpen: string | null;
+  // setIsNewTaskFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsNewTaskFormOpen: React.Dispatch<React.SetStateAction<string | null>>;
   setSelectedBoard: React.Dispatch<React.SetStateAction<Board>>;
   selectedBoard: Board;
 }
@@ -131,7 +134,8 @@ const NewTaskFormModal = ({
     // reset({ ...data }); // ! not work reset w/ {...data}
 
     // close new task form window/modal
-    setIsNewTaskFormOpen(false);
+    // setIsNewTaskFormOpen(false);
+    setIsNewTaskFormOpen(null);
   };
 
   // Reset form inputs on submit
@@ -164,7 +168,8 @@ const NewTaskFormModal = ({
         onSubmit={handleSubmit((data) => onSubmit(data))}
       >
         <button
-          onClick={() => setIsNewTaskFormOpen(false)}
+          // onClick={() => setIsNewTaskFormOpen(false)}
+          onClick={() => setIsNewTaskFormOpen(null)}
           className="absolute right-0 top-0 fill-medium-grey p-2 hover:fill-red-main focus-visible:fill-red-main"
           aria-label="close form"
           type="button"

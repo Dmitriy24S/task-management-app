@@ -1,13 +1,11 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import React, { useEffect } from "react";
+import { useFieldArray, useForm } from "react-hook-form";
+import * as yup from "yup";
 import Cross from "../../assets/icons/cross.svg";
 import Plus from "../../assets/icons/icon-add-task-mobile.svg";
 import { Board } from "../../types";
 import Modal from "../Modal";
-
-import { useFieldArray, useForm } from "react-hook-form";
-
-import * as yup from "yup";
 
 interface FormTypes {
   boardName: string;
@@ -41,8 +39,8 @@ const formSchema = yup.object({
 });
 
 interface Props {
-  isNewColumnFormOpen: boolean;
-  setIsNewColumnFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isNewColumnFormOpen: string | null;
+  setIsNewColumnFormOpen: React.Dispatch<React.SetStateAction<string | null>>;
   selectedBoard: Board;
   addNewColumnToBoard: (newColumnsName: { name: string }[], boardName: string) => void;
   handleDeleteColumn: (columnName: string) => void;
@@ -122,7 +120,8 @@ const NewColumnModal = ({
           })}
         >
           <button
-            onClick={() => setIsNewColumnFormOpen(false)}
+            // onClick={() => setIsNewColumnFormOpen(false)}
+            onClick={() => setIsNewColumnFormOpen(null)}
             className="absolute right-0 top-0 fill-medium-grey p-2 hover:fill-red-main focus-visible:fill-red-main"
             aria-label="close form"
             type="button"

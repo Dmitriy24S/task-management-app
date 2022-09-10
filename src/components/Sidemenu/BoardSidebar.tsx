@@ -16,7 +16,7 @@ interface BoardSidebarProps {
   boardsData: Board[];
   selectedBoard: Board;
   handleSwitchSelectBoard: (boardName: string) => void;
-  setIsNewBoardFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setActiveModalName: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 const BoardSidebar = ({
@@ -27,7 +27,7 @@ const BoardSidebar = ({
   boardsData,
   selectedBoard,
   handleSwitchSelectBoard,
-  setIsNewBoardFormOpen,
+  setActiveModalName,
 }: BoardSidebarProps) => {
   return (
     <>
@@ -83,7 +83,7 @@ const BoardSidebar = ({
           {/* Create new board button */}
           <button
             className="group flex min-w-max items-center p-4 text-[#6f6de0] hover:bg-[#6766ad22] sm:mr-8 sm:rounded-r-full"
-            onClick={() => setIsNewBoardFormOpen(true)}
+            onClick={() => setActiveModalName("newBoardFormModal")}
           >
             {/* Plus svg */}
             <span>

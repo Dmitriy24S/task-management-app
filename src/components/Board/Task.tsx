@@ -3,12 +3,12 @@ import { BoardColumns, BoardSubTasks, BoardTasks } from "../../types";
 
 interface TaskProps {
   task: BoardTasks;
-  setIsSubtasksOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setActiveModalName: React.Dispatch<React.SetStateAction<string | null>>;
   showSubtasks: (task: BoardTasks, column: BoardColumns) => void;
   column: BoardColumns;
 }
 
-const Task = ({ task, setIsSubtasksOpen, showSubtasks, column }: TaskProps) => {
+const Task = ({ task, setActiveModalName, showSubtasks, column }: TaskProps) => {
   // {title: 'Competitor analysis', description: '', status: 'Done', subtasks: Array(2)}
   return (
     <article

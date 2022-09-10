@@ -13,11 +13,11 @@ import styles from "../styles/Home.module.css";
 import { Board, BoardColumns, BoardSubTasks, BoardTasks } from "../types";
 
 const Home: NextPage = () => {
-  const [isNewTaskFormOpen, setIsNewTaskFormOpen] = useState(false);
-  const [isNewBoardFormOpen, setIsNewBoardFormOpen] = useState(false);
-  const [isSubtasksOpen, setIsSubtasksOpen] = useState(false);
   const [isBoardMenuOpen, setIsBoardMenuOpen] = useState(false);
-  const [isNewColumnFormOpen, setIsNewColumnFormOpen] = useState(false);
+  // const [isNewTaskFormOpen, setIsNewTaskFormOpen] = useState(false);
+  // const [isNewBoardFormOpen, setIsNewBoardFormOpen] = useState(false);
+  // const [isSubtasksOpen, setIsSubtasksOpen] = useState(false);
+  // const [isNewColumnFormOpen, setIsNewColumnFormOpen] = useState(false);
 
   const [boardsData, setBoardsData] = useState<Board[]>(data.boards);
   // State: [{…}, {…}, {…}]
@@ -47,7 +47,6 @@ const Home: NextPage = () => {
 
   const [selectedColumn, setSelectedColumn] = useState<BoardColumns | null>(null);
   const [selectedTask, setSelectedTask] = useState<BoardTasks | null>(null);
-  // const [selectedBoard, setSelectedBoard] = useState<Board>(data.boards[0]);
   const [selectedBoard, setSelectedBoard] = useState<Board>(boardsData[0]);
   // console.log({ selectedBoard });
   // {name: 'Platform Launch', columns: Array(3)}
@@ -66,7 +65,9 @@ const Home: NextPage = () => {
   // 2: {name: 'Done', tasks: Array(7)}
 
   const showSubtasks = (task: BoardTasks, column: BoardColumns) => {
-    setIsSubtasksOpen(true);
+    // setIsSubtasksOpen(true);
+    setActiveModalName("subtasksModal");
+
     console.log("show subtasks selected task:", { task });
     setSelectedTask(task);
     console.log("show subtasks selected column", { column });
@@ -260,7 +261,8 @@ const Home: NextPage = () => {
     // end handle status change
 
     // Close subtask modal - //TODO: this temp. fixes bug: if change status more than once in open modal -> causes duplicate task in columns (not updating current/old status)
-    setIsSubtasksOpen(false);
+    // setIsSubtasksOpen(false);
+    setActiveModalName(null); // TODO: refactor modals more?
   };
 
   // Add new column to board
@@ -295,7 +297,8 @@ const Home: NextPage = () => {
       setBoardsData([{ name: boardName, columns: newColumns }]);
     }
 
-    setIsNewColumnFormOpen(false);
+    // setIsNewColumnFormOpen(false);
+    setActiveModalName(null); // TODO: refactor modals more?
   };
 
   // Update board when add new column to board -> to save changes before switch to another board in sidebar menu
@@ -359,7 +362,8 @@ const Home: NextPage = () => {
     // add new board to array:
     setBoardsData([...boardsData, newBoard]);
     // close form modal:
-    setIsNewBoardFormOpen(false);
+    // setIsNewBoardFormOpen(false);
+    setActiveModalName(null); // TODO: refactor modals more?
 
     // console.log(selectedBoard, "check current selected board while adding new board"); // undefined (when all boards deleted beforehand)
     // delete all boards beforehand -> selectedBoard = undefined, after adding new board to empty data list -> not auto selected on page
@@ -399,6 +403,53 @@ const Home: NextPage = () => {
     }
   }, []);
 
+  // Modals
+  const [activeModalName, setActiveModalName] = useState<string | null>(null);
+  // Show active modal:
+  const modalManager = (activeModalName: string | null) => {
+    // TODO: refactor names? */
+    switch (activeModalName) {
+      case "newTaskModal":
+        return (
+          <NewTaskFormModal
+            isNewTaskFormOpen={activeModalName}
+            setIsNewTaskFormOpen={setActiveModalName}
+            setSelectedBoard={setSelectedBoard}
+            selectedBoard={selectedBoard}
+          />
+        );
+      case "subtasksModal":
+        return (
+          <SubtasksModal
+            selectedBoard={selectedBoard}
+            isSubtasksOpen={activeModalName}
+            setIsSubtasksOpen={setActiveModalName}
+            selectedTask={selectedTask}
+            handleSubtaskChange={handleSubtaskChange}
+            handleStatusChange={handleStatusChange}
+          />
+        );
+      case "newColumnModal":
+        return (
+          <NewColumnModal
+            isNewColumnFormOpen={activeModalName}
+            setIsNewColumnFormOpen={setActiveModalName}
+            selectedBoard={selectedBoard}
+            addNewColumnToBoard={addNewColumnToBoard}
+            handleDeleteColumn={handleDeleteColumn}
+          />
+        );
+      case "newBoardFormModal":
+        return (
+          <NewBoardFormModal
+            isNewBoardFormOpen={activeModalName}
+            setIsNewBoardFormOpen={setActiveModalName}
+            handleAddNewBoard={handleAddNewBoard}
+          />
+        );
+    }
+  };
+
   return (
     <>
       <Head>
@@ -410,6 +461,7 @@ const Home: NextPage = () => {
           rel="stylesheet"
         />
       </Head>
+
       <main className={`${darkTheme ? "dark" : ""} flex max-h-screen min-h-screen flex-col`}>
         {/* max-h-screen - prevents scroll on open pos:fixed modals (menu, new task form) */}
         <Header
@@ -417,35 +469,12 @@ const Home: NextPage = () => {
           setIsBoardMenuOpen={setIsBoardMenuOpen}
           darkTheme={darkTheme}
           selectedBoard={selectedBoard}
-          setIsNewTaskFormOpen={setIsNewTaskFormOpen}
           handleDeleteBoard={handleDeleteBoard}
+          setActiveModalName={setActiveModalName}
         />
-        <NewTaskFormModal
-          isNewTaskFormOpen={isNewTaskFormOpen}
-          setIsNewTaskFormOpen={setIsNewTaskFormOpen}
-          setSelectedBoard={setSelectedBoard}
-          selectedBoard={selectedBoard}
-        />
-        <SubtasksModal
-          selectedBoard={selectedBoard}
-          isSubtasksOpen={isSubtasksOpen}
-          setIsSubtasksOpen={setIsSubtasksOpen}
-          selectedTask={selectedTask}
-          handleSubtaskChange={handleSubtaskChange}
-          handleStatusChange={handleStatusChange}
-        />
-        <NewColumnModal
-          isNewColumnFormOpen={isNewColumnFormOpen}
-          setIsNewColumnFormOpen={setIsNewColumnFormOpen}
-          selectedBoard={selectedBoard}
-          addNewColumnToBoard={addNewColumnToBoard}
-          handleDeleteColumn={handleDeleteColumn}
-        />
-        <NewBoardFormModal
-          isNewBoardFormOpen={isNewBoardFormOpen}
-          setIsNewBoardFormOpen={setIsNewBoardFormOpen}
-          handleAddNewBoard={handleAddNewBoard}
-        />
+
+        {modalManager(activeModalName)}
+
         <Boards
           isBoardMenuOpen={isBoardMenuOpen}
           setIsBoardMenuOpen={setIsBoardMenuOpen}
@@ -453,13 +482,9 @@ const Home: NextPage = () => {
           setDarkTheme={setDarkTheme}
           boardsData={boardsData}
           selectedBoard={selectedBoard}
-          isNewTaskFormOpen={isNewTaskFormOpen}
-          setIsNewTaskFormOpen={setIsNewTaskFormOpen}
-          setIsSubtasksOpen={setIsSubtasksOpen}
           showSubtasks={showSubtasks}
           handleSwitchSelectBoard={handleSwitchSelectBoard}
-          setIsNewColumnFormOpen={setIsNewColumnFormOpen}
-          setIsNewBoardFormOpen={setIsNewBoardFormOpen}
+          setActiveModalName={setActiveModalName}
         />
       </main>
     </>

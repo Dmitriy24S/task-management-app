@@ -3,13 +3,17 @@ import React from "react";
 import PlusSvg from "../../assets/icons/icon-add-task-mobile.svg";
 
 interface Props {
-  setIsNewTaskFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setActiveModalName: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
-const HeaderAddTaskButton = ({ setIsNewTaskFormOpen }: Props) => {
+const HeaderAddTaskButton = ({ setActiveModalName }: Props) => {
   return (
     <button
-      onClick={() => setIsNewTaskFormOpen(true)}
+      onClick={() => {
+        console.log("open task modal");
+        // setIsNewTaskFormOpen(true);
+        setActiveModalName("newTaskModal");
+      }}
       aria-label="add task"
       className="flex items-center rounded-3xl bg-[#635FC7] py-2.5 px-4.5 text-white hover:bg-[#6e6adf] focus:outline-offset-2 focus-visible:outline-offset-2"
     >

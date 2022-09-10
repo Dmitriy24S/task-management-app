@@ -15,13 +15,9 @@ interface HeaderProps {
   // boardsData: BoardColumns[];
   boardsData: Board[];
   selectedBoard: Board;
-  isNewTaskFormOpen: boolean;
-  setIsNewTaskFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsSubtasksOpen: React.Dispatch<React.SetStateAction<boolean>>;
   showSubtasks: (task: BoardTasks, column: BoardColumns) => void;
   handleSwitchSelectBoard: (boardName: string) => void;
-  setIsNewColumnFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsNewBoardFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setActiveModalName: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 const colors = ["#49C4E5", "#8471F2", "#67E2AE", "#e5a449"];
@@ -56,13 +52,9 @@ const Boards = ({
   setDarkTheme,
   boardsData,
   selectedBoard,
-  isNewTaskFormOpen,
-  setIsNewTaskFormOpen,
-  setIsSubtasksOpen,
   showSubtasks,
   handleSwitchSelectBoard,
-  setIsNewColumnFormOpen,
-  setIsNewBoardFormOpen,
+  setActiveModalName,
 }: HeaderProps) => {
   return (
     <div className="relative flex min-h-full min-w-full flex-grow dark:bg-[#2B2C37]">
@@ -74,7 +66,7 @@ const Boards = ({
         boardsData={boardsData}
         selectedBoard={selectedBoard}
         handleSwitchSelectBoard={handleSwitchSelectBoard}
-        setIsNewBoardFormOpen={setIsNewBoardFormOpen}
+        setActiveModalName={setActiveModalName}
       />
       {/* Open sidebar desktop */}
       {/* {!isBoardMenuOpen && ( )} */}
@@ -84,6 +76,7 @@ const Boards = ({
           isBoardMenuOpen ? "invisible opacity-0 duration-300" : "visible opacity-100 duration-700"
         } fixed left-0 bottom-12 z-10 flex rounded-r-full bg-[#635FC7] p-4 pr-5 transition-opacity  hover:bg-[#736fe6]`}
         onClick={() => setIsBoardMenuOpen(true)}
+        // onClick={() => setActiveModalName("boardModal")}
       >
         <ShowSidebarSVG />
       </button>
@@ -137,7 +130,7 @@ const Boards = ({
                       <Task
                         task={task}
                         key={task.title}
-                        setIsSubtasksOpen={setIsSubtasksOpen}
+                        setActiveModalName={setActiveModalName}
                         showSubtasks={showSubtasks}
                         column={column}
                       />
@@ -148,7 +141,7 @@ const Boards = ({
             );
           })}
           {/* Add new column */}
-          <AddNewColumnButton setIsNewColumnFormOpen={setIsNewColumnFormOpen} />
+          <AddNewColumnButton setActiveModalName={setActiveModalName} />
         </div>
       </section>
     </div>
