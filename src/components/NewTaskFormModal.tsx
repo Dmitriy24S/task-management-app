@@ -241,32 +241,30 @@ const NewTaskFormModal = ({
             return (
               // Subtask
               // <>
-              <fieldset
-                className="subtask flex items-center gap-1"
-                name={fieldName}
-                key={fieldName}
-              >
-                <input
-                  type="text"
-                  id={`subtask${index}`}
-                  className="peer w-full cursor-pointer rounded bg-transparent py-2 px-4 text-sm text-black outline outline-1 outline-medium-grey/25  placeholder:text-black/25 focus:outline-main-purple dark:text-white dark:placeholder:text-white/25"
-                  placeholder="e.g. Make coffee"
-                  {...register(`subtasks.${index}.subtasktitle`)}
-                  name={`subtasks.${index}.subtasktitle`}
-                />
-                <button
-                  type="button"
-                  onClick={() => {
-                    // prevent deleting last subtask input, keep atleast one
-                    if (fields.length > 1) {
-                      remove(index);
-                    }
-                  }}
-                  className="block h-full fill-medium-grey p-2 hover:fill-red-main focus-visible:fill-red-main"
-                >
-                  {/* // ? without div/button overflow cutoff svg ? */}
-                  <Cross />
-                </button>
+              <fieldset className="subtask flex flex-col gap-3" name={fieldName} key={fieldName}>
+                <div className="subtask-input-container flex items-center gap-1">
+                  <input
+                    type="text"
+                    id={`subtask${index}`}
+                    className="peer w-full cursor-pointer rounded bg-transparent py-2 px-4 text-sm text-black outline outline-1 outline-medium-grey/25  placeholder:text-black/25 focus:outline-main-purple dark:text-white dark:placeholder:text-white/25"
+                    placeholder="e.g. Make coffee"
+                    {...register(`subtasks.${index}.subtasktitle`)}
+                    name={`subtasks.${index}.subtasktitle`}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      // prevent deleting last subtask input, keep atleast one
+                      if (fields.length > 1) {
+                        remove(index);
+                      }
+                    }}
+                    className="block h-full fill-medium-grey p-2 hover:fill-red-main focus-visible:fill-red-main"
+                  >
+                    {/* // ? without div/button overflow cutoff svg ? */}
+                    <Cross />
+                  </button>
+                </div>
                 {/* put inside for spacing fix? / for single .map return item with key={} */}
                 {errors.subtasks?.[index]?.subtasktitle && (
                   <p className="form-message text-sm text-red-main">
