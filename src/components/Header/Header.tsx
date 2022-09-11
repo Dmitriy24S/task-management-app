@@ -1,7 +1,9 @@
 import Image from "next/image";
 import React from "react";
 import { FaChevronDown } from "react-icons/fa";
+import PlusSvg from "../../assets/icons/icon-add-task-mobile.svg";
 import { Board } from "../../types";
+import Button from "../Shared/Button";
 import HeaderAddTaskButton from "./HeaderAddTaskButton";
 import HeaderMoreInfoButton from "./HeaderMoreInfoButton";
 
@@ -52,7 +54,20 @@ const Header = ({
           </button>
         </div>
         <div className="header-right flex items-center sm:gap-1.5">
-          <HeaderAddTaskButton setActiveModalName={setActiveModalName} />
+          <Button
+            type="button"
+            style="main-thin"
+            // TODO: refactor func.?
+            onClick={() => {
+              console.log("open task modal");
+              // setIsNewTaskFormOpen(true);
+              setActiveModalName("newTaskModal");
+            }}
+          >
+            <PlusSvg />
+            Add New Task
+          </Button>
+          {/* <HeaderAddTaskButton setActiveModalName={setActiveModalName} /> */}
           <HeaderMoreInfoButton
             selectedBoardName={selectedBoard?.name}
             handleDeleteBoard={handleDeleteBoard}

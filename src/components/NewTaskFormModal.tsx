@@ -8,6 +8,7 @@ import Cross from "../assets/icons/cross.svg";
 import Plus from "../assets/icons/icon-add-task-mobile.svg";
 import { Board, BoardColumns } from "../types";
 import Modal from "./Modal";
+import Button from "./Shared/Button";
 
 interface Props {
   // isNewTaskFormOpen: boolean;
@@ -283,16 +284,16 @@ const NewTaskFormModal = ({
           {/* Subtasks list container - end */}
 
           {/* Add new subtask - button */}
-          <button
+          <Button
             type="button"
-            className="mt-1.5 flex items-center justify-center gap-1 rounded-3xl bg-main-purple/20 py-2.5 px-4.5 text-center text-sm font-bold text-main-purple hover:bg-main-purple/10 focus:outline-offset-2 focus-visible:outline-offset-2 dark:text-white/90 dark:hover:bg-main-purple/30"
+            style="secondary"
             onClick={() => {
               append({ subtasktitle: "" });
             }}
           >
             <Plus />
             Add New Subtask
-          </button>
+          </Button>
         </div>
 
         {/* Select options - Status */}
@@ -333,15 +334,10 @@ const NewTaskFormModal = ({
           <p className="form-message text-sm text-red-main">{errors.taskStatus?.message}</p>
         )}
         {/* Create button */}
-        <button
-          type="submit"
-          className="flex items-center justify-center rounded-3xl bg-[#635FC7] py-2.5 px-4.5 text-center font-bold text-white hover:bg-[#6e6adf] focus:outline-offset-2 focus-visible:outline-offset-2"
-        >
+        <Button type="submit" style="main-bold">
           Create Task
-        </button>
+        </Button>
       </form>
-      {/* </section> */}
-      {/* </div> */}
     </Modal>
   );
 };

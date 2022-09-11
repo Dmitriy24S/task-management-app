@@ -6,6 +6,7 @@ import Cross from "../../assets/icons/cross.svg";
 import Plus from "../../assets/icons/icon-add-task-mobile.svg";
 import { Board } from "../../types";
 import Modal from "../Modal";
+import Button from "../Shared/Button";
 
 interface FormTypes {
   boardName: string;
@@ -222,7 +223,17 @@ const NewColumnModal = ({
             {/* Columns list container - end */}
 
             {/* Add new column - button */}
-            <button
+            <Button
+              type="button"
+              style="secondary"
+              onClick={() => {
+                append({ name: "" });
+              }}
+            >
+              <Plus />
+              Add New Column
+            </Button>
+            {/* <button
               type="button"
               className="mt-1.5 flex items-center justify-center gap-1 rounded-3xl bg-main-purple/20 py-2.5 px-4.5 text-center text-sm font-bold text-main-purple hover:bg-main-purple/10 focus:outline-offset-2 focus-visible:outline-offset-2 dark:text-white/90 dark:hover:bg-main-purple/30"
               onClick={() => {
@@ -231,16 +242,19 @@ const NewColumnModal = ({
             >
               <Plus />
               Add New Column
-            </button>
+            </button> */}
           </div>
 
           {/* Create button */}
-          <button
+          {/* <button
             type="submit"
             className="flex items-center justify-center rounded-3xl bg-[#635FC7] py-2.5 px-4.5 text-center font-bold text-white hover:bg-[#6e6adf] focus:outline-offset-2 focus-visible:outline-offset-2"
           >
             Create New Column
-          </button>
+          </button> */}
+          <Button type="submit" style="main-bold">
+            Create New Column
+          </Button>
         </form>
       )}
     </Modal>
