@@ -1,3 +1,13 @@
+# Task management app
+
+![Design preview for Task management app](./design/preview.jpg)
+
+## Welcome 
+
+Task management app. Created with NextJS & Tailwind CSS.
+
+[Live Demo](https://task-management-app-opal.vercel.app/) 👈
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
