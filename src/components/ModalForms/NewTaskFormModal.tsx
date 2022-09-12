@@ -4,11 +4,11 @@ import React, { useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { FaChevronDown } from "react-icons/fa";
 import * as yup from "yup";
-import Cross from "../assets/icons/cross.svg";
-import Plus from "../assets/icons/icon-add-task-mobile.svg";
-import { Board, BoardColumns } from "../types";
-import Modal from "./Modal";
-import Button from "./Shared/Button";
+import Cross from "../../assets/icons/cross.svg";
+import Plus from "../../assets/icons/icon-add-task-mobile.svg";
+import { Board, BoardColumns } from "../../types";
+import Button from "../Shared/Button";
+import Modal from "../Shared/Modal";
 
 interface Props {
   // isNewTaskFormOpen: boolean;

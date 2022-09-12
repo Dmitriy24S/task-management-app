@@ -4,11 +4,11 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import data from "../assets/data/data.json";
 import Boards from "../components/Board/Boards";
-import NewColumnModal from "../components/Board/NewColumnModal";
 import Header from "../components/Header/Header";
-import NewBoardFormModal from "../components/NewBoardFormModal";
-import NewTaskFormModal from "../components/NewTaskFormModal";
-import SubtasksModal from "../components/SubtasksModal";
+import EditBoardFormModal from "../components/ModalForms/EditBoardFormModal";
+import NewBoardFormModal from "../components/ModalForms/NewBoardFormModal";
+import NewTaskFormModal from "../components/ModalForms/NewTaskFormModal";
+import SubtasksModal from "../components/ModalForms/SubtasksModal";
 import styles from "../styles/Home.module.css";
 import { Board, BoardColumns, BoardSubTasks, BoardTasks } from "../types";
 
@@ -431,12 +431,24 @@ const Home: NextPage = () => {
         );
       case "newColumnModal":
         return (
-          <NewColumnModal
+          <EditBoardFormModal
             isNewColumnFormOpen={activeModalName}
             setIsNewColumnFormOpen={setActiveModalName}
             selectedBoard={selectedBoard}
             addNewColumnToBoard={addNewColumnToBoard}
             handleDeleteColumn={handleDeleteColumn}
+            kind={"newColumn"}
+          />
+        );
+      case "editBoardModal":
+        return (
+          <EditBoardFormModal
+            isNewColumnFormOpen={activeModalName}
+            setIsNewColumnFormOpen={setActiveModalName}
+            selectedBoard={selectedBoard}
+            addNewColumnToBoard={addNewColumnToBoard}
+            handleDeleteColumn={handleDeleteColumn}
+            kind={"editBoard"}
           />
         );
       case "newBoardFormModal":

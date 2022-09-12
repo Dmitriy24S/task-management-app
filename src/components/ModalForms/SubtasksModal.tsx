@@ -1,6 +1,6 @@
 import React from "react";
-import { Board, BoardColumns, BoardSubTasks, BoardTasks } from "../types";
-import Modal from "./Modal";
+import { Board, BoardColumns, BoardSubTasks, BoardTasks } from "../../types";
+import Modal from "../Shared/Modal";
 
 interface Props {
   // TODO: refactor/update names to 'active modal'?

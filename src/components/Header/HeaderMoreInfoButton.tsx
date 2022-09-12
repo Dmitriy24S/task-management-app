@@ -4,9 +4,14 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 interface Props {
   selectedBoardName: string;
   handleDeleteBoard: (selectedBoardName: string) => void;
+  setActiveModalName: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
-const HeaderMoreInfoButton = ({ selectedBoardName, handleDeleteBoard }: Props) => {
+const HeaderMoreInfoButton = ({
+  selectedBoardName,
+  handleDeleteBoard,
+  setActiveModalName,
+}: Props) => {
   return (
     <div
       className="dropdown-end group dropdown cursor-pointer rounded-md p-2 focus-visible:outline"
@@ -19,7 +24,10 @@ const HeaderMoreInfoButton = ({ selectedBoardName, handleDeleteBoard }: Props) =
       />
       <ul className="dropdown-content menu rounded-box m-3 flex w-52 cursor-default flex-col gap-1 bg-base-100 bg-white p-4 shadow-task shadow focus:outline-0 dark:bg-[#2B2C37] dark:text-white">
         <li>
-          <button className="font-semibold text-dark-grey/70 hover:bg-indigo-500 hover:text-white focus-visible:bg-indigo-500 focus-visible:text-white dark:text-white/70 dark:hover:text-white dark:focus-visible:text-white">
+          <button
+            className="font-semibold text-dark-grey/70 hover:bg-indigo-500 hover:text-white focus-visible:bg-indigo-500 focus-visible:text-white dark:text-white/70 dark:hover:text-white dark:focus-visible:text-white"
+            onClick={() => setActiveModalName("editBoardModal")}
+          >
             Edit Board
           </button>
         </li>

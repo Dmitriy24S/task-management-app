@@ -71,6 +71,7 @@ const Header = ({
           <HeaderMoreInfoButton
             selectedBoardName={selectedBoard?.name}
             handleDeleteBoard={handleDeleteBoard}
+            setActiveModalName={setActiveModalName}
           />
         </div>
       </div>

@@ -2,9 +2,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import React, { useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import * as yup from "yup";
-import Cross from "../assets/icons/cross.svg";
-import Plus from "../assets/icons/icon-add-task-mobile.svg";
-import Modal from "./Modal";
+import Cross from "../../assets/icons/cross.svg";
+import Plus from "../../assets/icons/icon-add-task-mobile.svg";
+import Modal from "../Shared/Modal";
 
 // TODO: refactor buttons into separate component? */
 

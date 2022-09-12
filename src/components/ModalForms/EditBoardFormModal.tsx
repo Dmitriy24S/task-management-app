@@ -5,8 +5,8 @@ import * as yup from "yup";
 import Cross from "../../assets/icons/cross.svg";
 import Plus from "../../assets/icons/icon-add-task-mobile.svg";
 import { Board } from "../../types";
-import Modal from "../Modal";
 import Button from "../Shared/Button";
+import Modal from "../Shared/Modal";
 
 interface FormTypes {
   boardName: string;
@@ -45,14 +45,16 @@ interface Props {
   selectedBoard: Board;
   addNewColumnToBoard: (newColumnsName: { name: string }[], boardName: string) => void;
   handleDeleteColumn: (columnName: string) => void;
+  kind: "editBoard" | "newColumn";
 }
 
-const NewColumnModal = ({
+const EditBoardFormModal = ({
   isNewColumnFormOpen,
   setIsNewColumnFormOpen,
   selectedBoard,
   addNewColumnToBoard,
   handleDeleteColumn,
+  kind,
 }: Props) => {
   // console.log(selectedBoard?.name); // ? renders on main page when closed?
   // always loaded component... // TODO: refactor?
@@ -129,7 +131,11 @@ const NewColumnModal = ({
           >
             <Cross />
           </button>
-          <h1 className="text-lg font-bold">Add New Column</h1>
+          <h1 className="text-lg font-bold">
+            {/* // TODO: Refactor new column modal / edit board modal? */}
+            {/* {kind === "editBoard" ? "Edit Board" : "Add New Column"} */}
+            Edit Board
+          </h1>
 
           {/* Board name */}
           <div className="relative flex w-full flex-col gap-2 text-white">
@@ -253,7 +259,10 @@ const NewColumnModal = ({
             Create New Column
           </button> */}
           <Button type="submit" style="main-bold">
-            Create New Column
+            {/* Create New Column */}
+            {/* {kind === "editBoard" ? "Save Changes" : "Create New Column"} */}
+            {/* // TODO: Refactor new column modal / edit board modal? */}
+            Save Changes
           </Button>
         </form>
       )}
@@ -261,4 +270,4 @@ const NewColumnModal = ({
   );
 };
 
-export default NewColumnModal;
+export default EditBoardFormModal;
