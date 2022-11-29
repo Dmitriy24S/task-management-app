@@ -139,6 +139,7 @@ const Boards = ({
       // destination.droppableId   Done destination   { index: 1, droppableId: 'Done' }
       const columnIdx = selectedBoard.columns.findIndex(object => {
         return object.name === start;
+        // start & finish : droppableId - (Done / Doing / etc)
       });
 
       let tempTasksArr = Array.from(selectedBoard.columns[columnIdx].tasks)
@@ -149,6 +150,7 @@ const Boards = ({
 
       const updatedBoard = selectedBoard.columns.map((column) => {
         if (column.name === start) {
+          // start & finish : droppableId - (Done / Doing / etc)
           return { ...column, tasks: tempTasksArr }
         } else {
           return column
@@ -158,10 +160,42 @@ const Boards = ({
       return
     }
 
+    console.log('start and finish columns are different', 123123123123123132312);
+
+
     // 2. start and finish columns are different (moving from one column to another):
 
-    // TODO: ...
+    // From middle colum 1st iteam (0idx) to 1st column 2nd item(1idx):
+    // source.droppableId:      Doing source:      {index: 0, droppableId: 'Doing'}
+    // destination.droppableId: Todo  destination: {index: 1, droppableId: 'Todo'}
 
+    // Update source column
+    const sourceColumnIdx = selectedBoard.columns.findIndex(object => {
+      // return object.name === source.droppableId; // start & finish : droppableId - (Done / Doing / etc)
+      return object.name === start;
+    });
+    let tempSourceTasksArr = Array.from(selectedBoard.columns[sourceColumnIdx].tasks)
+    tempSourceTasksArr.splice(source.index, 1) // remove selected column from old position
+
+    // Update target column
+    const targetColumnIdx = selectedBoard.columns.findIndex(object => {
+      // return object.name === destination.droppableId; // start & finish : droppableId - (Done / Doing / etc)
+      return object.name === finish;
+    });
+    let tempTargetTasksArr = Array.from(selectedBoard.columns[targetColumnIdx].tasks)
+    tempTargetTasksArr.splice(destination.index, 0, selectedBoard.columns[sourceColumnIdx].tasks[source.index]) // insert selected column in new position
+
+
+    const updatedBoard = selectedBoard.columns.map((column) => {
+      if (column.name === start) {
+        return { ...column, tasks: tempSourceTasksArr }
+      }
+      if (column.name === finish) {
+        return { ...column, tasks: tempTargetTasksArr }
+      }
+      return column
+    })
+    setSelectedBoard({ ...selectedBoard, columns: updatedBoard })
     console.log('RETURN FINISH CODE');
     return
   }
