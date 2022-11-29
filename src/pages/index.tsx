@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import data from "../assets/data/data.json";
+import data from '../assets/data/data.json';
 import Boards from "../components/Board/Boards";
 import Header from "../components/Header/Header";
 import EditBoardFormModal from "../components/ModalForms/EditBoardFormModal";
@@ -11,6 +11,30 @@ import NewTaskFormModal from "../components/ModalForms/NewTaskFormModal";
 import SubtasksModal from "../components/ModalForms/SubtasksModal";
 import styles from "../styles/Home.module.css";
 import { Board, BoardColumns, BoardSubTasks, BoardTasks } from "../types";
+
+
+const generateColumnColor = () => {
+  console.log("color generate");
+  // const colors = ["#49C4E5", "#8471F2", "#67E2AE", "#e5a449"];
+
+  // if (colors[index]) {
+  // return colors[index];
+  // } else {
+  // index % arr.length - will loop colors?
+  // console.log(generateColumnColor(5)); // #8471F2 //  hsl(216, 80%, 70%)
+
+  let rand = Math.random();
+  // console.log(rand, "1 rand"); // 0.5983916920571346 '1 rand'
+  rand = Math.floor(rand * 360);
+  // console.log(rand, "2 rand * 360"); // 215 '2 rand * 360'
+  rand = rand + 1;
+  // console.log(rand, "3 rand + 1"); // 216 '3 rand + 1'
+
+  const randomColor = `hsl(${rand}, 80%, 70%)`; // hsl(216, 80%, 70%)
+
+  return randomColor; // #8471F2 //  hsl(216, 80%, 70%)
+};
+
 
 const Home: NextPage = () => {
   const [isBoardMenuOpen, setIsBoardMenuOpen] = useState(false);
@@ -273,6 +297,7 @@ const Home: NextPage = () => {
     // 0: {name: '1111'}
     const newColumns = newColumnsName.map((columnName) => ({
       name: columnName.name,
+      color: generateColumnColor(),
       tasks: [],
     }));
 
@@ -352,6 +377,7 @@ const Home: NextPage = () => {
     // make columns array:
     const boardColumns = columnsNames.map((columnName) => ({
       name: columnName.name,
+      color: generateColumnColor(),
       tasks: [],
     }));
     // make board object:
@@ -465,7 +491,7 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Home App</title>
+        <title>Task Management App - NextJS</title>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link
@@ -497,6 +523,7 @@ const Home: NextPage = () => {
           showSubtasks={showSubtasks}
           handleSwitchSelectBoard={handleSwitchSelectBoard}
           setActiveModalName={setActiveModalName}
+          setSelectedBoard={setSelectedBoard}
         />
       </main>
     </>

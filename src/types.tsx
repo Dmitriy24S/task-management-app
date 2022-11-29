@@ -5,6 +5,8 @@ export interface Board {
 
 export interface BoardColumns {
   name: string;
+  // color: string;
+  color?: string; // ! why ? demands in index.tsx [boardsData, setBoardsData] = useState<Board[]>(data.boards);
   tasks: BoardTasks[];
 }
 

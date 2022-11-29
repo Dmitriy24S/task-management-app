@@ -1,49 +1,51 @@
 import { Transition } from "@headlessui/react";
 import React from "react";
+// import { DragDropContext, DragUpdate, Droppable, DropResult } from 'react-beautiful-dnd';
+import { DragUpdate, DropResult } from 'react-beautiful-dnd';
 import ShowSidebarSVG from "../../assets/icons/sidebar-show.svg";
-import { Board, BoardColumns, BoardSubTasks, BoardTasks } from "../../types";
+import { Board, BoardColumns, BoardTasks } from "../../types";
 import BoardSidebar from "../Sidemenu/BoardSidebar";
 import AddNewColumnButton from "./AddNewColumnButton";
-import BoardColumn from "./BoardColumn";
 import Task from "./Task";
+
+import dynamic from 'next/dynamic';
+
+const DragDropContext = dynamic(
+  async () => {
+    const mod = await import('react-beautiful-dnd');
+    return mod.DragDropContext;
+  },
+  { ssr: false },
+);
+
+const Droppable = dynamic(
+  async () => {
+    const mod = await import('react-beautiful-dnd');
+    return mod.Droppable;
+  },
+  { ssr: false },
+);
+
+const Draggable = dynamic(
+  async () => {
+    const mod = await import('react-beautiful-dnd');
+    return mod.Draggable;
+  },
+  { ssr: false },
+);
 
 interface HeaderProps {
   isBoardMenuOpen: boolean;
   setIsBoardMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
   darkTheme: boolean;
   setDarkTheme: React.Dispatch<React.SetStateAction<boolean>>;
-  // boardsData: BoardColumns[];
   boardsData: Board[];
   selectedBoard: Board;
   showSubtasks: (task: BoardTasks, column: BoardColumns) => void;
   handleSwitchSelectBoard: (boardName: string) => void;
   setActiveModalName: React.Dispatch<React.SetStateAction<string | null>>;
+  setSelectedBoard: React.Dispatch<React.SetStateAction<Board>>
 }
-
-const colors = ["#49C4E5", "#8471F2", "#67E2AE", "#e5a449"];
-
-const generateColumnColor = (index: number) => {
-  console.log("color generate, rerun?"); // ! reruns ?
-
-  // ? half fix rerun function on rerender of component? - (put colors outside and push new color run function only when not exisiting index of color)
-  // const colors = ["#49C4E5", "#8471F2", "#67E2AE", "#e5a449"];
-  // if (colors[index]) {
-  // return colors[index];
-  // } else {
-  // index % arr.length - will loop colors?
-  // console.log(generateColumnColor(5)); // #8471F2 //  hsl(216, 80%, 70%)
-
-  let rand = Math.random();
-  console.log(rand, "1 rand"); // 0.5983916920571346 '1 rand'
-  rand = Math.floor(rand * 360);
-  console.log(rand, "2 rand * 360"); // 215 '2 rand * 360'
-  rand = rand + 1;
-  console.log(rand, "3 rand + 1"); // 216 '3 rand + 1'
-  const randomColor = `hsl(${rand}, 80%, 70%)`; // hsl(216, 80%, 70%)
-  colors.push(randomColor, "random color result"); // push new color to fix/prevent recalc. new color for exisitng extra column?
-  return randomColor; // #8471F2 //  hsl(216, 80%, 70%)
-  // }
-};
 
 const Boards = ({
   isBoardMenuOpen,
@@ -55,7 +57,147 @@ const Boards = ({
   showSubtasks,
   handleSwitchSelectBoard,
   setActiveModalName,
+  setSelectedBoard
 }: HeaderProps) => {
+
+  // Reorder items inside column / Reoder/move column
+  const onDragEnd = (result: DropResult) => {
+    console.log('DRAG END');
+    const { destination, source, draggableId, type } = result
+    console.log('type', type);
+
+    // check if dragging column or a task
+
+    // outside
+    if (!destination) {
+      return
+    }
+    // same place
+    if (destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return
+    }
+
+    console.log('onDragEnd source', source);
+    // onDragEnd source { index: 0, droppableId: 'column-1' }
+    // onDragEnd column { id: 'column-1', title: 'Todo', taskIds: Array(4) }
+    // onDragEnd newTaskIds(4)['task-1', 'task-2', 'task-3', 'task-4']
+
+    console.log('source.droppableId:', source.droppableId, 'source:', source);
+    console.log('destination.droppableId:', destination.droppableId, 'destination:', destination);
+
+    const start = source.droppableId
+    const finish = destination.droppableId
+    // console.log('onDragEnd column/start', start);
+    // {index: 1, droppableId: 'column-1'}
+    // console.log('onDragEnd destination', destination);
+    // {droppableId: 'column-1', index: 0}
+
+    console.log('start (source.droppableId)', start);
+    console.log('finish (destination.droppableId)', finish);
+
+    console.log('draggableId', draggableId); // draggableId Doing
+
+    console.log('source.index', source.index);
+    console.log('destination.index', destination.index);
+
+    // DRAG START
+    // DRAG UPDATE
+    // Object.keys(data.tasks) (4) ['0', '1', '2', '3']0: "0"1: "1"2: "2"3: "3"length: 4[[Prototype]]: Array(0)
+    // destination {droppableId: 'all-columns', index: 0}
+    // opacity 0
+    // DRAG END
+    // type column
+    // onDragEnd source {index: 1, droppableId: 'all-columns'}
+    // onDragEnd column/start undefined
+    // onDragEnd destination {droppableId: 'all-columns', index: 0}
+    // draggableId Doing
+    // COLUMN 111123123123131230
+    // source.index 1
+    // destination.index 0
+
+    // Reordering of Columns:
+    if (type === 'column') {
+      console.log('COLUMN', 111123123123131232);
+
+      let tempColumnsArr = Array.from(selectedBoard.columns)
+      tempColumnsArr.splice(source.index, 1) // remove selected column from old position
+      // console.log('tempArr', tempArr, 1111111);
+      tempColumnsArr.splice(destination.index, 0, selectedBoard.columns[source.index]) // insert selected column in new position
+      // console.log('tempArr', tempArr, 2222222);
+      setSelectedBoard({ ...selectedBoard, columns: tempColumnsArr })
+      return
+    }
+
+    // Reordering of Tasks inside Column:
+    // 1. keep original logic move inside 1 column
+    if (start === finish) {
+      // droppableId : column name (Done / Doing / etc)
+      // console.log('start === finish', 1111111, start, finish, 'start finish');
+      // source.droppableId        Done source        { index: 0, droppableId: 'Done' }
+      // destination.droppableId   Done destination   { index: 1, droppableId: 'Done' }
+      const columnIdx = selectedBoard.columns.findIndex(object => {
+        return object.name === start;
+      });
+
+      let tempTasksArr = Array.from(selectedBoard.columns[columnIdx].tasks)
+      tempTasksArr.splice(source.index, 1) // remove selected column from old position
+      // console.log('tempTasksArr', tempTasksArr, 1111111);
+      tempTasksArr.splice(destination.index, 0, selectedBoard.columns[columnIdx].tasks[source.index]) // insert selected column in new position
+      // console.log('tempTasksArr', tempTasksArr, 2222222);
+
+      const updatedBoard = selectedBoard.columns.map((column) => {
+        if (column.name === start) {
+          return { ...column, tasks: tempTasksArr }
+        } else {
+          return column
+        }
+      })
+      setSelectedBoard({ ...selectedBoard, columns: updatedBoard })
+      return
+    }
+
+    // 2. start and finish columns are different (moving from one column to another):
+
+    // TODO: ...
+
+    console.log('RETURN FINISH CODE');
+    return
+  }
+
+  const onDragStart = () => {
+    // document.body.style.color = 'orange'
+    console.log('DRAG START');
+
+  }
+
+  const onDragUpdate = (update: DragUpdate) => {
+    console.log('DRAG UPDATE');
+
+    const { destination } = update
+    const opacity = destination ? destination.index / Object.keys(selectedBoard.columns[0].tasks).length : 0
+    console.log('Object.keys(data.tasks)', Object.keys(selectedBoard.columns[0].tasks));
+    // const opacity = destination ? destination.index / Object.keys(data.tasks).length : 0
+    // console.log('Object.keys(data.tasks)', Object.keys(data.tasks));
+    // Object.keys(data.tasks)
+    // (4) ['task-1', 'task-2', 'task-3', 'task-4']
+    // 0: "task-1"
+    // 1: "task-2"
+    // 2: "task-3"
+    // 3: "task-4"
+    console.log('destination', destination);
+    console.log('opacity', opacity);
+    // destination {droppableId: 'column-1', index: 1}
+    // opacity 0.25
+    // destination {droppableId: 'column-1', index: 2}
+    // opacity 0.5
+    // destination {droppableId: 'column-1', index: 3}
+    // opacity 0.75
+    document.body.style.backgroundColor = `rgba(21, 81, 153, ${opacity})`
+  }
+
+
   return (
     <div className="relative flex min-h-full min-w-full flex-grow dark:bg-[#2B2C37]">
       <BoardSidebar
@@ -72,11 +214,10 @@ const Boards = ({
       {/* {!isBoardMenuOpen && ( )} */}
       <button
         aria-label="show sidebar menu"
-        className={`${
-          isBoardMenuOpen ? "invisible opacity-0 duration-300" : "visible opacity-100 duration-700"
-        } fixed left-0 bottom-12 z-10 flex rounded-r-full bg-[#635FC7] p-4 pr-5 transition-opacity  hover:bg-[#736fe6]`}
+        className={`${isBoardMenuOpen ? "invisible opacity-0 duration-300" : "visible opacity-100 duration-700"
+          } fixed left-0 bottom-12 z-10 flex rounded-r-full bg-[#635FC7] p-4 pr-5 transition-opacity  hover:bg-[#736fe6]`}
         onClick={() => setIsBoardMenuOpen(true)}
-        // onClick={() => setActiveModalName("boardModal")}
+      // onClick={() => setActiveModalName("boardModal")}
       >
         <ShowSidebarSVG />
       </button>
@@ -86,63 +227,87 @@ const Boards = ({
         // className={`${
         //   isBoardMenuOpen ? "translate-x-[320px]" : "translate-x-0"
         // } relative min-h-full w-full bg-[#F4F7FD] p-4 transition-transform duration-300 dark:bg-[#20212C] dark:text-white`}
-        className={`main-container relative min-h-full w-full overflow-x-auto bg-[#F4F7FD] px-6 pb-16 pt-24 transition-transform duration-300 dark:bg-[#20212C] dark:text-white`}
+        className={`main-container relative flex min-h-full w-full overflow-x-auto bg-[#F4F7FD] px-6 pb-16 pt-24 transition-transform duration-300 dark:bg-[#20212C] dark:text-white`}
       >
-        {/* // ? pb-16 not matter? */}
-        <div className="board-list mx-auto grid h-full w-11/12 min-w-fit grid-flow-col justify-center gap-4">
-          {/* // ?  mr-40 margin right for spacing on horizontal right scroll? */}
-
-          {/* Boards columns */}
-          {selectedBoard?.columns.map((column: BoardColumns, index: number) => {
-            // console.log(column);
-            // {name: 'Todo', tasks: Array(4)}
-            return (
-              <BoardColumn index={index} selectedBoard={selectedBoard} key={column.name}>
-                {/* Title */}
-                <h2 className="flex items-center gap-3">
-                  {/* {column.name === "Todo" ? (
-                    <div className="h-4 w-4 rounded-full bg-[rgba(73,196,229,1)]"></div>
-                  ) : column.name === "Doing" ? (
-                    <div className="h-4 w-4 rounded-full bg-[rgba(132,113,242,1)]"></div>
-                  ) : (
-                    <div className="h-4 w-4 rounded-full bg-[rgba(103,226,174,1)]"></div>
-                  )} */}
-                  <div
-                    className="h-4 w-4 rounded-full"
-                    style={{
-                      backgroundColor: colors[index] ? colors[index] : generateColumnColor(index),
-                      // ? half fix rerun function on rerender of component?
-                    }}
-                  ></div>
-                  {column.name}
-                </h2>
-                <div
-                  // pb-16 mb-16 spacing bottom?
-                  className={`tasks-container mb-16 flex flex-col gap-4 ${
-                    column.tasks.length === 0
-                      ? "h-full rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600"
-                      : ""
-                  }`}
+        <DragDropContext
+          onDragStart={onDragStart}
+          onDragUpdate={onDragUpdate}
+          onDragEnd={onDragEnd}
+        >
+          {/* container board list? */}
+          <Droppable droppableId='all-columns' direction='horizontal' type='column' >
+            {(provided) => {
+              return (
+                <div className="board-list mx-auto grid h-full w-11/12 min-w-fit grid-flow-col justify-center"
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
                 >
-                  {/* Task */}
-                  {column.tasks.map((task: BoardTasks) => {
+                  {/* Boards columns */}
+                  {selectedBoard?.columns.map((column: BoardColumns, index: number) => {
+                    // console.log(column);
+                    // {name: 'Todo', tasks: Array(4)}
                     return (
-                      <Task
-                        task={task}
-                        key={task.title}
-                        setActiveModalName={setActiveModalName}
-                        showSubtasks={showSubtasks}
-                        column={column}
-                      />
+                      // Column?
+                      <Draggable draggableId={column.name} index={index} key={column.name}>
+                        {(provided) =>
+                          <section className={`flex w-[22rem] flex-col gap-4 mr-4`}
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                          >
+                            {/* Title */}
+                            <h2 className="flex items-center gap-3" {...provided.dragHandleProps}>
+                              {/* title color dot: */}
+                              <div
+                                className="h-4 w-4 rounded-full"
+                                style={{
+                                  // backgroundColor: colors[index] ? colors[index] : generateColumnColor(index),
+                                  backgroundColor: column.color
+                                }} />
+                              {column.name}
+                            </h2>
+                            {/* Tasks */}
+                            <Droppable droppableId={column.name} type='task'>
+                              {(provided, snapshot) =>
+                                <div
+                                  className={`tasks-container mb-16 flex flex-col ${column.tasks.length === 0
+                                    ? "h-full rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600"
+                                    : ""
+                                    }`}
+                                  ref={provided.innerRef}
+                                  // isDraggingOver={snapshot.isDraggingOver}
+                                  {...provided.droppableProps}
+                                >
+                                  {/* Task */}
+                                  {column.tasks.map((task: BoardTasks, index) => {
+                                    return (
+                                      <Task
+                                        task={task}
+                                        key={task.title}
+                                        setActiveModalName={setActiveModalName}
+                                        showSubtasks={showSubtasks}
+                                        column={column}
+                                        index={index}
+                                      // isDraggingOver={snapshot.isDraggingOver}
+                                      />
+                                    )
+                                  })}
+                                  {provided.placeholder}
+                                </div>
+                              }
+                            </Droppable>
+                          </section>
+                        }
+                      </Draggable>
                     );
                   })}
+                  {provided.placeholder}
                 </div>
-              </BoardColumn>
-            );
-          })}
-          {/* Add new column */}
-          <AddNewColumnButton setActiveModalName={setActiveModalName} />
-        </div>
+              )
+            }}
+          </Droppable>
+        </DragDropContext>
+        {/* Add new column */}
+        <AddNewColumnButton setActiveModalName={setActiveModalName} />
       </section>
     </div>
   );
