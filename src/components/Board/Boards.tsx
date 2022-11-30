@@ -2,11 +2,13 @@ import { Transition } from "@headlessui/react";
 import React from "react";
 // import { DragDropContext, DragUpdate, Droppable, DropResult } from 'react-beautiful-dnd';
 import { DragUpdate, DropResult } from 'react-beautiful-dnd';
+import ScrollContainer from 'react-indiana-drag-scroll';
 import ShowSidebarSVG from "../../assets/icons/sidebar-show.svg";
 import { Board, BoardColumns, BoardTasks } from "../../types";
 import BoardSidebar from "../Sidemenu/BoardSidebar";
 import AddNewColumnButton from "./AddNewColumnButton";
 import Task from "./Task";
+
 
 import dynamic from 'next/dynamic';
 
@@ -257,12 +259,14 @@ const Boards = ({
       </button>
 
       {/* Main board container list */}
-      <section
+      <ScrollContainer hideScrollbars={false}
         // className={`${
         //   isBoardMenuOpen ? "translate-x-[320px]" : "translate-x-0"
         // } relative min-h-full w-full bg-[#F4F7FD] p-4 transition-transform duration-300 dark:bg-[#20212C] dark:text-white`}
         className={`board-container relative flex mx-auto h-screen overflow-x-auto px-6 pt-24 transition-transform duration-300`}
+        ignoreElements={'h2, article'}
       >
+        {/* <ScrollContainer > */}
         <DragDropContext
           onDragStart={onDragStart}
           onDragUpdate={onDragUpdate}
@@ -342,7 +346,9 @@ const Boards = ({
         </DragDropContext>
         {/* Add new column */}
         <AddNewColumnButton setActiveModalName={setActiveModalName} />
-      </section>
+        {/* </ScrollContainer> */}
+      </ScrollContainer>
+
     </div>
   );
 };
