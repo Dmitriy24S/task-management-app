@@ -32,29 +32,26 @@ const BoardSidebar = ({
   return (
     <>
       <div
-        className={`${
-          isBoardMenuOpen ? "block" : "hidden"
-        } backdrop fixed inset-0 z-20 bg-black opacity-30 sm:hidden`}
+        className={`${isBoardMenuOpen ? "block" : "hidden"
+          } backdrop fixed inset-0 z-20 bg-black opacity-30 sm:hidden`}
         onClick={() => setIsBoardMenuOpen(false)}
       ></div>
       <div
-        className={`menu-container ${
-          isBoardMenuOpen
-            ? // "flex sm:min-w-[320px] sm:border-r sm:border-gray-200 dark:sm:border-gray-700" // ? no transition s min width
-              // "flex sm:w-[320px] sm:border-r sm:border-gray-200 dark:sm:border-gray-700"
-              "flex sm:w-full sm:border-r sm:border-gray-200 dark:sm:border-gray-700"
-            : "invisible sm:flex sm:w-0"
-        } fixed right-0 left-0 z-20 mx-auto mt-20 max-w-[20rem]  overflow-x-hidden rounded-md bg-white fill-[#828FA3] text-[#828FA3] transition-[width] duration-300 ease-in-out dark:bg-[#2B2C37] sm:relative sm:z-10 sm:mt-0 sm:rounded-none sm:pt-20`}
+        className={`menu-container ${isBoardMenuOpen
+          ? // "flex sm:min-w-[320px] sm:border-r sm:border-gray-200 dark:sm:border-gray-700" // ? no transition s min width
+          // "flex sm:w-[320px] sm:border-r sm:border-gray-200 dark:sm:border-gray-700"
+          "flex sm:w-full sm:border-r sm:border-gray-200 dark:sm:border-gray-700"
+          : "invisible sm:flex sm:w-0"
+          } fixed right-0 left-0 z-20 mt-20 max-w-[20rem]  overflow-x-hidden rounded-md bg-white fill-[#828FA3] text-[#828FA3] transition-[width] duration-300 ease-in-out dark:bg-[#2B2C37] sm:relative sm:z-10 sm:mt-0 sm:rounded-none sm:pt-20`}
       >
         {/* sm:min-h-full */}
         {/* max-h-screen */}
         {/* sm:fixed */}
         {/* sm:relative */}
         <div
-          className={`menu-content ${
-            isBoardMenuOpen ? "visible flex opacity-100" : "invisible flex opacity-0"
+          className={`menu-content ${isBoardMenuOpen ? "visible flex opacity-100" : "invisible flex opacity-0"
             //   } menu-content w-full flex-col gap-4 overflow-hidden p-4 sm:fixed`}
-          }  w-[320px] max-w-[20rem] flex-col gap-4 font-semibold sm:fixed sm:min-h-[85%] sm:transition-all sm:duration-300`}
+            }  w-[320px] max-w-[20rem] flex-col gap-4 font-semibold sm:fixed sm:min-h-[85%] sm:transition-all sm:duration-300`}
         >
           {/* overflow-y-auto	overflow-x-hidden */}
           {/* overflow-hidden */}

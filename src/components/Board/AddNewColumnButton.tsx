@@ -8,7 +8,7 @@ interface Props {
 
 const AddNewColumnButton = ({ setActiveModalName }: Props) => {
   return (
-    <section className="mb-16 pt-10">
+    <section className="mb-4 pt-10">
       {/* pt-10 to offset top for missing title compared to columns? */}
       {/* mb-16 to match left column botom spacing? */}
       <button

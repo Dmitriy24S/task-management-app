@@ -233,7 +233,7 @@ const Boards = ({
 
 
   return (
-    <div className="relative flex min-h-full min-w-full flex-grow dark:bg-[#2B2C37]">
+    <div className="main-wrapper relative flex min-w-full flex-grow bg-[#F4F7FD] dark:bg-[#20212C] dark:text-white">
       <BoardSidebar
         isBoardMenuOpen={isBoardMenuOpen}
         setIsBoardMenuOpen={setIsBoardMenuOpen}
@@ -261,7 +261,7 @@ const Boards = ({
         // className={`${
         //   isBoardMenuOpen ? "translate-x-[320px]" : "translate-x-0"
         // } relative min-h-full w-full bg-[#F4F7FD] p-4 transition-transform duration-300 dark:bg-[#20212C] dark:text-white`}
-        className={`main-container relative flex min-h-full w-full overflow-x-auto bg-[#F4F7FD] px-6 pb-16 pt-24 transition-transform duration-300 dark:bg-[#20212C] dark:text-white`}
+        className={`board-container relative flex mx-auto h-screen overflow-x-auto px-6 pt-24 transition-transform duration-300`}
       >
         <DragDropContext
           onDragStart={onDragStart}
@@ -272,7 +272,7 @@ const Boards = ({
           <Droppable droppableId='all-columns' direction='horizontal' type='column' >
             {(provided) => {
               return (
-                <div className="board-list mx-auto grid h-full w-11/12 min-w-fit grid-flow-col justify-center"
+                <div className="board-list grid h-full w-11/12 min-w-fit grid-flow-col justify-center"
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                 >
@@ -303,7 +303,7 @@ const Boards = ({
                             <Droppable droppableId={column.name} type='task'>
                               {(provided, snapshot) =>
                                 <div
-                                  className={`tasks-container mb-16 flex flex-col ${column.tasks.length === 0
+                                  className={`tasks-container flex flex-col ${column.tasks.length === 0
                                     ? "h-full rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600"
                                     : ""
                                     }`}
