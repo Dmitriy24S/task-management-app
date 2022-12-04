@@ -1,20 +1,19 @@
-import type { NextPage } from "next";
-import Head from "next/head";
-import Image from "next/image";
-import { useEffect, useState } from "react";
-import data from '../assets/data/data.json';
-import Boards from "../components/Board/Boards";
-import Header from "../components/Header/Header";
-import EditBoardFormModal from "../components/ModalForms/EditBoardFormModal";
-import NewBoardFormModal from "../components/ModalForms/NewBoardFormModal";
-import NewTaskFormModal from "../components/ModalForms/NewTaskFormModal";
-import SubtasksModal from "../components/ModalForms/SubtasksModal";
-import styles from "../styles/Home.module.css";
-import { Board, BoardColumns, BoardSubTasks, BoardTasks } from "../types";
-
+import type { NextPage } from 'next'
+import Head from 'next/head'
+import Image from 'next/image'
+import { useEffect, useState } from 'react'
+import data from '../assets/data/data.json'
+import Boards from '../components/Board/Boards'
+import Header from '../components/Header/Header'
+import EditBoardFormModal from '../components/ModalForms/EditBoardFormModal'
+import NewBoardFormModal from '../components/ModalForms/NewBoardFormModal'
+import NewTaskFormModal from '../components/ModalForms/NewTaskFormModal'
+import SubtasksModal from '../components/ModalForms/SubtasksModal'
+import styles from '../styles/Home.module.css'
+import { Board, BoardColumns, BoardSubTasks, BoardTasks } from '../types'
 
 const generateColumnColor = () => {
-  console.log("color generate");
+  console.log('color generate')
   // const colors = ["#49C4E5", "#8471F2", "#67E2AE", "#e5a449"];
 
   // if (colors[index]) {
@@ -23,27 +22,26 @@ const generateColumnColor = () => {
   // index % arr.length - will loop colors?
   // console.log(generateColumnColor(5)); // #8471F2 //  hsl(216, 80%, 70%)
 
-  let rand = Math.random();
+  let rand = Math.random()
   // console.log(rand, "1 rand"); // 0.5983916920571346 '1 rand'
-  rand = Math.floor(rand * 360);
+  rand = Math.floor(rand * 360)
   // console.log(rand, "2 rand * 360"); // 215 '2 rand * 360'
-  rand = rand + 1;
+  rand = rand + 1
   // console.log(rand, "3 rand + 1"); // 216 '3 rand + 1'
 
-  const randomColor = `hsl(${rand}, 80%, 70%)`; // hsl(216, 80%, 70%)
+  const randomColor = `hsl(${rand}, 80%, 70%)` // hsl(216, 80%, 70%)
 
-  return randomColor; // #8471F2 //  hsl(216, 80%, 70%)
-};
-
+  return randomColor // #8471F2 //  hsl(216, 80%, 70%)
+}
 
 const Home: NextPage = () => {
-  const [isBoardMenuOpen, setIsBoardMenuOpen] = useState(false);
+  const [isBoardMenuOpen, setIsBoardMenuOpen] = useState(false)
   // const [isNewTaskFormOpen, setIsNewTaskFormOpen] = useState(false);
   // const [isNewBoardFormOpen, setIsNewBoardFormOpen] = useState(false);
   // const [isSubtasksOpen, setIsSubtasksOpen] = useState(false);
   // const [isNewColumnFormOpen, setIsNewColumnFormOpen] = useState(false);
 
-  const [boardsData, setBoardsData] = useState<Board[]>(data.boards);
+  const [boardsData, setBoardsData] = useState<Board[]>(data.boards)
   // State: [{…}, {…}, {…}]
   // console.log({ boardsData });
   // boards: Array(3)
@@ -69,9 +67,9 @@ const Home: NextPage = () => {
   // 1: {name: 'Marketing Plan', columns: Array(3)}
   // 2: {name: 'Roadmap', columns: Array(3)}
 
-  const [selectedColumn, setSelectedColumn] = useState<BoardColumns | null>(null);
-  const [selectedTask, setSelectedTask] = useState<BoardTasks | null>(null);
-  const [selectedBoard, setSelectedBoard] = useState<Board>(boardsData[0]);
+  const [selectedColumn, setSelectedColumn] = useState<BoardColumns | null>(null)
+  const [selectedTask, setSelectedTask] = useState<BoardTasks | null>(null)
+  const [selectedBoard, setSelectedBoard] = useState<Board>(boardsData[0])
   // console.log({ selectedBoard });
   // {name: 'Platform Launch', columns: Array(3)}
   // name: "Platform Launch"
@@ -90,12 +88,12 @@ const Home: NextPage = () => {
 
   const showSubtasks = (task: BoardTasks, column: BoardColumns) => {
     // setIsSubtasksOpen(true);
-    setActiveModalName("subtasksModal");
+    setActiveModalName('subtasksModal')
 
-    console.log("show subtasks selected task:", { task });
-    setSelectedTask(task);
-    console.log("show subtasks selected column", { column });
-    setSelectedColumn(column);
+    console.log('show subtasks selected task:', { task })
+    setSelectedTask(task)
+    console.log('show subtasks selected column', { column })
+    setSelectedColumn(column)
     // column:
     // name: "Doing"
     // tasks: Array(6)
@@ -112,22 +110,22 @@ const Home: NextPage = () => {
     // ... 4: {title: 'Add authentication endpoints', description: '', status: 'Doing', subtasks: Array(2)}
     // ... 5: {title: 'Research pricing points of various competitors and trial different business models', description: "We know what we're planning to build for version o…he subtasks until we have a coherent proposition.", status: 'Doing', subtasks: Array(3)}
     // length: 6
-  };
+  }
 
   // Handle switch / select board
   const handleSwitchSelectBoard = (boardName: string) => {
-    const newSelectedBoard = boardsData.filter((board) => board.name === boardName);
-    console.log({ newSelectedBoard }, "new selected board");
+    const newSelectedBoard = boardsData.filter((board) => board.name === boardName)
+    console.log({ newSelectedBoard }, 'new selected board')
     // newSelectedBoard: Array(1)
     // 0:
     // columns: (3) [{…}, {…}, {…}]
     // name: "Marketing Plan"
-    setSelectedBoard(newSelectedBoard[0]);
-  };
+    setSelectedBoard(newSelectedBoard[0])
+  }
 
   // Subtask checkbox tick in modal
   const handleSubtaskChange = (task: BoardTasks, subtask: BoardSubTasks) => {
-    console.log("handle subtask change:", { task });
+    console.log('handle subtask change:', { task })
     // {task: {…}}
     // title: "Design settings and search pages"
     // description: ""
@@ -137,10 +135,10 @@ const Home: NextPage = () => {
     // 1: {title: 'Settings - Billing page', isCompleted: true}
     // 2: {title: 'Search page', isCompleted: false}
 
-    console.log({ subtask });
+    console.log({ subtask })
     // subtask: {…}}
     /// subtask: isCompleted: true title: "Settings - Billing page"
-    const updatedSubtask = { ...subtask, isCompleted: !subtask.isCompleted }; // ???????
+    const updatedSubtask = { ...subtask, isCompleted: !subtask.isCompleted } // ???????
     // console.log({ updatedSubtask });
 
     // ? prevent undefined ?
@@ -148,19 +146,19 @@ const Home: NextPage = () => {
       const updatedSubtasks = selectedTask.subtasks.map((el: BoardSubTasks) => {
         // console.log({ el });
         if (el.title === subtask.title) {
-          console.log("got one:", el);
-          return { ...el, isCompleted: !el.isCompleted };
+          console.log('got one:', el)
+          return { ...el, isCompleted: !el.isCompleted }
         }
-        return el;
-      });
+        return el
+      })
       // console.log({ updatedSubtasks });
       // updatedSubtasks: Array(3)
       // 0: {title: 'Settings - Account page', isCompleted: true}
       // 1: {title: 'Settings - Billing page', isCompleted: true}
       // 2: {title: 'Search page', isCompleted: true}
-      console.log({ selectedColumn });
+      console.log({ selectedColumn })
 
-      setSelectedTask({ ...selectedTask, subtasks: updatedSubtasks });
+      setSelectedTask({ ...selectedTask, subtasks: updatedSubtasks })
 
       // console.log({ selectedBoard });
       // {selectedBoard: {…}}
@@ -173,9 +171,9 @@ const Home: NextPage = () => {
           if (column.name === selectedTask.status) {
             const updatedTasks = column.tasks.map((el) => {
               if (el.title === task.title) {
-                return { ...el, subtasks: updatedSubtasks };
-              } else return el;
-            });
+                return { ...el, subtasks: updatedSubtasks }
+              } else return el
+            })
 
             // console.log({ updatedSubtasks });
             // updatedSubtasks: Array(3)
@@ -196,7 +194,7 @@ const Home: NextPage = () => {
             // 4: {title: 'Add authentication endpoints', description: '', status: 'Doing', subtasks: Array(2)}
             // 5: {title: 'Research pricing points of various competitors and trial different business models', description: "We know what we're planning to build for version o…he subtasks until we have a coherent proposition.", status: 'Doing', subtasks: Array(3)}
 
-            let updatedColumn = { ...column, tasks: updatedTasks };
+            let updatedColumn = { ...column, tasks: updatedTasks }
             // console.log({ updatedColumn });
             // updatedColumn:
             // name: "Doing"
@@ -212,26 +210,26 @@ const Home: NextPage = () => {
             // 4: {title: 'Add authentication endpoints', description: '', status: 'Doing', subtasks: Array(2)}
             // 5: {title: 'Research pricing points of various competitors and trial different business models', description: "We know what we're planning to build for version o…he subtasks until we have a coherent proposition.", status: 'Doing', subtasks: Array(3)}
 
-            return updatedColumn;
+            return updatedColumn
           } else {
             // console.log({ column });
             // column:
             // name: "Doing"
             // tasks: (6) [{…}, {…}, {…}, {…}, {…}, {…}]
-            return column;
+            return column
           }
-        }),
-      });
+        })
+      })
     } // end prevent undefined
-  };
+  }
 
   // Task status change
   const handleStatusChange = (newStatus: string, oldStatus: string, task: BoardTasks) => {
-    console.log("handle status change");
+    console.log('handle status change')
     // console.log({ newStatus }); // 'Todo'
     // console.log({ oldStatus }); // 'Doing'
     // console.log({ task }); // task: {title: 'Design settings and search pages', description: '', status:'Doing'...
-    const updatedTaskWithNewStatus = { ...task, status: newStatus };
+    const updatedTaskWithNewStatus = { ...task, status: newStatus }
     // console.log({ updatedTaskWithNewStatus });
     // updatedTaskWithNewStatus:
     // description: ""
@@ -259,12 +257,12 @@ const Home: NextPage = () => {
       columns: selectedBoard.columns.map((column: BoardColumns) => {
         // Add task to selected status column
         if (column.name === updatedTaskWithNewStatus.status) {
-          const updatedTasks = [...column.tasks, updatedTaskWithNewStatus];
+          const updatedTasks = [...column.tasks, updatedTaskWithNewStatus]
           // console.log({ updatedTasks });
           // updatedTasks: Array(5)
           // 0: {title: 'Build UI for onboarding flow', description: '', status: 'Todo', subtasks: Array(3)}
           // 1: {title: 'Build UI for search', desc...
-          return { ...column, tasks: updatedTasks };
+          return { ...column, tasks: updatedTasks }
         }
         // Delete task from old status column
         if (column.name === oldStatus) {
@@ -272,22 +270,22 @@ const Home: NextPage = () => {
           // splice(start: number, deleteCount?: number): T[];
           // column.tasks.splice;
           const newTasksWithRemovedTask = column.tasks.filter((item) => {
-            return item.title !== task.title;
-          });
+            return item.title !== task.title
+          })
           return {
             ...column,
-            tasks: newTasksWithRemovedTask,
-          };
+            tasks: newTasksWithRemovedTask
+          }
         }
-        return column;
-      }),
-    });
+        return column
+      })
+    })
     // end handle status change
 
     // Close subtask modal - //TODO: this temp. fixes bug: if change status more than once in open modal -> causes duplicate task in columns (not updating current/old status)
     // setIsSubtasksOpen(false);
-    setActiveModalName(null); // TODO: refactor modals more?
-  };
+    setActiveModalName(null) // TODO: refactor modals more?
+  }
 
   // Add new column to board
   const addNewColumnToBoard = (newColumnsName: { name: string }[], boardName: string) => {
@@ -298,33 +296,33 @@ const Home: NextPage = () => {
     const newColumns = newColumnsName.map((columnName) => ({
       name: columnName.name,
       color: generateColumnColor(),
-      tasks: [],
-    }));
+      tasks: []
+    }))
 
-    console.log(selectedBoard); // undefined if removed all boards
+    console.log(selectedBoard) // undefined if removed all boards
 
     if (selectedBoard) {
       // TODO: refactor?
       const updatedBoardsDataWithNewName = boardsData.map((board) => {
         if (board.name === selectedBoard.name) {
-          return { name: boardName, columns: [...selectedBoard?.columns, ...newColumns] };
-        } else return board;
-      });
-      setBoardsData(updatedBoardsDataWithNewName); // ? refactor?
+          return { name: boardName, columns: [...selectedBoard?.columns, ...newColumns] }
+        } else return board
+      })
+      setBoardsData(updatedBoardsDataWithNewName) // ? refactor?
       setSelectedBoard({
         ...selectedBoard,
         name: boardName,
-        columns: [...selectedBoard?.columns, ...newColumns],
-      });
+        columns: [...selectedBoard?.columns, ...newColumns]
+      })
     } else {
       // TODO: refactor?
-      setSelectedBoard({ name: boardName, columns: newColumns });
-      setBoardsData([{ name: boardName, columns: newColumns }]);
+      setSelectedBoard({ name: boardName, columns: newColumns })
+      setBoardsData([{ name: boardName, columns: newColumns }])
     }
 
     // setIsNewColumnFormOpen(false);
-    setActiveModalName(null); // TODO: refactor modals more?
-  };
+    setActiveModalName(null) // TODO: refactor modals more?
+  }
 
   // Update board when add new column to board -> to save changes before switch to another board in sidebar menu
   useEffect(() => {
@@ -332,110 +330,111 @@ const Home: NextPage = () => {
       boardsData.map((board) => {
         if (board.name === selectedBoard.name) {
           // console.log("match select board", selectedBoard);
-          return selectedBoard;
-        } else return board;
+          return selectedBoard
+        } else return board
       })
-    );
-  }, [selectedBoard]);
+    )
+  }, [selectedBoard])
 
   // Handle delete board (header more info button option)
   const handleDeleteBoard = (selectedBoardName: string) => {
-    console.log("handle delete board");
+    console.log('handle delete board')
     const newBoardsDataWithRemovedBoard = boardsData.filter(
       (board) => board.name !== selectedBoardName
-    );
+    )
 
-    console.log(newBoardsDataWithRemovedBoard);
-    setBoardsData(newBoardsDataWithRemovedBoard);
+    console.log(newBoardsDataWithRemovedBoard)
+    setBoardsData(newBoardsDataWithRemovedBoard)
 
     // Update selected board after board deletion switch to first board in new board data array:
     // prevent nullish (null/undefined) - add .? optional chaining
     // Unhandled Runtime Error // TypeError: Cannot read properties of undefined (reading 'name')
     if (selectedBoard?.name === selectedBoardName) {
-      console.log("update selected board after deletion");
-      setSelectedBoard(newBoardsDataWithRemovedBoard[0]);
-      console.log({ selectedBoard }, "selected board");
+      console.log('update selected board after deletion')
+      setSelectedBoard(newBoardsDataWithRemovedBoard[0])
+      console.log({ selectedBoard }, 'selected board')
     }
-  };
+  }
 
   // Handle delete column (new column modal option)
   const handleDeleteColumn = (columnName: string) => {
     const updatedColumnsAfterDeletion = selectedBoard.columns.filter(
       (column) => column.name !== columnName
-    );
+    )
 
-    console.log("deleting column:", columnName);
-    console.log(updatedColumnsAfterDeletion, "updated columns");
+    console.log('deleting column:', columnName)
+    console.log(updatedColumnsAfterDeletion, 'updated columns')
 
-    setSelectedBoard({ ...selectedBoard, columns: updatedColumnsAfterDeletion });
-  };
+    setSelectedBoard({ ...selectedBoard, columns: updatedColumnsAfterDeletion })
+  }
 
   // Handle add new board (sidemenu button)
   const handleAddNewBoard = (boardName: string, columnsNames: { name: string }[]) => {
-    console.log("handle add new board");
+    console.log('handle add new board')
     // TODO: refactor?
     // make columns array:
     const boardColumns = columnsNames.map((columnName) => ({
       name: columnName.name,
       color: generateColumnColor(),
-      tasks: [],
-    }));
+      tasks: []
+    }))
     // make board object:
     const newBoard = {
       name: boardName,
-      columns: boardColumns,
-    };
+      columns: boardColumns
+    }
     // add new board to array:
-    setBoardsData([...boardsData, newBoard]);
+    setBoardsData([...boardsData, newBoard])
     // close form modal:
     // setIsNewBoardFormOpen(false);
-    setActiveModalName(null); // TODO: refactor modals more?
+    setActiveModalName(null) // TODO: refactor modals more?
 
     // console.log(selectedBoard, "check current selected board while adding new board"); // undefined (when all boards deleted beforehand)
     // delete all boards beforehand -> selectedBoard = undefined, after adding new board to empty data list -> not auto selected on page
     if (selectedBoard == null) {
-      console.log("null/undefined selectedBoard, set to boardsData[0] manually");
+      console.log('null/undefined selectedBoard, set to boardsData[0] manually')
       // console.log(boardsData[0], "0000"); // undefined '0000'
       // setSelectedBoard(boardsData[0]); // ! no -> undefined
-      setSelectedBoard(newBoard); // works
+      setSelectedBoard(newBoard) // works
     }
-  };
+  }
 
   // Dark / Light Theme
-  const [darkTheme, setDarkTheme] = useState(false);
+  const [darkTheme, setDarkTheme] = useState(false)
 
   // Toggle browser scrollbar color (+.css):
   // document.documentElement.setAttribute( "data-color-scheme", darkTheme ? "light" : "dark")
 
   // Save theme to local storage
   useEffect(() => {
-    console.log("dark theme state on load:", darkTheme);
-    console.log("get local storage theme:", localStorage.getItem("theme"));
+    console.log('dark theme state on load:', darkTheme)
+    console.log('get local storage theme:', localStorage.getItem('theme'))
     if (
       // if saved dark theme in local storage or device prefers dark mode - set dark theme
-      localStorage.getItem("theme") === "dark" ||
-      (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme:dark)").matches)
+      localStorage.getItem('theme') === 'dark' ||
+      (!('theme' in localStorage) &&
+        window.matchMedia('(prefers-color-scheme:dark)').matches)
     ) {
-      console.log("dark mode load, set dark");
-      setDarkTheme(true);
+      console.log('dark mode load, set dark')
+      setDarkTheme(true)
       // localStorage.setItem("theme", "dark");
-      document.documentElement.setAttribute("data-color-scheme", "dark");
+      document.documentElement.setAttribute('data-color-scheme', 'dark')
     } else {
       // else set light theme
-      console.log("light mode load, set light");
-      setDarkTheme(false);
+      console.log('light mode load, set light')
+      setDarkTheme(false)
       // localStorage.setItem("theme", "light");
-      document.documentElement.setAttribute("data-color-scheme", "light");
+      document.documentElement.setAttribute('data-color-scheme', 'light')
     }
-  }, []);
+  }, [])
 
   // Modals
-  const [activeModalName, setActiveModalName] = useState<string | null>(null);
+  const [activeModalName, setActiveModalName] = useState<string | null>(null)
   // Show active modal:
   const modalManager = (activeModalName: string | null) => {
     // TODO: refactor names? */
     switch (activeModalName) {
-      case "newTaskModal":
+      case 'newTaskModal':
         return (
           <NewTaskFormModal
             isNewTaskFormOpen={activeModalName}
@@ -443,8 +442,8 @@ const Home: NextPage = () => {
             setSelectedBoard={setSelectedBoard}
             selectedBoard={selectedBoard}
           />
-        );
-      case "subtasksModal":
+        )
+      case 'subtasksModal':
         return (
           <SubtasksModal
             selectedBoard={selectedBoard}
@@ -454,8 +453,8 @@ const Home: NextPage = () => {
             handleSubtaskChange={handleSubtaskChange}
             handleStatusChange={handleStatusChange}
           />
-        );
-      case "newColumnModal":
+        )
+      case 'newColumnModal':
         return (
           <EditBoardFormModal
             isNewColumnFormOpen={activeModalName}
@@ -463,10 +462,10 @@ const Home: NextPage = () => {
             selectedBoard={selectedBoard}
             addNewColumnToBoard={addNewColumnToBoard}
             handleDeleteColumn={handleDeleteColumn}
-            kind={"newColumn"}
+            kind={'newColumn'}
           />
-        );
-      case "editBoardModal":
+        )
+      case 'editBoardModal':
         return (
           <EditBoardFormModal
             isNewColumnFormOpen={activeModalName}
@@ -474,33 +473,35 @@ const Home: NextPage = () => {
             selectedBoard={selectedBoard}
             addNewColumnToBoard={addNewColumnToBoard}
             handleDeleteColumn={handleDeleteColumn}
-            kind={"editBoard"}
+            kind={'editBoard'}
           />
-        );
-      case "newBoardFormModal":
+        )
+      case 'newBoardFormModal':
         return (
           <NewBoardFormModal
             isNewBoardFormOpen={activeModalName}
             setIsNewBoardFormOpen={setActiveModalName}
             handleAddNewBoard={handleAddNewBoard}
           />
-        );
+        )
     }
-  };
+  }
 
   return (
     <>
       <Head>
         <title>Task Management App - NextJS</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link rel='preconnect' href='https://fonts.googleapis.com' />
+        <link rel='preconnect' href='https://fonts.gstatic.com' />
         <link
-          href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
+          href='https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap'
+          rel='stylesheet'
         />
       </Head>
 
-      <main className={`${darkTheme ? "dark" : ""} flex max-h-screen min-h-screen flex-col`}>
+      <main
+        className={`${darkTheme ? 'dark' : ''} flex max-h-screen min-h-screen flex-col`}
+      >
         {/* max-h-screen - prevents scroll on open pos:fixed modals (menu, new task form) */}
         <Header
           isBoardMenuOpen={isBoardMenuOpen}
@@ -527,7 +528,7 @@ const Home: NextPage = () => {
         />
       </main>
     </>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

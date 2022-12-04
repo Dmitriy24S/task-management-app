@@ -1,34 +1,34 @@
-import React from "react";
-import { BsThreeDotsVertical } from "react-icons/bs";
+import React from 'react'
+import { BsThreeDotsVertical } from 'react-icons/bs'
 
 interface Props {
-  selectedBoardName: string;
-  handleDeleteBoard: (selectedBoardName: string) => void;
-  setActiveModalName: React.Dispatch<React.SetStateAction<string | null>>;
+  selectedBoardName: string
+  handleDeleteBoard: (selectedBoardName: string) => void
+  setActiveModalName: React.Dispatch<React.SetStateAction<string | null>>
 }
 
 const HeaderMoreInfoButton = ({
   selectedBoardName,
   handleDeleteBoard,
-  setActiveModalName,
+  setActiveModalName
 }: Props) => {
   return (
     <div
-      className="dropdown-end group dropdown cursor-pointer rounded-md p-2 focus-visible:outline"
+      className='dropdown-end group dropdown cursor-pointer rounded-md p-2 focus-visible:outline'
       tabIndex={0}
     >
       <BsThreeDotsVertical
         fontSize={25}
-        fill="#828fa3"
-        className="group-hover:fill-black group-focus-visible:fill-black dark:group-hover:fill-white/80 dark:group-focus-visible:fill-white/80"
+        fill='#828fa3'
+        className='group-hover:fill-black group-focus-visible:fill-black dark:group-hover:fill-white/80 dark:group-focus-visible:fill-white/80'
       />
-      <ul className="dropdown-content menu rounded-box m-3 flex w-52 cursor-default flex-col gap-1 bg-base-100 bg-white p-4 shadow-task shadow focus:outline-0 dark:bg-[#2B2C37] dark:text-white">
+      <ul className='dropdown-content menu rounded-box m-3 flex w-52 cursor-default flex-col gap-1 bg-white p-4  shadow focus:outline-0 dark:bg-[#2B2C37] dark:text-white'>
         <li>
           <button
-            className="font-semibold text-dark-grey/70 hover:bg-indigo-500 hover:text-white focus-visible:bg-indigo-500 focus-visible:text-white dark:text-white/70 dark:hover:text-white dark:focus-visible:text-white"
+            className='font-semibold text-dark-grey/70 hover:bg-indigo-500 hover:text-white focus-visible:bg-indigo-500 focus-visible:text-white dark:text-white/70 dark:hover:text-white dark:focus-visible:text-white'
             onClick={(e) => {
-              e.currentTarget.blur(); // close dropdown on click -> otherwise only closes in background when click inside opened modal
-              setActiveModalName("editBoardModal");
+              e.currentTarget.blur() // close dropdown on click -> otherwise only closes in background when click inside opened modal
+              setActiveModalName('editBoardModal')
             }}
           >
             Edit Board
@@ -36,10 +36,10 @@ const HeaderMoreInfoButton = ({
         </li>
         <li>
           <button
-            className="font-bold text-red-main hover:bg-red-600 hover:text-white focus-visible:bg-red-600 focus-visible:text-white"
+            className='font-bold text-red-main hover:bg-red-600 hover:text-white focus-visible:bg-red-600 focus-visible:text-white'
             onClick={(e) => {
-              e.currentTarget.blur(); // close dropdown on click
-              handleDeleteBoard(selectedBoardName);
+              e.currentTarget.blur() // close dropdown on click
+              handleDeleteBoard(selectedBoardName)
             }}
           >
             Delete Board
@@ -47,7 +47,7 @@ const HeaderMoreInfoButton = ({
         </li>
       </ul>
     </div>
-  );
-};
+  )
+}
 
-export default HeaderMoreInfoButton;
+export default HeaderMoreInfoButton
