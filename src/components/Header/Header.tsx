@@ -54,7 +54,7 @@ const Header = ({
           {selectedBoard?.name} <FaChevronDown fill='#635FC7' className='md:hidden' />
         </button>
 
-        <div className='header-right ml-auto flex items-center md:gap-1.5'>
+        <div className='header-right ml-auto flex items-center pr-4 md:gap-1.5'>
           <Button
             type='button'
             style='main-thin'
