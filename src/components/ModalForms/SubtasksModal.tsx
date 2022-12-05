@@ -1,4 +1,5 @@
 import React from "react";
+import Cross from "../../assets/icons/cross.svg";
 import { Board, BoardColumns, BoardSubTasks, BoardTasks } from "../../types";
 import Modal from "../Shared/Modal";
 
@@ -30,14 +31,21 @@ const SubtasksModal = ({
     selectedTask && (
       <Modal isOpen={isSubtasksOpen} setIsOpen={setIsSubtasksOpen}>
         <h1 className="text-lg font-bold">{selectedTask.title}</h1>
+        <button
+          onClick={() => setIsSubtasksOpen(null)}
+          className="absolute right-4 top-6 fill-medium-grey p-2 hover:fill-red-main focus-visible:fill-red-main"
+          aria-label="close form"
+          type="button"
+        >
+          <Cross />
+        </button>
         <p className="text-sm text-medium-grey">
           {selectedTask.description ? selectedTask.description : "No description"}
         </p>
         <div>
           <p className="mt-1 pb-4 text-xs font-bold leading-6 text-[#828fa3]">
-            {`${
-              selectedTask?.subtasks.filter((item: BoardSubTasks) => item.isCompleted).length
-            } out of
+            {`${selectedTask?.subtasks.filter((item: BoardSubTasks) => item.isCompleted).length
+              } out of
 ${selectedTask?.subtasks.length} subtasks`}
           </p>
           <div className="subtask-list-container flex flex-col gap-3">
@@ -58,16 +66,16 @@ ${selectedTask?.subtasks.length} subtasks`}
                       console.log("index click:", index); // index click: 0
                       handleSubtaskChange(selectedTask, subtask);
                     }}
-                    // onChange={() =>
-                    //   handleSubtaskChange({
-                    //     ...selectedTask,
-                    //     subtasks: [
-                    //       ...selectedTask.subtasks,
-                    //       { ...subtask, isCompleted: !subtask.isCompleted },
-                    //     ],
-                    //   })
-                    // }
-                    // Warning: You provided a `checked` prop to a form field without an `onChange` handler. This will render a read-only field. If the field should be mutable use `defaultChecked`. Otherwise, set either `onChange` or `readOnly`
+                  // onChange={() =>
+                  //   handleSubtaskChange({
+                  //     ...selectedTask,
+                  //     subtasks: [
+                  //       ...selectedTask.subtasks,
+                  //       { ...subtask, isCompleted: !subtask.isCompleted },
+                  //     ],
+                  //   })
+                  // }
+                  // Warning: You provided a `checked` prop to a form field without an `onChange` handler. This will render a read-only field. If the field should be mutable use `defaultChecked`. Otherwise, set either `onChange` or `readOnly`
                   />
                   <div className="checkbox"></div>
                   <span>{subtask.title}</span>
