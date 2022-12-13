@@ -225,7 +225,14 @@ const Home: NextPage = () => {
 
   // Task status change
   const handleStatusChange = (newStatus: string, oldStatus: string, task: BoardTasks) => {
-    console.log('handle status change')
+    console.log(
+      'handle status change',
+      'newStatus:',
+      newStatus,
+      'oldStatus:',
+      oldStatus,
+      task
+    )
     // console.log({ newStatus }); // 'Todo'
     // console.log({ oldStatus }); // 'Doing'
     // console.log({ task }); // task: {title: 'Design settings and search pages', description: '', status:'Doing'...

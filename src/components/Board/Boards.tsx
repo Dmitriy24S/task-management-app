@@ -35,7 +35,7 @@ const Draggable = dynamic(
   { ssr: false }
 )
 
-interface HeaderProps {
+interface BoardsProps {
   isBoardMenuOpen: boolean
   setIsBoardMenuOpen: React.Dispatch<React.SetStateAction<boolean>>
   darkTheme: boolean
@@ -59,7 +59,7 @@ const Boards = ({
   handleSwitchSelectBoard,
   setActiveModalName,
   setSelectedBoard
-}: HeaderProps) => {
+}: BoardsProps) => {
   // Reorder items inside column / Reoder/move column
   const onDragEnd = (result: DropResult) => {
     console.log('DRAG END')
@@ -183,20 +183,29 @@ const Boards = ({
       // return object.name === source.droppableId; // start & finish : droppableId - (Done / Doing / etc)
       return object.name === start
     })
+
     const tempSourceTasksArr = Array.from(selectedBoard.columns[sourceColumnIdx].tasks)
-    tempSourceTasksArr.splice(source.index, 1) // remove selected column from old position
+    tempSourceTasksArr.splice(source.index, 1) // remove selected task? from old position
 
     // Update target column
     const targetColumnIdx = selectedBoard.columns.findIndex((object) => {
       // return object.name === destination.droppableId; // start & finish : droppableId - (Done / Doing / etc)
       return object.name === finish
     })
+
+    // Grab selected task and update it status with status/name of new column e.g: from 'Doing' to 'Todo':
+    const updatedTask = {
+      ...selectedBoard.columns[sourceColumnIdx].tasks[source.index],
+      status: destination.droppableId
+    }
+
     const tempTargetTasksArr = Array.from(selectedBoard.columns[targetColumnIdx].tasks)
     tempTargetTasksArr.splice(
       destination.index,
       0,
-      selectedBoard.columns[sourceColumnIdx].tasks[source.index]
-    ) // insert selected column in new position
+      // selectedBoard.columns[sourceColumnIdx].tasks[source.index]
+      updatedTask
+    ) // insert selected task in new position
 
     const updatedBoard = selectedBoard.columns.map((column) => {
       if (column.name === start) {
