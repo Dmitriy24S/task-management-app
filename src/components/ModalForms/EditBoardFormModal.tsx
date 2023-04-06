@@ -1,26 +1,32 @@
-import { yupResolver } from "@hookform/resolvers/yup";
-import React, { useEffect } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
-import * as yup from "yup";
-import Cross from "../../assets/icons/cross.svg";
-import Plus from "../../assets/icons/icon-add-task-mobile.svg";
-import { Board } from "../../types";
-import Button from "../Shared/Button";
-import Modal from "../Shared/Modal";
+import { yupResolver } from '@hookform/resolvers/yup'
+import React, { useEffect } from 'react'
+import { useFieldArray, useForm } from 'react-hook-form'
+import { useDispatch, useSelector } from 'react-redux'
+import * as yup from 'yup'
+import Cross from '../../assets/icons/cross.svg'
+import Plus from '../../assets/icons/icon-add-task-mobile.svg'
+import { RootState } from '../../redux'
+import {
+  addNewColumnToBoard,
+  closeModal,
+  deleteColumn,
+} from '../../redux/BoardSlice/BoardSlice'
+import Button from '../Shared/Button'
+import Modal from '../Shared/Modal'
 
 interface FormTypes {
-  boardName: string;
-  columns: { name: string }[];
+  boardName: string
+  columns: { name: string }[]
 }
 
 const formSchema = yup.object({
   boardName: yup
     .string()
     .trim()
-    .min(4, "Title must be at least 4 characters")
-    .max(20, "Title must be at most 20 characters")
+    .min(4, 'Title must be at least 4 characters')
+    .max(20, 'Title must be at most 20 characters')
     // .matches(/^[a-zA-Z0-9 ]+$/, "only letters and numbers")
-    .required("Title is required"),
+    .required('Title is required'),
   columns: yup
     .array()
     .of(
@@ -28,36 +34,25 @@ const formSchema = yup.object({
         name: yup
           .string()
           .trim()
-          .min(4, "Name must be at least 4 characters")
-          .max(20, "Name must be at most 20 characters")
+          .min(4, 'Name must be at least 4 characters')
+          .max(20, 'Name must be at most 20 characters')
           // .matches(/^[a-zA-Z0-9 ]+$/, "only letters and numbers")
-          .required("Name is required"),
+          .required('Name is required'),
       })
     )
-    .min(1, "Cannot be empty") // ?
-    .max(2, "Max 2")
-    .required("Column names are required"),
-});
+    // .min(1, 'Cannot be empty') // allow to just edit board titles without need to add new column
+    .max(2, 'Max 2')
+    .required('Column names are required'),
+})
 
 interface Props {
-  isNewColumnFormOpen: string | null;
-  setIsNewColumnFormOpen: React.Dispatch<React.SetStateAction<string | null>>;
-  selectedBoard: Board;
-  addNewColumnToBoard: (newColumnsName: { name: string }[], boardName: string) => void;
-  handleDeleteColumn: (columnName: string) => void;
-  kind: "editBoard" | "newColumn";
+  isNewColumnFormOpen: string | null
+  kind: 'editBoard' | 'newColumn'
 }
 
-const EditBoardFormModal = ({
-  isNewColumnFormOpen,
-  setIsNewColumnFormOpen,
-  selectedBoard,
-  addNewColumnToBoard,
-  handleDeleteColumn,
-  kind,
-}: Props) => {
-  // console.log(selectedBoard?.name); // ? renders on main page when closed?
-  // always loaded component... // TODO: refactor?
+const EditBoardFormModal = ({ isNewColumnFormOpen, kind }: Props) => {
+  const dispatch = useDispatch()
+  const selectedBoard = useSelector((state: RootState) => state.board.selectedBoard)
 
   const {
     register,
@@ -68,197 +63,172 @@ const EditBoardFormModal = ({
     formState,
     formState: { isSubmitSuccessful, errors },
   } = useForm<FormTypes>({
-    mode: "onChange", // validation error onChange while typing in input
+    mode: 'onChange', // validation error onChange while typing in input
     defaultValues: {
-      boardName: selectedBoard?.name === undefined ? "Unnamed Board" : selectedBoard.name,
+      boardName: selectedBoard?.name === undefined ? 'Unnamed Board' : selectedBoard.name,
       // items: [{ name: "default Value" }]
-      columns: [{ name: "" }],
+      columns: [{ name: '' }],
       // show one default empty field for column name input
     },
     resolver: yupResolver(formSchema),
-  });
+  })
 
-  const { fields, append, remove } = useFieldArray({ name: "columns", control }); // ability to add/remove column name input field
-
-  // Reset form inputs on submit
-  //   useEffect(() => {
-  //     if (formState.isSubmitSuccessful) {
-  //       reset({
-  //         boardName: selectedBoard?.name === undefined ? "Unnamed Board" : selectedBoard.name,
-  //         columns: [{ name: "" }],
-  //       });
-  //     }
-  //   }, [formState, reset]);
+  const { fields, append, remove } = useFieldArray({ name: 'columns', control }) // ability to add/remove column name input field
 
   // Reset form inputs on render? -> fixes updates board name if all boards are deleted
   useEffect(() => {
     reset({
-      boardName: selectedBoard?.name === undefined ? "Unnamed Board" : selectedBoard.name,
-      columns: [{ name: "" }],
-    });
-  }, [isNewColumnFormOpen]);
+      boardName: selectedBoard?.name === undefined ? 'Unnamed Board' : selectedBoard.name,
+      columns: [{ name: '' }],
+    })
+  }, [isNewColumnFormOpen])
+
+  console.log('errors form', errors)
 
   return (
-    <Modal isOpen={isNewColumnFormOpen} setIsOpen={setIsNewColumnFormOpen}>
-      {/* hides dom elements, still alwats loaded component... */}
-      {/* // TODO: refactor? */}
+    <Modal isOpen={isNewColumnFormOpen}>
       {isNewColumnFormOpen && (
         <form
-          className="relative flex flex-col gap-6"
+          className='relative flex flex-col gap-6'
           onSubmit={handleSubmit((data) => {
-            // console.log(data);
-            // {columns: Array(1), boardName: 'Platform Launchrfds'}
-            // boardName: "Platform Launchrfds"
-            // columns: Array(1)
-            // 0:
-            // name: "1111"
-
-            // console.log(data.columns);
-            // [{…}]
-            // 0: {name: '1111'}
-
-            addNewColumnToBoard(data.columns, data.boardName);
-
-            // setIsNewColumnFormOpen(false);
+            // addNewColumnToBoard(data.columns, data.boardName)
+            dispatch(
+              addNewColumnToBoard({
+                // columns: data.columns,
+                newColumnsName: data.columns,
+                boardName: data.boardName,
+              })
+            )
+            dispatch(closeModal())
           })}
         >
           <button
-            // onClick={() => setIsNewColumnFormOpen(false)}
-            onClick={() => setIsNewColumnFormOpen(null)}
-            className="absolute right-0 top-0 fill-medium-grey p-2 hover:fill-red-main focus-visible:fill-red-main"
-            aria-label="close form"
-            type="button"
+            onClick={() => dispatch(closeModal())}
+            className='absolute right-0 top-0 fill-medium-grey p-2 hover:fill-red-main focus-visible:fill-red-main'
+            aria-label='close form'
+            type='button'
           >
             <Cross />
           </button>
-          <h1 className="text-lg font-bold">
-            {/* // TODO: Refactor new column modal / edit board modal? */}
+          <h1 className='text-lg font-bold'>
+            {/* // TODO: Refactor text new column modal / edit board modal? */}
             {/* {kind === "editBoard" ? "Edit Board" : "Add New Column"} */}
             Edit Board
           </h1>
 
           {/* Board name */}
-          <div className="relative flex w-full flex-col gap-2 text-white">
+          <div className='relative flex w-full flex-col gap-2 text-white'>
             <label
-              htmlFor="board-name"
-              className="text-xs font-bold text-medium-grey dark:text-white"
+              htmlFor='board-name'
+              className='text-xs font-bold text-medium-grey dark:text-white'
             >
               Board Name
             </label>
             <input
-              type="text"
-              id="board-name"
-              className="peer cursor-pointer rounded px-4 py-2 text-sm text-medium-grey outline outline-1 outline-medium-grey/25 transition-colors placeholder:text-black/25 focus:outline-main-purple dark:bg-dark-grey dark:placeholder:text-white/25"
+              type='text'
+              id='board-name'
+              className='peer cursor-pointer rounded px-4 py-2 text-sm text-medium-grey outline outline-1 outline-medium-grey/25 transition-colors placeholder:text-black/25 focus:outline-main-purple dark:bg-dark-grey dark:placeholder:text-white/25'
+              {...register('boardName')}
               // value={selectedBoard?.name}
-              {...register("boardName")}
               // autoFocus
             />
             {errors.boardName && (
-              <p className="form-message text-sm text-red-main">{errors.boardName?.message}</p>
+              <p className='form-message text-sm text-red-main'>
+                {errors.boardName?.message}
+              </p>
             )}
           </div>
 
           {/* Exising columns list container - start */}
-          <div className="columns-container flex flex-col gap-3">
+          <div className='columns-container flex flex-col gap-3'>
             <label
-              className="block text-xs font-bold text-medium-grey dark:text-white"
-              htmlFor="column-name0"
+              className='block text-xs font-bold text-medium-grey dark:text-white'
+              htmlFor='column-name0'
             >
               Columns
             </label>
             {selectedBoard?.columns.map((column, index) => {
               return (
-                <fieldset className="column-name flex items-center gap-1" key={column.name}>
+                <fieldset
+                  className='column-name flex items-center gap-1'
+                  key={column.name}
+                >
                   <input
-                    type="text"
+                    type='text'
                     // id={`column-name${index}`}
-                    className="peer w-full cursor-pointer rounded bg-transparent py-2 px-4 text-sm  text-medium-grey outline outline-1  outline-medium-grey/25 placeholder:text-black/25 focus:outline-main-purple dark:placeholder:text-white/25"
-                    placeholder="Todo"
+                    className='peer w-full cursor-pointer rounded bg-transparent py-2 px-4 text-sm  text-medium-grey outline outline-1  outline-medium-grey/25 placeholder:text-black/25 focus:outline-main-purple dark:placeholder:text-white/25'
+                    placeholder='Todo'
                     value={column.name}
                     readOnly
                   />
                   <button
-                    type="button"
+                    type='button'
                     onClick={() => {
-                      handleDeleteColumn(column.name);
+                      // handleDeleteColumn(column.name)
+                      dispatch(deleteColumn({ columnName: column.name }))
                     }}
-                    className="block h-full fill-medium-grey p-2 hover:fill-red-main focus-visible:fill-red-main"
+                    className='block h-full fill-medium-grey p-2 hover:fill-red-main focus-visible:fill-red-main'
                   >
                     {/* // ? without div/button overflow cutoff svg ? */}
                     <Cross />
                   </button>
                 </fieldset>
-              );
+              )
             })}
 
             {/* Add new columns */}
             {fields?.map((_item, index) => {
-              const fieldName = `columns[${index}]`;
+              console.log('fields', fields, index)
+              const fieldName = `columns[${index}]`
               return (
-                <fieldset className="flex flex-col gap-3" key={`column-name${index}`}>
-                  <div className="column-name flex items-center gap-1">
+                <fieldset className='flex flex-col gap-3' key={`column-name${index}`}>
+                  <div className='column-name flex items-center gap-1'>
                     <input
-                      type="text"
+                      type='text'
                       id={`column-name${index}`}
-                      className="peer w-full cursor-pointer rounded bg-transparent py-2 px-4 text-sm  text-medium-grey outline outline-1  outline-medium-grey/25 placeholder:text-black/25 focus:outline-main-purple dark:placeholder:text-white/25"
-                      placeholder="New column name"
+                      className='peer w-full cursor-pointer rounded bg-transparent py-2 px-4 text-sm  text-medium-grey outline outline-1  outline-medium-grey/25 placeholder:text-black/25 focus:outline-main-purple dark:placeholder:text-white/25'
+                      placeholder='New column name'
                       {...register(`columns.${index}.name`)}
                     />
                     <button
-                      type="button"
+                      type='button'
                       onClick={() => {
-                        if (fields.length > 1) {
-                          remove(index);
-                        }
+                        // if (fields.length > 1) {
+                        remove(index)
+                        // }
                       }}
-                      className="block h-full fill-medium-grey p-2 hover:fill-red-main focus-visible:fill-red-main"
+                      className='block h-full fill-medium-grey p-2 hover:fill-red-main focus-visible:fill-red-main'
+                      aria-label='remove'
                     >
-                      {/* // ? without div/button overflow cutoff svg ? */}
                       <Cross />
                     </button>
                   </div>
 
                   {errors.columns?.[index]?.name && (
-                    <p className="form-message text-sm text-red-main">
+                    <p className='form-message text-sm text-red-main'>
                       {errors.columns?.[index]?.name?.message}
                     </p>
                   )}
                 </fieldset>
-              );
+              )
             })}
             {/* Columns list container - end */}
 
             {/* Add new column - button */}
             <Button
-              type="button"
-              style="secondary"
+              type='button'
+              style='secondary'
               onClick={() => {
-                append({ name: "" });
+                append({ name: '' })
               }}
             >
               <Plus />
               Add New Column
             </Button>
-            {/* <button
-              type="button"
-              className="mt-1.5 flex items-center justify-center gap-1 rounded-3xl bg-main-purple/20 py-2.5 px-4.5 text-center text-sm font-bold text-main-purple hover:bg-main-purple/10 focus:outline-offset-2 focus-visible:outline-offset-2 dark:text-white/90 dark:hover:bg-main-purple/30"
-              onClick={() => {
-                append({ name: "" });
-              }}
-            >
-              <Plus />
-              Add New Column
-            </button> */}
           </div>
 
           {/* Create button */}
-          {/* <button
-            type="submit"
-            className="flex items-center justify-center rounded-3xl bg-[#635FC7] py-2.5 px-4.5 text-center font-bold text-white hover:bg-[#6e6adf] focus:outline-offset-2 focus-visible:outline-offset-2"
-          >
-            Create New Column
-          </button> */}
-          <Button type="submit" style="main-bold">
+          <Button type='submit' style='main-bold'>
             {/* Create New Column */}
             {/* {kind === "editBoard" ? "Save Changes" : "Create New Column"} */}
             {/* // TODO: Refactor new column modal / edit board modal? */}
@@ -267,7 +237,7 @@ const EditBoardFormModal = ({
         </form>
       )}
     </Modal>
-  );
-};
+  )
+}
 
-export default EditBoardFormModal;
+export default EditBoardFormModal

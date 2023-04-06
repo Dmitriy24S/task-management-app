@@ -1,13 +1,14 @@
 import dynamic from 'next/dynamic'
 import React from 'react'
+import { useDispatch } from 'react-redux'
+import { RootState } from '../../redux'
+import { showSubtasks } from '../../redux/BoardSlice/BoardSlice'
 import { BoardColumns, BoardSubTasks, BoardTasks } from '../../types'
 
 interface TaskProps {
   task: BoardTasks
-  showSubtasks: (task: BoardTasks, column: BoardColumns) => void
   column: BoardColumns
   index: number
-  // isDragging: boolean
 }
 
 const Draggable = dynamic(
@@ -18,26 +19,21 @@ const Draggable = dynamic(
   { ssr: false }
 )
 
-const Task = ({
-  task,
-  showSubtasks,
-  column,
-  index
-}: // isDragging
-TaskProps) => {
+const Task = ({ task, column, index }: TaskProps) => {
   // {title: 'Competitor analysis', description: '', status: 'Done', subtasks: Array(2)}
+  const dispatch = useDispatch()
+
   return (
     <Draggable draggableId={task.title} index={index}>
       {(provided, snapshot) => (
         <article
           className={`group mb-5 cursor-pointer rounded-lg border border-[#86868619] bg-white p-5 py-6 text-black shadow-task dark:bg-[#2B2C37] dark:text-white`}
-          onClick={() => showSubtasks(task, column)}
+          onClick={() => dispatch(showSubtasks({ task, column }))}
           // (3) [{…}, {…}, {…}]
           // 0: {title: 'Settings - Account page', isCompleted: true}
           // 1: {title: 'Settings - Billing page', isCompleted: true}
           // 2: {title: 'Search page', isCompleted: false}
           ref={provided.innerRef}
-          // isDragging={snapshot.isDragging}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >

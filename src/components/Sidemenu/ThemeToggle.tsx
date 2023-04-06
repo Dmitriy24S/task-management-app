@@ -1,17 +1,19 @@
 import { Switch } from '@headlessui/react'
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '../../redux'
+import { toggleDarkTheme } from '../../redux/BoardSlice/BoardSlice'
 
-interface ThemeToggleProps {
-  darkTheme: boolean
-  setDarkTheme: React.Dispatch<React.SetStateAction<boolean>>
-}
+const ThemeToggle = () => {
+  const { darkTheme } = useSelector((state: RootState) => state.board)
+  const dispatch = useDispatch()
 
-const ThemeToggle = ({ darkTheme, setDarkTheme }: ThemeToggleProps) => {
   return (
     <section
       className='theme-toggle group mx-auto mt-4 mb-6 flex w-56 min-w-max cursor-pointer items-center justify-center gap-6 rounded-md bg-[#F4F7FD] p-4 dark:bg-[#20212C] sm:mb-0 sm:mt-auto'
       onClick={() => {
-        setDarkTheme(!darkTheme)
+        // setDarkTheme(!darkTheme)
+        dispatch(toggleDarkTheme(!darkTheme))
         if (!darkTheme) {
           localStorage.setItem('theme', 'dark')
           console.log('storage save to dark')
@@ -35,12 +37,9 @@ const ThemeToggle = ({ darkTheme, setDarkTheme }: ThemeToggleProps) => {
           e.stopPropagation() // prevent 2x local storage save, click -> switch click + div click
         }}
         checked={darkTheme}
-        // onChange={() => setDarkTheme((prevDarkTheme) => !prevDarkTheme)}
-        // onChange={setDarkTheme}
         onChange={() => {
-          // console.log(e); // boolean
-          // e.stopPropagation() // nope
-          setDarkTheme(!darkTheme)
+          // setDarkTheme(!darkTheme)
+          dispatch(toggleDarkTheme(!darkTheme))
           if (!darkTheme) {
             localStorage.setItem('theme', 'dark')
             console.log('storage save to dark')
@@ -51,8 +50,6 @@ const ThemeToggle = ({ darkTheme, setDarkTheme }: ThemeToggleProps) => {
             localStorage.setItem('theme', 'light')
             console.log('storage save to light')
             document.documentElement.setAttribute('data-color-scheme', 'light')
-            // !!!
-            // TODO refactor
           }
         }}
         className={`${!darkTheme ? 'bg-[#635FC7]' : 'bg-[#444298]'}
@@ -63,7 +60,7 @@ relative inline-flex h-[22px] w-[40px] shrink-0 cursor-pointer items-center roun
           aria-hidden='true'
           className={[
             'pointer-events-none inline-block h-[14px] w-[14px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out',
-            darkTheme ? 'translate-x-[21px]' : 'translate-x-0'
+            darkTheme ? 'translate-x-[21px]' : 'translate-x-0',
           ].join(' ')}
         />
       </Switch>

@@ -1,25 +1,24 @@
 export interface Board {
-  name: string;
-  columns: BoardColumns[];
+  name: string
+  columns: BoardColumns[]
 }
 
 export interface BoardColumns {
-  name: string;
-  // color: string;
-  color?: string; // ! why ? demands in index.tsx [boardsData, setBoardsData] = useState<Board[]>(data.boards);
-  tasks: BoardTasks[];
+  name: string
+  color?: string // ! ? demands in index.tsx [boardsData, setBoardsData] = useState<Board[]>(data.boards);
+  tasks: BoardTasks[]
 }
 
 export interface BoardTasks {
-  title: string;
-  description: string;
-  status: string;
-  subtasks: BoardSubTasks[];
+  title: string
+  description: string
+  status: string
+  subtasks: BoardSubTasks[]
 }
 
 export interface BoardSubTasks {
-  isCompleted: boolean;
-  title: string;
+  isCompleted: boolean
+  title: string
 }
 
 // boards: Array(3)
